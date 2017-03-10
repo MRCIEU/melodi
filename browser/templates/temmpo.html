@@ -1,0 +1,102 @@
+{% extends "base_generic.html" %}
+{% load humanize %}
+
+{% load staticfiles %}
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+    var table = $('#search_sets').DataTable({
+                "order": [[1, "desc"]],
+                dom: 'frtip',
+                lengthChange: false,
+                scrollY:        200,
+                deferRender:    true,
+                scroller:       true
+            })
+
+
+            $('#search_sets tbody').on('click', 'tr', function () {
+                var numItems = $('.selected').length
+                if (numItems < 3) {
+                    d = table.row(this).data()[0]
+                    $(this).toggleClass('selected');
+                    //check if A again and clear
+                    if (d == $('#circle1').text()){
+                        //console.log('comA again')
+                        $('#circle1').text('?')
+                        $('#id_a').val('')
+                    }
+                    //check if B again and clear
+                    else if (d == $('#circle2').text()){
+                        $('#circle2').text('?')
+                        $('#id_b').val('')
+                    }
+                    //check if A is empty
+                    else if ($('#circle1').text().length < 1 || $('#circle1').text() == '?'){
+                        $('#circle1').text(d)
+                        $('#as1').val(d)
+                    }
+                    //check if B is empty
+                    else if ($('#circle2').text().length < 1 || $('#circle2').text() == '?'){
+                        $('#circle2').text(d)
+                        $('#as2').val(d)
+                    }else{
+                        $(this).removeClass('selected');
+                    }
+                }
+            });
+    })
+</script>
+{% endblock %}
+
+{% block title %}Temmpo{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="row well">
+    <br>
+        <form  action="{% url 'temmpo_res' %}" id="temmpo_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="col-md-4 well" style="height:80px">
+            Article Set 1 = <b><span name="circle1" value="a" id="circle1">?</span></b><br>
+            Article Set 2 = <b><span name="circle2" value="b" id="circle2">?</span></b>
+            <input type="hidden" id="as1" name="as1" value="">
+            <input type="hidden" id="as2" name="as2" value="">
+        </div>
+        <div class="col-md-4 well" style="height:80px">
+            Upload intermediates <input type="file" name="intFile">
+        </div>
+        <div class="col-md-4 well" style="height:80px">
+            <!--input type="image" src="/static/browser/img/temmpo_logo.png" width="370px" alt="Submit Form" /-->
+            <button type="submit" class="btn btn-warning btn-block">TeMMPo ME !!!</button>
+        </div>
+        </form>
+    </div>
+    <div class="row well">
+        <div class="col-md-12">
+            <table id="search_sets" class="display" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date added</th>
+                    <th>Description</th>
+                    <th>Pubmed articles</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for a in s %}
+                    <tr>
+                        <!--td><a href="/articles/{{a.id}}/">{{ a.job_name }}</a></td-->
+                        <td>{{ a.job_name }}</td>
+                        <td>{{ a.job_start }}</td>
+                        <td>{{ a.ss_desc|truncatechars:40 }}</td>
+                        <td>{{ a.pTotal | intcomma}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+{% endblock %}

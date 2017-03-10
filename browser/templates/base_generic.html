@@ -1,0 +1,139 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'browser/img/favicon.ico' %}"/>
+
+    <link rel="stylesheet" href="{% static 'browser/css/bootstrap-3.3.5-dist/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'browser/css/custom.css' %}"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="{% static 'browser/js/bootstrap-tour-0.10.2/build/css/bootstrap-tour.min.css' %}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,af-2.1.1,b-1.1.2,b-colvis-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,cr-1.3.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.css"/>
+
+    <script src="{% static 'browser/js/jquery-2.1.4.min.js' %}"></script>
+{#  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>#}
+    <script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{% static 'browser/js/bootstrap-tour-0.10.2/build/js/bootstrap-tour.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/dt/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,af-2.1.1,b-1.1.2,b-colvis-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,cr-1.3.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.js"></script>
+
+    <script>
+        function submitForm(formID) {
+            document.getElementById(formID).submit();
+        }
+    </script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-73565642-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    {% block styles %}{% endblock %}
+    {% block scripts %}{% endblock %}
+    <title> {% block title %}{% endblock %}</title>
+    <meta name="description" content="MELODI - Mining Enriched Literature Objects to Derive Intermediates">
+    <meta name="keywords" content="Bristol University, Neo4j, MELODI">
+    <meta name="author" content="Ben Elsworth">
+
+    <style>
+        @media (min-width: 1400px) {
+            .container{
+                max-width: 1280px;
+                min-width: 1280px;
+            }
+}
+    </style>
+    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+    <script type="text/javascript">
+        window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"dark-top"};
+    </script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
+    <!-- End Cookie Consent plugin -->
+
+</head>
+
+<body>
+        <nav class="navbar navbar-default" style="background-color: #D4D4D4;margin-bottom: 0px;">
+        <div class="container">
+            <div id = "ft_welcome">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="{% url 'home' %}"><img src="/static/browser/img/melodi_logo.png" width="200" style="position: relative; top:-10px"></a>
+          </div>
+             <div class="navbar-header">
+                <span class="navbar-brand"><font size=2><b>M</b>ining <b>E</b>nriched <b>L</b>iterature <b>O</b>bjects to <b>D</b>erive <b>I</b>ntermediates</font></span>
+             </div>
+          <div id="navbar" class="navbar-collapse collapse">
+             <div class="navbar-header">
+                 <span style="margin-right: 100px"></span>
+             </div>
+            <ul class="nav navbar-nav">
+                <li id="ft_home" class="{% if nbar == 'home' %}active{% endif %}"><a href="{% url 'home' %}">Home</a></li>
+                <li id="ft_about" class="{% if nbar == 'about' %}active{% endif %}"><a href="{% url 'about' %}">About</a></li>
+                <!--li id="ft_help" class="{% if nbar == 'help' %}active{% endif %}"><a href="{% url 'help' %}">Help</a></li-->
+                <li id="ft_results" class="{% if nbar == 'results' %}active{% endif %}"><a href="{% url 'jobs' %}">Results</a></li>
+            </ul>
+              <div class="navbar-header" id="ft_info">
+                <a class="navbar-brand" href="javascript:void(0);" id="startTour"><img src="/static/browser/img/information-icon-md.png"  height="40" style="position: relative; top:-10px; margin: 0px 10px 0px 10px"></a>
+              </div>
+            <form class="navbar-form navbar-right">
+            {% comment %}   
+		 {{ user.id }}
+                {{ user.email }}
+		{% endcomment %}
+                {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-info" aria-label="Left Align" onclick="location.href = '{% url 'logout' %}';">
+                        <span class="glyphicon glyphicon-log-out" aria-hidden="true" id="shareText"></span>&nbsp;
+                        <span>Logout {{ user.username }}</span>
+                    </button>
+                {%  else %}
+                    <button type="button" class="btn btn-info" aria-label="Left Align" onclick="location.href = '{% url 'socialauth_begin' 'google-oauth2' %}';">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true" id="shareText"></span>&nbsp;
+                        <span>Sign in</span>
+                    </button>
+                {% endif %}
+          </form>
+          </div><!--/.nav-collapse -->
+            </div><!--/tour -->
+        </div><!--/.container-fluid -->
+      </nav>
+   <div class="container">
+       <div id="content">
+           {% block content %}
+           {% endblock %}
+       </div>
+   </div>
+<br><br>
+ <footer class="footer" style="background-color: #D4D4D4; height:100px">
+      <div class="container" style="height:100px">
+        <div class="row">
+            <div class="col-lg-3">
+                 <a href="http://www.cancerresearchuk.org/" target="_blank"><img class="center-block" src="/static/browser/img/Cancer_Research_UK.svg.png" height="100" style="padding: 10px "/></a>
+            </div>
+            <div class="col-lg-3">
+                <a href="http://www.bristol.ac.uk/" target="_blank"><img class="center-block" src="/static/browser/img/bristol_uni_logo_transparent.gif" height="100" style="padding: 15px "/></a>
+            </div>
+            <div class="col-lg-3">
+                <a href="http://www.bristol.ac.uk/social-community-medicine/projects/icep/" target="_blank"><img class="center-block" src="/static/browser/img/ICEP_logo.png" height="100"/></a>
+            </div>
+            <div class="col-lg-3">
+                <a href="http://www.bristol.ac.uk/integrative-epidemiology/" target="_blank"><img class="center-block" src="/static/browser/img/MRC_IEU.png" height="80" style="margin:10px"/></a>
+            </div>
+        </div>
+      </div>
+    </footer>
+</body>
+{% block bottom_scripts %}{% endblock %}
+</html>

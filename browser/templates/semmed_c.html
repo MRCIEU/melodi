@@ -1,0 +1,853 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+
+
+.open_img {
+    background-image: url("{% static "browser/img/details_open.png" %}");
+{#    width: 10px;#}
+    background-repeat: no-repeat;
+    padding-left: 22px;  /* width of the image plus a little extra padding */
+    cursor: pointer;
+    padding-bottom: 3px;
+}
+.close_img {
+    background-image: url("{% static "browser/img/details_close.png" %}");
+    background-repeat: no-repeat;
+    padding-left: 22px;  /* width of the image plus a little extra padding */
+    cursor: pointer;
+    padding-bottom: 3px;
+}
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        var neg_search_num=100
+
+        function share_result(resID,status){
+            console.log(status+' sharing '+resID)
+            $.ajax({
+                url: "{% url 'ajax_share' %}",
+                "data": {
+                    resID : resID,
+                    status: status,
+                },
+                type: 'get', // This is the default though, you don't actually need to always mention it
+                success: function(data) {
+                    show_share_button(status)
+                },
+                failure: function(data) {
+                    alert('Got an error dude');
+                }
+            });
+        }
+
+        function show_share_button(status){
+            if (status == 'False') {
+                console.log('updating button to not share')
+                document.getElementById('share_yes').style.display = 'none';
+                document.getElementById('share_no').style.display = 'block';
+            } else {
+                console.log('updating button to share')
+                document.getElementById('share_yes').style.display = 'block';
+                document.getElementById('share_no').style.display = 'none';
+            }
+        }
+
+        //function to add filter to table
+        function tFilter(w){
+            //console.log("searching for "+w)
+            oTable = $('#resAll').dataTable();
+            oTable.fnFilter( w, 0, false, false);
+            //g=oTable.fnFilter.val()
+            //console.log(g)
+        }
+
+        function concept_div(key){
+            $('#'+key).toggle();
+            var c = $('#'+key+'_header').attr('class')
+            if (c == "open_img") {
+                $('#' + key + '_header').attr('class','close_img')
+            }else {
+                $('#' + key + '_header').attr('class','open_img')
+            }
+        }
+
+        /*
+        $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    if ( settings.nTable.id === 'resAll' ) {
+                        var min = parseInt($('#min').val(), 10);
+                        var max = parseFloat($('#max').val(), 10);
+                        var mesh = parseFloat($('#meshLevel').val(), 10);
+                        var val_p = parseFloat(data[5]) || 0;
+                        var val_o = parseFloat(data[6]) || 0;
+                        var val_m = parseFloat(data[7]) || 0;
+
+                        if (( isNaN(min) && isNaN(max) && isNaN(mesh)) ||
+                                //one
+                                ( min <= val_o && isNaN(max) && isNaN(mesh)) ||
+                                ( isNaN(min) && val_p <= max && isNaN(mesh)) ||
+                                ( isNaN(min) && isNaN(max) && mesh <= val_m  ) ||
+                                //two
+                                ( min <= val_o && val_p <= max && isNaN(mesh)) ||
+                                ( isNaN(min) && val_p <= max && mesh <= val_m) ||
+                                ( min <= val_o && isNaN(max) && mesh <= val_m) ||
+                                //three
+                                ( min <= val_o && val_p <= max && mesh <= val_m))
+                                {
+                            return true;
+                        }
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+        );
+        */
+        $(document).ready(function () {
+
+            // Instance the tour for the button
+			var tour = new Tour({
+                backdrop: true,
+                backdropPadding: 5,
+                onEnd: function(tour){$('.nav-tabs a[href="#home"]').tab('show');},
+			  steps: [
+			   {
+			    element: "#sankey_multiple",
+			    title: "Sankey Plot",
+			    content: "A Sankey plot displaying the top 20 enriched shared MeSH terms and the links between the two search sets",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#p",
+			    title: "Max Mean Corrected P-Value Filter",
+			    content: "Filter the results by the maximum mean corrected P-Value for the enrichment analysis across both search sets",
+			    placement: "right"
+
+			  },
+                  {
+			    element: "#o",
+			    title: "Min Mean Odds Ratio Filter",
+			    content: "Filter the results by the minimum mean odds ratio for the enrichment analysis across both search sets",
+			    placement: "right"
+
+			  },
+                  {
+			    element: "#m",
+			    title: "Min MeSH Hierarchy Filter",
+			    content: "Filter the results by the minimum position of the MeSH term in the MeSH hierarchy - higher value = more specific",
+			    placement: "right"
+
+			  },
+                  {
+			    element: "#t",
+			    title: "Top Hits",
+			    content: "Sets the number of hits to return to the page",
+			    placement: "right"
+
+			  },
+                  {
+			    element: "#neg1",
+			    title: "Negative Filtering",
+			    content: "It is often useful to temporarily hide results from the results page. This decision is often made because a term is a false positive or a known true positive",
+			    placement: "right"
+
+			  },
+                  {
+			    element: "#share_option",
+			    title: "Share Option",
+			    content: "This button show the current share status of the results page. If this page is your own you can choose wether or not to share it by creating a unique link",
+			    placement: "left"
+
+			  },
+                  {
+			    element: "#reset_download",
+			    title: "Download and Reset",
+			    content: "Download the data on display in CSV format, or Reset the display to default values",
+			    placement: "top"
+
+			  },
+                  {
+			    element: "#results",
+                      onShow: function(tour){$('.nav-tabs a[href="#home"]').tab('show');},
+			    title: "Shared data",
+			    content: "Details of the shared MeSH terms",
+			    placement: "top"
+
+			  },
+                  {
+			    element: "#results",
+                      onShow: function(tour){$('.nav-tabs a[href="#menu1"]').tab('show');},
+			    title: "{{ s1_name }} enrichment details",
+			    content: "Details of the enrichment analysis for {{ s1_name }}",
+			    placement: "top"
+
+			  },
+                        {
+			    element: "#results",
+                      onShow: function(tour){$('.nav-tabs a[href="#menu2"]').tab('show');},
+			    title: "{{ s2_name }} enrichment details",
+			    content: "Details of the enrichment analysis for {{ s2_name }}",
+			    placement: "top"
+
+			  },
+			]});
+
+            //localStorage.clear();
+            // Initialize the tour
+			tour.init();
+
+			// Start the tour
+			tour.start();
+
+            $("#startTour").click(function(){
+                console.log('restarting tour')
+   				 tour.restart();
+			})
+
+
+            $(function () {
+                $("#mesh").slider({
+                    range: "max",
+                    min: 1,
+                    max: 11,
+                    value: 4,
+                    slide: function (event, ui) {
+                        $("#meshLevel").val(ui.value);
+                    },
+                    stop: function (event, ui) {
+                        table_all.draw()
+                    }
+                });
+                $("#meshLevel").val($("#mesh").slider("value"));
+
+                $("#minOdds").slider({
+                    range: "max",
+                    min: 0,
+                    max: 100,
+                    value: 10,
+                    slide: function (event, ui) {
+                        $("#min").val(ui.value);
+                    },
+                    stop: function (event, ui) {
+                        table_all.draw()
+                    }
+                });
+                $("#min").val($("#minOdds").slider("value"));
+
+                $("#maxP").slider({
+                    range: "max",
+                    min: 1,
+                    max: 50,
+                    value: 3,
+                    slide: function (event, ui) {
+                        $("#max").val('1e-'+ui.value);
+                    },
+                    stop: function (event, ui) {
+                        table_all.draw()
+                    }
+                });
+                $("#max").val("1e-"+$("#maxP").slider("value"))
+
+                 $("#topHits").slider({
+                    range: "max",
+                    min: 5,
+                    max: 100,
+                    value: 10,
+                     step: 5,
+                    slide: function (event, ui) {
+                        $("#maxTop").val(ui.value);
+                    },
+                     stop: function (event, ui) {
+                         $('#resAll').DataTable().page.len(ui.value).draw()
+                     }
+                });
+                $("#maxTop").val($("#topHits").slider("value"))
+
+                //table_all.draw();
+            });
+
+            var resID = {{ res }}
+            console.log('resID: '+resID)
+            var table_all = $('#resAll').DataTable({
+                //"order": [[4, "asc"],[5,"desc"]],
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url":"{% url 'ajax_overlap' %}",
+                    "data": function(d){
+                        d.resID = resID
+                        var sTerm = neg_searcher()
+                        var nsTerm = JSON.stringify(sTerm[0])
+                        var psTerm = JSON.stringify(sTerm[1])
+                        d.t = 'semmed_c'
+                        d.n=nsTerm
+                        d.p=psTerm
+                        d.pval=parseFloat($("#max").val())
+                        d.odds=parseFloat($("#min").val())
+                        //d.iDisplayLength=parseInt($("#maxTop").val())
+                        //d.top=parseInt($("#maxTop").val())
+                        d.pfr=parseInt($("#meshLevel").val())
+                    },
+                },
+                "order": [[5, "asc"]],
+                "columnDefs": [
+                    {
+                        "render": function ( data, type, row ) {
+                            s = data.split(":")
+                            d = '<span class="sem_item" style="color:green; cursor: pointer">'+s[0]+'</span>'
+                            return d
+                        },
+                        "targets": 0
+                    },
+                {
+                     render: function ( data, type, row ) {
+                         var d = data
+                         if (data != 0){
+                             var url = '{% url "pubs" "1_1" %}'.replace('1_1',row[8]+'_0')
+                             var d = '<a href="'+url+'" target=\"_blank\"">'+data+'</a>'
+                         }
+                         return d
+                     },
+                     targets: 1
+                 },
+                 {
+                     render: function ( data, type, row ) {
+                         var d = data
+                         if (data != 0){
+                             var url = '{% url 'pubs' '1_1' %}'.replace('1_1',row[8]+'_1')
+                             var d = '<a href="'+url+'" target=\"_blank\"">'+data+'</a>'
+                         }
+                         return d
+                     },
+                     targets: 2
+                 },
+                 {
+                     render: function ( data, type, row ) {
+                         var d = data
+                         if (data != 0){
+                             d = '<a href="/pubs/'+row[8]+'_2/" target="_blank">'+data+'</a>'
+                         }
+                         return d
+                     },
+                     targets: 3
+                 },
+                 {
+                    targets: 7,
+                    visible: false
+                 },
+                 {
+                    targets: 8,
+                    visible: false
+                 }
+                ],
+                dom: 'Bfrtip',
+                lengthChange: false,
+                "buttons": [
+                    'copy', 'csv','excel','colvis'
+                ],
+                "drawCallback": function( oSettings ) {
+                    //console.log( 'DataTables has redrawn the table' );
+                    google.charts.setOnLoadCallback(drawChart);
+                    res_header();
+                    concepts();
+                }
+            })
+             //check for low number of total records and adjust pfr
+            function dynamic_filter(){
+                var info = table_all.page.info();
+                console.log(info)
+                console.log('total records: '+info.recordsTotal)
+                if ((info.recordsTotal > 0 && info.recordsTotal <= 10)){
+                    //mesh level
+                    $("#mesh").slider("value", 1);
+                    $("#meshLevel").val(1);
+                    //odds
+                    $("#minOdds").slider("value", 0);
+                    $("#min").val(0);
+                    //pval
+                    $("#maxP").slider("value",1);
+                    $("#max").val("1e-"+1);
+                }else if (info.recordsTotal > 1000){
+                    $("#mesh").slider("value", 7);
+                    $("#meshLevel").val(7);
+                }else{
+                    $("#mesh").slider("value", 4);
+                    $("#meshLevel").val(4);
+                }
+                table_all.draw();
+            }
+
+            setTimeout( function () {
+                dynamic_filter()
+            }, 1000 );
+
+            function res_header(){
+                //set results header
+                var info = table_all.page.info();
+                console.log(info)
+                $("#res_top").text($("#maxTop").val());
+                $("#res_filt").text(info.recordsDisplay.toLocaleString());
+                $("#res_all").text(info.recordsTotal.toLocaleString());
+            }
+
+                        function getSortedKeys(obj) {
+                var keys = []; for(var key in obj) keys.push(key);
+                return keys.sort(function(b,a){return obj[a]-obj[b]});
+            }
+
+            function concepts(){
+                var jsonData = table_all.ajax.json();
+                console.log('Compiling concepts')
+                //console.log(jsonData.data)
+                d = jsonData.data
+                var conceptLists = {}
+                for (var i = 0; i < jsonData.data.length; i++) {
+                    var c = jsonData.data[i][9]
+                    console.log(c)
+                    var s = jsonData.data[i][0]
+                    console.log(s)
+                    //check for multiple concept IDs
+                    cSplit = c.split(',').forEach(function(c){
+                        if (c in conceptLists) {
+                            if (conceptLists[c].indexOf(s) < 0) {
+                                conceptLists[c].push(s)
+                            }
+                        } else {
+                            conceptLists[c] = [s]
+                        }
+                    })
+                }
+                console.log(conceptLists)
+                var conceptCounts = {}
+                for (var c in conceptLists){
+                    conceptCounts[c] = conceptLists[c].length
+                }
+
+                console.log(conceptCounts)
+
+                //get full concept names
+                var fullNames = {{ cDic | safe}}
+                //console.log(fullNames)
+
+                //clear checkboxes
+                $("#concept_boxes").text('')
+                var conceptCounts_sorted_keys = getSortedKeys(conceptCounts)
+                //console.log(conceptCounts_sorted_keys)
+                for (var i in conceptCounts_sorted_keys) {
+                    var key = conceptCounts_sorted_keys[i]
+                    var name = fullNames[key]
+                    //console.log(key)
+                    //console.log(conceptLists[key].join("<br>"))
+                    var concept_info = '<ul>'
+                    for (var l in conceptLists[key]){
+                        concept_info += '<li>'+conceptLists[key][l]+'</li>'
+                    }
+                    concept_info += '</ul>'
+                    //$("#concept_boxes").append('<label data-toggle="tooltip" data-placement="top" data-original-title="'+conceptLists[key].join("\n")+'"><input type="checkbox" name="myCheckbox" checked/> '+name+' ('+conceptCounts[key]+')</span><br>');
+                    $("#concept_boxes").append('<span id='+key+'_header class="open_img" onclick="concept_div(\''+key+'\')" style="white-space: nowrap; overflow:auto;">'+conceptCounts[key]+' '+name+'</span><br><div id='+key+' style="display:none; white-space: nowrap; overflow:auto;">'+concept_info+'</div>');
+                }
+            }
+
+             function neg_searcher(){
+                console.log('neg_searcher')
+                var nsTerm = ''
+                var psTerm = ''
+                var sCheck = false
+                 var fList = ''
+                //var nVal = $('#neg_search' + n).val()
+                for (var i = 1; i <= neg_search_num; i++) {
+                    var v = $('#neg_search' + i).val()
+                    if (v) {
+                        console.log('Neg search - ' + i + ":" + v)
+                        var t = $('#text_search_type' + i).val()
+                        if (v.length > 2) {
+                            if (t == 'i') {
+                                nsTerm += v + '|'
+                                //add terms to download
+                                fList += i + "\t" + v + "\tNeg\n"
+                            }else{
+                                psTerm += v + '|'
+                                //add terms to download
+                                fList += i + "\t" + v + "\tPos\n"
+
+                            }
+                        }
+                        if (v.length > 0) {
+                            var sCheck = true
+                        }
+                        if (v.length == 0) {
+                            $('#text_search_type' + i).val('r')
+                        }
+                    }
+                }
+                 if (nsTerm.length > 0){
+                     nsTerm = nsTerm.slice(0, -1);
+                 }
+                 if (psTerm.length > 0){
+                     psTerm = psTerm.slice(0, -1);
+                 }
+
+                 //add terms to download
+                $('#fList').val(fList)
+
+                //console.log(nsTerm)
+                //console.log(psTerm)
+                return [nsTerm,psTerm]
+
+            }
+
+            var filter_html = ''
+            for (i = 1; i < neg_search_num+1; i++) {
+                filter_html += '<form class="form-inline"><div class="form-group"><input type="text" id="neg_search'+i+'" size="12" class="form-control input-sm neg_search_box"><select id="text_search_type'+i+'"  class="form-control input-sm search_opt_type" style="width: 35px;padding-left:0px;padding-right:0px""> <option value="i">N</option> <option value="r">Y</option> </select> </div></form>'
+            }
+
+            //console.log(filter_html)
+            $('#filter_boxes').html(filter_html)
+
+            //handlers for text insert and option change
+            $('.search_opt_type').on('change', function(){table_all.ajax.reload()});
+            $('.neg_search_box').on('keyup', function(){if ($('#neg_search1').val().length>2 || $('#neg_search1').val().length==0){table_all.ajax.reload()}});
+
+            //check for click events on SemMed items
+            $("body").on('click', ".sem_item", function(){
+                var v = $(this).html()
+                for (i = 1; i <= neg_search_num; i++) {
+                    vCheck = $('#neg_search' + i).val()
+                    //console.log('Neg search - ' + i + ":" + vCheck)
+                    //check if already added
+                    //console.log('n - '+n+' o '+o)
+                    if (vCheck == v){
+                        break
+                    }
+                    if (vCheck.length == 0){
+                        console.log("Adding to neg box "+i)
+                        $('#neg_search' + i).val(v)
+                        //change select value
+                        table_all.ajax.reload()
+                        break
+                    }
+                }
+            });
+
+
+            // Event listener to the filtering inputs to redraw on input
+            //$('#max').keyup( function() {
+            //    table_all.draw();
+            //} );
+            var table_s1 = $('#resA').DataTable({
+                "order": [[5, "asc"],[3,"desc"]],
+                dom: 'Bfrtip',
+                lengthChange: false,
+                "buttons": [
+                    'copy', 'csv','excel','colvis'
+                ],
+            })
+            var table_s2 = $('#resB').DataTable({
+                "order": [[5, "asc"],[3,"desc"]],
+                dom: 'Bfrtip',
+                lengthChange: false,
+                "buttons": [
+                   'copy', 'csv','excel','colvis'
+                ],
+            })
+
+             var oTable = $('#datatable').dataTable({
+                // ...
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{% url 'order_list_json' %}"
+            });
+
+            //setInterval( function () {
+            //    table.ajax.reload();
+            //}, 5000 );
+
+            google.charts.load("44", {packages: ["sankey"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                console.log('drawing chart')
+                var data = new google.visualization.DataTable();
+                var s1Name = '{{ s1_name }}'
+                var s2Name = '{{ s2_name }}'
+                var sData = []
+                var maxCounter = 0
+                var jsonData = table_all.ajax.json();
+                //console.log(jsonData.data.length+' rows were loaded')
+
+                for (var i = 0; i < jsonData.data.length; i++) {
+                    d = jsonData.data[i]
+                    maxCounter += 1
+                    mt = d[0].split(":")[0]
+                    exp_mt = d[1]
+                    mt_out = d[2]
+                    if (maxCounter < $("#maxTop").val()) {
+                        sData.push([s1Name, mt, parseInt(exp_mt)])
+                        sData.push([mt, s2Name, parseInt(mt_out)])
+                    }
+                }
+                //console.log(sData)
+                data.addColumn('string', 'From');
+                data.addColumn('string', 'To');
+                data.addColumn('number', 'Artciles');
+                data.addRows(sData)
+
+                // Set chart options
+                var options = {
+                    //width: 1000,
+                    width: $("#sankey_div").width()-30,
+                    sankey: {
+                        node: {
+                            interactivity: true
+                        }
+                    }
+                };
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.Sankey(document.getElementById('sankey_multiple'));
+                chart.draw(data, options);
+                google.visualization.events.addListener(chart, 'select', function () {
+                    var sel = chart.getSelection();
+                    //val=sel[0].name.replace(/ *\[[^)]*\] */g, "");
+                    val = sel[0].name.replace(/\//g, " / ");
+                    tFilter(val)
+                });
+
+
+            }
+            $(".reset_btn").click(function() {
+                console.log('Resetting')
+
+                //clear search field
+                tFilter('')
+
+                //reset sliders
+                dynamic_filter()
+                //$("#minOdds").slider("value", 10);
+                //$("#min").val(10);
+                //$("#maxP").slider("value", 3);
+                //$("#max").val('1e-' + 3);
+                $("#topHits").slider("value", 10);
+                $("#maxTop").val(10);
+
+                //remove ignore options
+                $('.neg_search_box').val('')
+                $('.search_opt_type').val('i')
+                table_all.ajax.reload()
+            })
+
+            $("#success-alert").hide();
+            $("#share_button_no").click(function showAlert() {
+                $("#success-alert").alert();
+                $("#success-alert").fadeTo(20000, 500).slideUp(500, function(){
+                    $("#success-alert").slideUp(500);
+                });
+            });
+             $("#share_button_yes").click(function () {
+               $("#success-alert").hide()
+            });
+        });
+
+    //function to submit filter list for download if not empty
+    function fList_submit() {
+        console.log('fList_submit')
+        var f = document.getElementById('fList').value;
+        if (f.length>0) {
+            console.log(f);
+            document.getElementById('filter_form').submit();
+        }
+    }
+
+    show_share_button('{{ shareStatus }}')
+
+    </script>
+
+{% endblock %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+     {% if overlap > 0 %}
+         <div class="row">
+            <div class="col-md-2" id="graph_sliders">
+                <br><br><br>
+                <div id="p">
+                    <label for="max"><small>Max Cor PVal:</small></label>
+                    <input type="text" id="max" readonly style="border:0; color:#f6931f; font-weight:bold;" size="5">
+                    <div id="maxP"></div>
+                </div>
+                <br>
+                <div id="o">
+                    <label for="min"><small>Min Odds:</small></label>
+                    <input type="text" id="min" readonly style="border:0; color:#f6931f; font-weight:bold;" size="5">
+                    <div id="minOdds"></div>
+                </div>
+                <br>
+                <div id="t">
+                    <label for="maxTop"><small>Top Hits:</small></label>
+                    <input type="text" id="maxTop" readonly style="border:0; color:#f6931f; font-weight:bold;" size="5">
+                    <div id="topHits"></div>
+                </div>
+                <br>
+                <div id="neg1" style="overflow-y: scroll; height: 280px" >
+                    <form id="filter_form" action="{% url  'download_filter' %}" method="post" style=" display:inline;margin:0px;padding:0px;">{% csrf_token %}
+                             <label><small>Filter: <a href="javascript:void(0);" onclick="fList_submit();">(Download List)</a></small></label>
+                         <input type="hidden" name="fList" id="fList" value=''>
+                         <input type="hidden" name="resID" id="fList_resID" value={{ res }}>
+                         <input type="hidden" name="fType" id="tType" value="semmed_c">
+                     </form>
+                    <label for="neg_search1">
+                    <div id="filter_boxes"></div>
+                </div>
+            </div>
+             <div class="col-md-8">
+                 <div class="alert alert-success" id="success-alert" style="display: none">
+                     <button type="button" class="close" data-dismiss="alert">x</button>
+                     Results available via this link - <a href="http://melodi.biocompute.org.uk/results/{{ hash_id }}/">http://melodi.biocompute.org.uk/results/{{ hash_id }}/</a>.
+                 </div>
+                 <div id="res_header" style="position: relative; left: 370px; top: 33px">
+                     Showing top <span id="res_top"></span> of <span id="res_filt"></span> filtered results (total :
+                     <span id="res_all"></span>)
+                 </div>
+                 <br><br>
+                 <div style="margin: auto; width:100%; height: 500px;" id="sankey_multiple">
+                     <span id="sankey_text"></span>
+                 </div>
+                 <div style="text-align: center;" id="reset_download">
+                     <form action="{% url  'download_result' %}" method="post"
+                           style=" display:inline;margin:0px;padding:0px;">{% csrf_token %}
+                         <button type="submit" class="btn btn-info download_btn" id="download">
+                             <span class="glyphicon glyphicon-download-alt" aria-hidden="true" id="download"></span>&nbsp;
+                             <span>Download Data</span>
+                         </button>
+                         <input type="hidden" name="resID" id="resID" value={{ res }}>
+                     </form>
+                     <button type="button" class="btn btn-info reset_btn">
+                         <span class="glyphicon glyphicon-refresh" aria-hidden="true" id="reset"></span>&nbsp;
+                         <span>Reset Filtering</span>
+                     </button>
+                 </div>
+             </div>
+             <div class="col-md-2">
+             <br>
+                 <div style="position: relative; float:right; top: 0px" id="share_option">
+                     {% if userStatus == 'user' %}
+
+                         <div id="share_yes" style="display:none;">
+                             <button type="button" id='share_button_yes' class="btn btn-success" aria-label="Left Align"
+                                     onclick="share_result('{{ hash_id }}','False');">
+                                 <span class="glyphicon glyphicon-share-alt" aria-hidden="true" id="shareText"></span>&nbsp;
+                                 <span id="shareText">Shared <small>(Click to unshare)</small></span>
+                             </button>
+                         </div>
+                         <div id="share_no">
+                             <button type="button" id='share_button_no' class="btn btn-success" aria-label="Left Align"
+                                     onclick="share_result('{{ hash_id }}','True');">
+                                 <span class="glyphicon glyphicon-share-alt" aria-hidden="true" id="shareText"></span>&nbsp;
+                                 <span>Share result</span>
+                             </button>
+                         </div>
+                     {% elif userStatus == 'guest' %}
+                         <button id='share_button' class="btn btn-success" style="cursor:not-allowed"><span
+                                 id="shareText">Result is shared</span></button>
+                     {% endif %}
+                 </div>
+                    <br>
+                <div id ="concept_div">
+                    <br>
+                    <h5>Concepts:</h5>
+                    <div id="concept_boxes" style="height: 500px; overflow: scroll;"></div>
+                </div>
+            </div>
+             </div>
+         </div>
+
+    {% else %}
+        <h3>No overlapping data were identified.</h3>
+    {% endif %}
+
+    <div id="results">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Overlap</a></li>
+            <li><a data-toggle="tab" href="#menu1">{{ s1_name |truncatechars:20 }} {% if year2 != 2016 %} ({{ year2 }}){%  endif %}</a></li>
+            <li><a data-toggle="tab" href="#menu2">{{ s2_name |truncatechars:20 }} {% if year2 != 2016 %} ({{ year2 }}){%  endif %}</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <table id="resAll" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th width="20%">SemMedDB Concept</th>
+                        <th>{{ s1_name|truncatechars:10 }}</th>
+                        <th>{{ s2_name|truncatechars:10 }}</th>
+                        <th>Shared</th>
+                        <th>Score</th>
+                        <th>Mean CP</th>
+                        <th>Mean Odds</th>
+                        <th width="10%">Hierarchy</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <table id="resA" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>SemMedDB Concept</th>
+                        <th>Observed</th>
+                        <th>Expected</th>
+                        <th>Odds Ratio</th>
+                        <th>P-value</th>
+                        <th>Corrected P-value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for a in resA %}
+                        <tr>
+                            <td>{{ a }}</td>
+                            {% for i in resA|get_item:a %}
+                                <td>{{ i }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <table id="resB" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>SemMedDB Concept</th>
+                        <th>Observed</th>
+                        <th>Expected</th>
+                        <th>Odds Ratio</th>
+                        <th>P-value</th>
+                        <th>Corrected P-value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for a in resB %}
+                        <tr>
+                            <td>{{ a }}</td>
+                            {% for i in resB|get_item:a %}
+                                <td>{{ i }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

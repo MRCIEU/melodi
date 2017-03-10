@@ -1,0 +1,107 @@
+.form_error{
+    color: 	#FF0000
+}
+
+.news_border{
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 5px;
+}
+
+.music-bullet li {
+    display: block;
+}
+
+.music-bullet li:before
+{
+    /*Using a Bootstrap glyphicon as the bullet point*/
+    /*content: "\e080";*/
+    content: "\e002";
+    font-family: 'Glyphicons Halflings';
+    font-size: 9px;
+    float: left;
+    margin-top: 4px;
+    margin-left: -17px;
+
+}
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1.5px solid black;
+  font-size: 15px;
+  color: white;
+  line-height: 150px;
+  text-align: center;
+  background: #31B0D5;
+  margin:0 auto;
+}
+
+.rectangle {
+	width: 200px;
+	height: 100px;
+	background: #CCCCCC;
+    text-align: center;
+    font-size: 20px;
+}
+
+.rectangle-box{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #CCCCCC;
+    margin:0 auto;
+    border: 1.5px solid black;
+    font-size: 20px;
+}
+.rectangle-box:before{
+    content: "";
+    display: block;
+    padding-top: 50%;
+}
+.rectangle-content{
+    position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    color: white;
+}
+.rectangle-content div {
+   display: table;
+   width: 100%;
+   height: 100%;
+}
+.rectangle-content span {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: white
+}
+
+.arrow {
+    width:120px;
+    margin:50px auto;
+}
+
+.line {
+    margin-top:14px;
+    width:90px;
+    background:green;
+    height:10px;
+    float:left;
+}
+.point {
+    width: 0;
+	height: 0;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 30px solid green;
+    float:right;
+}

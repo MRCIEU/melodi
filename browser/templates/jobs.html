@@ -1,0 +1,249 @@
+{% extends "base_generic.html" %}
+
+{% block scripts %}
+    <script>
+        //function reload_ss(){
+        //    setInterval(function () {
+        //        ssTable.ajax.reload(null, false);
+        //        ssCheck='false'
+        //    }, 2000);
+        //}
+
+        function delete_data(id,type){
+                console.log('deleting data : '+type+'-'+id)
+                $.ajax({
+                    url: "{% url 'ajax_delete' %}",
+                    "data": {
+                        id : id,
+                        type: type,
+                    },
+                    type: 'get', // This is the default though, you don't actually need to always mention it
+                    success: function(data) {
+                        //ssTable.ajax.reload(null, false);
+                    },
+                    failure: function(data) {
+                        alert('Got an error dude');
+                    }
+                });
+            }
+
+        $(document).ready(function () {
+
+            var table1 = $('#com_jobs').DataTable({
+              "order": [[2, "desc"]],
+            })
+
+            var ssCheck = 'true'
+            var ssTable = $('#ajax_ss').DataTable({
+                //"processing": true,
+                "serverSide": true,
+                "ajax": "{% url 'ajax_searchset' %}",
+                "order": [[ 2, "desc" ]],
+                scrollY:        200,
+                deferRender:    true,
+                scroller:       true,
+                "columnDefs": [
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data.length>40){
+                                d = data.substring(0,20)+' ... '+data.slice(-20)
+                            }
+                            else{
+                                d = data
+                            }
+                            if (row[3]=='Complete') {
+                                return '<span class="glyphicon glyphicon-remove" aria-hidden="true" id=' + row[5] + ' style="cursor: pointer;" onclick="delete_data(' + row[5] + ',\'AS\')"></span>&nbsp;' + d
+                            }else{
+                                return d
+                            }
+                        },
+                        "targets": 0
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data.length>40){
+                                d = data.substring(0,20)+' ... '+data.slice(-20)
+                            }
+                            else{
+                                d = data
+                            }
+                            return d
+                        },
+                        "targets": 1
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            if (/Failed/.test(data)) {
+                                var d = '<span class=\'text-danger\'>' + data + '</span>'
+                            }else if (data == 'Complete'){
+                                var url = '{% url 'articles' '123' %}'.replace('123',row[5])
+                                var d = "<a href="+url+">View summary</a>"
+                            }else{
+                                ssCheck = 'true'
+                                d=data
+                            }
+                            return d
+                        },
+                        "targets": 3
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data == 100) {
+                                var d = '<div class="progress" style="margin-bottom:0px;"><div class="progress-bar" role="progressbar" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100" style="width:' + data + '%">' + data + '%</div></div>'
+                            }else{
+                                d = '<div class="progress" style="margin-bottom:0px;"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100" style="width:' + data + '%">' + data + '%</div></div>'
+                            }
+                            return d
+                        },
+                        "targets":4,
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            //console.log('reloading for '+data)
+                            return data
+                        },
+                        "targets":5,
+                        "visible": false
+                    },
+                ],
+                "initComplete": function( settings, json ) {
+                    var s = setInterval(function () {
+                        //console.log(ssCheck)
+                        if (ssCheck == 'false') {
+                            clearInterval(s);
+                        }
+                        ssTable.ajax.reload(null, false)
+                        ssCheck = 'false'
+                    }, 2000);
+                }
+            });
+
+            $('#ajax_ss tbody').on( 'click', '.glyphicon-remove', function () {
+                setInterval(function () {
+                    ssTable.draw();
+                    mcTable.draw();
+                },2000);
+            } );
+
+            var mcCheck = 'true'
+            var mcTable = $('#ajax_mc').DataTable({
+                //"processing": true,
+                "serverSide": true,
+                "ajax": "{% url 'ajax_compare' %}",
+                "order": [[ 2, "desc" ],[1, "desc"]],
+                scrollY:        200,
+                deferRender:    true,
+                scroller:       true,
+                "columnDefs": [
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data.length>40){
+                                d = data.substring(0,20)+' ... '+data.slice(-20)
+                            }
+                            else{
+                                d = data
+                            }
+                            return d
+                        },
+                        "targets": 0
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data == 'meshMain') {
+                                var d = '<a href="https://www.nlm.nih.gov/mesh/meshhome.html"><img src="/static/browser/img/MeSH.jpg" height="25"></a> MeSH'
+                            }else if (data == 'semmed_t' || data == 'semmed'){
+                                var d = '<a href="http://skr3.nlm.nih.gov/SemMedDB/index.html"><img src="/static/browser/img/lhncbc.jpg" height="25"></a> SemMedDB Triple'
+                            }else if (data == 'semmed_c'){
+                                var d = '<a href="http://skr3.nlm.nih.gov/SemMedDB/index.html"><img src="/static/browser/img/lhncbc.jpg" height="25"></a> SemMedDB Concept'
+                            }else if (data == 'Temmpo'){
+                                var d = 'Temmpo'
+                            }
+
+                            return d
+                        },
+                        "targets":1,
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data == 'Failed') {
+                                var d = '<span class=\'text-danger\'>' + data + '</span>'
+                            }else if (data == 'No results'){
+                                mcCheck = 'false'
+                                var d = data
+                            }else if (data == 'View results'){
+                                var url = '{% url 'results' '123' %}'.replace('123',row[5])
+                                var d = "<a href="+url+">View results</a>"
+                            }else{
+                                mcCheck = 'true'
+                                d=data
+                            }
+                            return d
+                        },
+                        "targets": 3
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            if (data == 100) {
+                                var d = '<div class="progress" style="margin-bottom:0px;"><div class="progress-bar" role="progressbar" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100" style="width:' + data + '%">' + data + '%</div></div>'
+                            }else{
+                                d = '<div class="progress" style="margin-bottom:0px;"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + data + '" aria-valuemin="0" aria-valuemax="100" style="width:' + data + '%">' + data + '%</div></div>'
+                            }
+                            return d
+                        },
+                        "targets":4,
+                    },
+                    {
+                        "render": function ( data, type, row ) {
+                            //console.log(data)
+                            return data
+                        },
+                        "targets":5,
+                        "visible": false
+                    }
+                ],
+                "initComplete": function( settings, json ) {
+                    var s = setInterval(function () {
+                        //console.log(ssCheck)
+                        if (mcCheck == 'false') {
+                            clearInterval(s);
+                        }
+                        mcTable.ajax.reload()
+                        mcCheck = 'false'
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block content %}
+    <h3>Analysed Article Sets</h3>
+    <table id="ajax_mc" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>Job name</th>
+            <th>Job type</th>
+            <th>Date started</th>
+            <th>Stage</th>
+            <th width="15%">Progress</th>
+        </tr>
+        </thead>
+    </table>
+    <hr>
+    <h3>Created Article Sets</h3>
+    <table id="ajax_ss" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>Job name</th>
+            <th>Job description</th>
+            <th>Date started</th>
+            <th>Stage</th>
+            <th width="15%">Progress</th>
+        </tr>
+        </thead>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="well well-sm">
+                <h3>How to use</h3>
+                <ol>
+                    <li>Create article sets in one of two ways:
+                        <ul>
+                            <li>Use a PubMed query</li>
+                            <li>Upload a set of PubMed IDs, one per line</li>
+                        </ul>
+                    <li>Once created, select two article sets from table on the home page</li>
+                    <li>Choose analysis options and then hit the 'Find Intermediates' button</li>
+                </ol>
+            </div>
+        </div><br>
+        <div class="col-md-3">
+            <div class="well well-sm">
+                <h3>Graph Metrics</h3>
+                    <ul>
+                        <li>45 million nodes</li>
+                        <li>200 million relationships</li>
+                        <li>1.7 billion properties</li>
+                    </ul>
+                </div>
+        </div><br>
+        <div class="col-md-4">
+            <div class="well well-sm">
+                <h3>Contact</h3>
+                    <ul>
+                        <li>melodi@biocompute.org.uk</li>
+                    </ul>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <img class="center-block" src="/static/browser/img/melodi_overview.png" width="800">
+            </div>
+        </div>
+    </div>
+{% endblock %}

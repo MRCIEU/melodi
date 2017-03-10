@@ -1,0 +1,16 @@
+  #graph-container {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+
+    #layout-notification {
+      display: block;
+      position: absolute;
+      top: 1em;
+      left: 1em;
+      visibility: hidden;
+      font-weight: bold;
+    }

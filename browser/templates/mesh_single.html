@@ -1,0 +1,76 @@
+{% extends "base_generic.html" %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+
+            // Instance the tour for the button
+			var tour = new Tour({
+                backdrop: true,
+                backdropPadding: 5,
+			  steps: [
+                  {
+			    element: "#results",
+			    title: "{{ s1_name }} enrichment details",
+			    content: "Details of the enrichment analysis for {{ s1_name }}",
+			    placement: "top"
+
+			  },
+			]});
+
+            //localStorage.clear();
+            // Initialize the tour
+			tour.init();
+
+			// Start the tour
+			tour.start();
+
+            $("#startTour").click(function(){
+                console.log('restarting tour')
+   				 tour.restart();
+			})
+
+            var table_s1 = $('#resA').DataTable({
+                "order": [[5, "asc"],[3,"desc"]],
+                dom: 'Bfrtip',
+                lengthChange: false,
+                "buttons": [
+                    'copy', 'csv','excel','colvis'
+                ],
+            })
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+    <div id="results">
+        <table id="resA" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Mesh Term</th>
+                <th>Observed</th>
+                <th>Expected</th>
+                <th>Odds Ratio</th>
+                <th>P-value</th>
+                <th>Corrected P-value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for a in resA %}
+            <tr>
+                <td>{{ a }}</td>
+                {% for i in resA|get_item:a %}
+                <td>{{ i }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

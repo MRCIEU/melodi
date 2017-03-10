@@ -1,0 +1,93 @@
+{% extends "base_generic.html" %}
+
+{% block scripts %}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script>
+    $(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: "'{{ ss | safe}}' - Number of articles per year (10 most common journals labelled)"
+        },
+        xAxis: {
+            //categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            categories: {{ years | safe}}
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Article number'
+            },
+            stackLabels: {
+                enabled: false,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        /*
+        legend: {
+            align: 'right',
+            x: -30,
+            verticalAlign: 'bottom',
+            y: 25,
+            //floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            //borderColor: '#CCC',
+            //borderWidth: 1,
+            shadow: false
+        },
+        */
+        legend:{
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            floating: true,
+            backgroundColor: '#FFFFFF',
+            y: 30,
+            x: 80,
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: false,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+        /*
+        series: [{
+            name: 'John',
+            data: [5, 3, 4, 7, 2]
+        }, {
+            name: 'Jane',
+            data: [2, 2, 3, 2, 1]
+        }, {
+            name: 'Joe',
+            data: [3, 4, 4, 2, 5]
+        }]
+        */
+        series: {{ aData | safe}}
+    });
+});
+    </script>
+{% endblock %}
+
+{% block title %}Article Set Details{% endblock %}
+
+{% block content %}
+    <br>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+{% endblock %}

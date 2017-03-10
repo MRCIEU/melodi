@@ -1,0 +1,131 @@
+PMID- 26068064
+OWN - NLM
+STAT- MEDLINE
+DA  - 20150703
+DCOM- 20150915
+IS  - 1879-3169 (Electronic)
+IS  - 0378-4274 (Linking)
+VI  - 237
+IP  - 2
+DP  - 2015 Sep 2
+TI  - Protective effect of 1,25-dihydroxyvitamin D3 on ethanol-induced intestinal
+      barrier injury both in vitro and in vivo.
+PG  - 79-88
+LID - 10.1016/j.toxlet.2015.06.006 [doi]
+LID - S0378-4274(15)00216-7 [pii]
+AB  - Studies have suggested the role of 1,25-dihydroxyvitamin D3 (1,25(OH)2D3) in
+      protecting intestinal barrier function from injuries induced by multiple
+      reagents. Vitamin D deficiency was reported to be associated with poor prognosis 
+      in patients with alcoholic liver disease (ALD). This study is designed to
+      investigate the effect of 1,25(OH)2D3 on ethanol-induced intestinal barrier
+      dysfunction and the underlying mechanisms utilizing Caco-2 cell monolayers and a 
+      mouse model with acute ethanol injury. In Caco-2 monolayers, ethanol
+      significantly increased monolayer permeability, disrupted TJ distribution,
+      increased phosphorylation level of MLC, and induced generation of ROS compared
+      with controls. However, pre-treatment with 1,25(OH)2D3 greatly ameliorated the
+      ethanol-induced barrier dysfunction, TJ disruption, phosphorylation level of MLC,
+      and generation of ROS compared with ethanol-exposed monolayers. Mice fed with
+      vitamin d-sufficient diet had a higher plasma level of 25(OH)D3 and were more
+      resistant to ethanol-induced acute intestinal barrier injury compared with the
+      vitamin d-deficient group. These results suggest that the suppression of
+      generation of ROS and increased phosphorylation level of MLC might be one of the 
+      mechanisms underlying the protective effect of 1,25(OH)2D3 on ethanol-induced
+      intestinal barrier injury and provide evidence for the application of vitamin D
+      as therapeutic factors against ethanol-induced gut leakiness.
+CI  - Copyright (c) 2015 Elsevier Ireland Ltd. All rights reserved.
+FAU - Chen, Shan-Wen
+AU  - Chen SW
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Ma, Yuan-Yuan
+AU  - Ma YY
+AD  - Animal Experiment Center, Peking University First Hospital, Peking University, 8 
+      Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Zhu, Jing
+AU  - Zhu J
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Zuo, Shuai
+AU  - Zuo S
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Zhang, Jun-Ling
+AU  - Zhang JL
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Chen, Zi-Yi
+AU  - Chen ZY
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Chen, Guo-Wei
+AU  - Chen GW
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Wang, Xin
+AU  - Wang X
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Pan, Yi-Sheng
+AU  - Pan YS
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Liu, Yu-Cun
+AU  - Liu YC
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China.
+FAU - Wang, Peng-Yuan
+AU  - Wang PY
+AD  - Division of General Surgery, Peking University First Hospital, Peking University,
+      8 Xi ShiKu Street, Beijing 100034, PR China. Electronic address:
+      wangpengyuan2014@126.com.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, Non-U.S. Gov't
+DEP - 20150609
+PL  - Netherlands
+TA  - Toxicol Lett
+JT  - Toxicology letters
+JID - 7709027
+RN  - 0 (Myosin Light Chains)
+RN  - 0 (Protective Agents)
+RN  - 0 (Tjp1 protein, mouse)
+RN  - 0 (Zonula Occludens-1 Protein)
+RN  - 3K9958V90M (Ethanol)
+RN  - FXC9231JVH (Calcitriol)
+SB  - IM
+MH  - Animals
+MH  - Caco-2 Cells
+MH  - Calcitriol/*pharmacology
+MH  - Cell Survival/drug effects
+MH  - Electric Impedance
+MH  - Ethanol/*toxicity
+MH  - Female
+MH  - Humans
+MH  - Intestinal Mucosa/*drug effects/metabolism
+MH  - Mice
+MH  - Mice, Inbred C57BL
+MH  - Myosin Light Chains/metabolism
+MH  - Permeability
+MH  - Phosphorylation
+MH  - Protective Agents/pharmacology
+MH  - Zonula Occludens-1 Protein/analysis
+OTO - NOTNLM
+OT  - 1,25(OH)(2)D(3)
+OT  - Ethanol
+OT  - MLC
+OT  - Reactive oxygen species (ROS)
+OT  - TEER
+OT  - Tight junction
+EDAT- 2015/06/13 06:00
+MHDA- 2015/09/16 06:00
+CRDT- 2015/06/13 06:00
+PHST- 2015/04/04 [received]
+PHST- 2015/06/03 [revised]
+PHST- 2015/06/05 [accepted]
+PHST- 2015/06/09 [aheadofprint]
+AID - S0378-4274(15)00216-7 [pii]
+AID - 10.1016/j.toxlet.2015.06.006 [doi]
+PST - ppublish
+SO  - Toxicol Lett. 2015 Sep 2;237(2):79-88. doi: 10.1016/j.toxlet.2015.06.006. Epub
+      2015 Jun 9.
+

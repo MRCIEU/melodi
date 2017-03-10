@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block scripts %}
+   <style>
+
+  ul.nav-pills {
+      top: 120px;
+      position: fixed;
+  }
+  div.col-sm-9 div {
+      height: 250px;
+      font-size: 28px;
+  }
+  #section1 {color: #fff; background-color: #1E88E5;}
+  #section2 {color: #fff; background-color: #673ab7;}
+  #section3 {color: #fff; background-color: #ff9800;}
+  #section4 {color: #fff; background-color: #00bcd4;}
+
+  @media screen and (max-width: 1010px) {
+    #section1, #section2, #section3, #section4  {
+        margin-left: 50px;
+    }
+  }
+  </style>
+{% endblock %}
+
+{% block title %}Help{% endblock %}
+
+{% block content %}
+    <div data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+        <div class="row">
+            <nav class="col-sm-3" id="myScrollspy">
+              <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#section1">Section 1</a></li>
+                <li><a href="#section2">Section 2</a></li>
+                <li><a href="#section3">Section 3</a></li>
+                <li><a href="#section4">Section 4</a></li>
+              </ul>
+            </nav>
+            <div class="col-sm-9">
+              <div id="section1">
+                <h1>Section 1</h1>
+                <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+              </div>
+              <div id="section2">
+                <h1>Section 2</h1>
+                <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+              </div>
+              <div id="section3">
+                <h1>Section 3</h1>
+                <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+              </div>
+              <div id="section4">
+                <h1>Section 4</h1>
+                <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

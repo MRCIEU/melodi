@@ -1,0 +1,131 @@
+{% extends "base_generic.html" %}
+{% load humanize %}
+
+{% load staticfiles %}
+{% block scripts %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+ $(document).ready(function () {
+     var resID = {{ res }}
+     var table = $('#res').DataTable({
+         "processing": true,
+         "serverSide": true,
+         "ajax": {
+             "url": "{% url 'ajax_overlap' %}",
+             "data": function (d) {
+                 d.resID = resID
+                 d.t = 'temmpo'
+                 {% comment %}
+                 var sTerm = neg_searcher()
+                 var nsTerm = JSON.stringify(sTerm[0])
+                 var psTerm = JSON.stringify(sTerm[1])
+                 d.n = nsTerm
+                 d.p = psTerm
+                 d.pval = parseFloat($("#max").val())
+                 d.odds = parseFloat($("#min").val())
+                 //d.iDisplayLength=parseInt($("#maxTop").val())
+                 //d.top=parseInt($("#maxTop").val())
+                 d.pfr = parseInt($("#meshLevel").val()){% endcomment %}
+             },
+         },
+         "order": [4, "desc"],
+         "columnDefs": [
+             {}],
+         dom: 'Bfrtip',
+         lengthChange: false,
+         "buttons": [
+             'copy', 'csv', 'excel', 'colvis'
+         ],
+          "drawCallback": function( oSettings ) {
+              //console.log( 'DataTables has redrawn the table' );
+              google.charts.setOnLoadCallback(drawChart);
+          }
+     })
+
+     google.charts.load("44", {packages: ["sankey"]});
+     google.charts.setOnLoadCallback(drawChart);
+     function drawChart() {
+         console.log('drawing chart')
+         var data = new google.visualization.DataTable();
+         var s1Name = '{{ s1_name }}'
+         var s2Name = '{{ s2_name }}'
+         var sData = []
+         var maxCounter = 0
+         //var jsonData = {{ overlap_json|safe}};
+         var jsonData = table.ajax.json();
+         console.log(jsonData.data.length+' rows were loaded')
+         for (var i = 0; i < jsonData.data.length; i++) {
+             d = jsonData.data[i]
+             maxCounter += 1
+             mt = d[0]
+             exp_mt = d[1]
+             mt_out = d[2]
+             //console.log(d)
+             if (exp_mt > 0 && mt_out >0) {
+                 //if (maxCounter < $("#maxTop").val()) {
+                     sData.push([s1Name, mt, parseInt(exp_mt)])
+                     sData.push([mt, s2Name, parseInt(mt_out)])
+                 //}
+             }
+         }
+         //console.log(sData)
+         data.addColumn('string', 'From');
+         data.addColumn('string', 'To');
+         data.addColumn('number', 'Artciles');
+         data.addRows(sData)
+
+         // Set chart options
+         var options = {
+             //width: 1000,
+             width: $("#sankey_div").width() - 30,
+             sankey: {
+                 node: {
+                     interactivity: true
+                 }
+             }
+         };
+
+         // Instantiate and draw our chart, passing in some options.
+         var chart = new google.visualization.Sankey(document.getElementById('sankey_multiple'));
+         chart.draw(data, options);
+         google.visualization.events.addListener(chart, 'select', function () {
+             var sel = chart.getSelection();
+             //val=sel[0].name.replace(/ *\[[^)]*\] */g, "");
+             val = sel[0].name.replace(/\//g, " / ");
+             tFilter(val)
+         });
+     }
+ })
+</script>
+{% endblock %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+{#    context={'hash_id':hash_id, 'res':resID,'resA':d1,'resB':d2, 'nbar': 'results', 's1_name':s1_name, 's2_name':s2_name, 'overlap':o,'year2':year2,'userStatus':userStatus,'shareStatus':shareStatus}#}
+{{ overlap_json }}
+    <br>
+     <div style="margin: auto; width:100%; height: 500px;" id="sankey_multiple"></div>
+    <table id="res" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>Mesh Term</th>
+            <th>{{ s1_name }}</th>
+            <th>{{ s2_name }}</th>
+            <th>Shared</th>
+            <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% comment %}{% for a in overlap %}
+            <tr>
+                <td>{{ a.name }}</td>
+                <td>{{ a.score }}</td>
+                <td>{{ a.uniq_a }}</td>
+                <td>{{ a.uniq_b }}</td>
+                <td>{{ a.shared }}</td>
+            </tr>
+        {% endfor %}{% endcomment %}
+        </tbody>
+    </table>
+{% endblock %}
