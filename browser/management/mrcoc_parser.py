@@ -1,6 +1,6 @@
 import sys, gzip, os, time
 
-# first convert MRCOC file to redued format
+# first convert MRCOC file to reduced format
 # wget https://mbr.nlm.nih.gov/MRCOC/detailed_CoOccurs_2016.txt.gz
 # gunzip -c detailed_CoOccurs_2016.txt.gz | awk -F '|' '$10==1' | cut -d "|" -f 1,9,14 | grep '|1:' | sort | uniq | gzip > detailed_CoOccurs_2016_uniq_main.txt.gz
 

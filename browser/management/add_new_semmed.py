@@ -13,9 +13,8 @@ import config
 
 #neo4j
 from neo4j.v1 import GraphDatabase,basic_auth
-auth_token2 = basic_auth(config.user2, config.password2)
-#driver2 = GraphDatabase.driver("bolt://"+config.server2,auth=auth_token2)
-driver2 = GraphDatabase.driver("bolt://"+config.server2,auth=auth_token2)
+auth_token = basic_auth(config.user, config.password)
+driver = GraphDatabase.driver("bolt://"+config.server+":"+config.port,auth=auth_token)
 
 #files
 baseDir='SemMedDB/'
@@ -31,7 +30,7 @@ new_pmids='data/new_pmids.txt.gz'
 #Time taken: 16 minutes
 def getData():
 	print "Getting PubMed data from MELODI graph..."
-	session2 = driver2.session()
+	session2 = driver.session()
 	pFile = 'data/pmids_10.txt.gz'
 	pDic = {}
 	start = time.time()
@@ -108,7 +107,7 @@ def addNewPmids():
 	#pmid:ID(Pubmed)|issn|:IGNORE|dcom|:IGNORE
 	counter=0
 	countAdd=0
-	session2 = driver2.session()
+	session2 = driver.session()
 	with gzip.open(semCitation, 'rb') as f:
 		for line in f:
 			counter+=1
@@ -127,7 +126,7 @@ def addNewPmids():
 					print "Time taken:", round((time.time() - start)/60, 1), "minutes"
 					print "Added "+str(countAdd)
 					session2.close()
-					session2 = driver2.session()
+					session2 = driver.session()
 				statement = "MERGE (n:Pubmed {pmid:"+pmid+"}) ON MATCH SET n.issn='"+issn+"',n.da='"+da+"',n.dcom='"+dcom+"',n.dp='"+dp+"' on CREATE SET n.issn='"+issn+"',n.da='"+da+"',n.dcom='"+dcom+"',n.dp='"+dp+"'"
 				session2.run(statement)
 
@@ -144,7 +143,7 @@ def addNewSemMed():
 
 	counter=0
 	countAdd=0
-	session2 = driver2.session()
+	session2 = driver.session()
 	#104253|285762|1|16691646|ISA|C0008044|Chicago|geoa|1|C0020898|Illinois|geoa|1
 	#don't split inside quoted sections, e.g. 49963|341414|1|21065029|COEXISTS_WITH|"708|925"|"C1QBP|CD8A"|gngm|1|C0771648|Poractant alfa|orch|1
 	with gzip.open(semPA, 'rb') as f:
@@ -169,7 +168,7 @@ def addNewSemMed():
 					print "Time taken:", round((time.time() - start)/60, 1), "minutes"
 					print "Added "+str(countAdd)
 					session2.close()
-					session2 = driver2.session()
+					session2 = driver.session()
 				#check for dodgy pubmed ids with [2] in
 				if pmid.isdigit():
 					#statement="match (p:Pubmed{pmid:"+pmid+"}),(s:SDB_triple{s_name:'"+s_name+"',s_type:'"+s_type+"',o_name:'"+o_name+"',o_type:'"+o_type+"',predicate:'"+predicate+"'}) merge (p)-[:SEM]-(s);"
@@ -179,7 +178,7 @@ def addNewSemMed():
 def fix():
 	print "Fixing..."
 	start = time.time()
-	session2 = driver2.session()
+	session2 = driver.session()
 	counter=0
 	with gzip.open('data/new_pmids_test.txt.gz', 'rb') as f:
 		for line in f:
@@ -191,7 +190,7 @@ def fix():
 			if counter % 100000 == 0:
 				print "------ "+str(counter)+" ------"
 				#session2.close()
-				#session2 = driver2.session()
+				#session2 = driver.session()
 
 	print "Time taken to read from file:", round(time.time() - start, 3), "seconds"
 
