@@ -3,6 +3,14 @@ from csv import reader
 
 import config
 
+#3 steps
+#1. Convert each sql table to a pipe separated format
+#	for i in *sql.gz; do echo $i; python ~/scripts/bristol/mysql_to_csv.py <(gunzip -c $i) | gzip > ${i%%.*}.psv.gz; done
+#2. Get rid of double quotest in citations
+#	gunzip -c semmedVER30_R_CITATIONS_to12312016.csv.gz | sed "s/'//g" | gzip > semmedVER30_R_CITATIONS_to12312016_edit.csv.gz
+#3. Add new data - change file locations in script and run this script
+#	python browser/management/add_new_semmed.py
+
 #neo4j
 from neo4j.v1 import GraphDatabase,basic_auth
 auth_token2 = basic_auth(config.user2, config.password2)

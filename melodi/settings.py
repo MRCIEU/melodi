@@ -226,11 +226,11 @@ CELERYBEAT_SCHEDULE = {
         #'schedule': timedelta(hours=1),
 		'schedule': crontab(hour=3, minute=0),#
     },
-    'neo': {
-        'task': 'tasks.neo4j_check',
-        #'schedule': timedelta(hours=1),
-		'schedule': timedelta(minutes=30),#
-    },
+    #'neo': {
+    #    'task': 'tasks.neo4j_check',
+    #    #'schedule': timedelta(hours=1),
+	#	'schedule': timedelta(minutes=30),#
+    #},
 
 }
 #  Logging

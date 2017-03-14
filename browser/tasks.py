@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 from neo4j.v1 import GraphDatabase,basic_auth
 auth_token = basic_auth(config.user, config.password)
-driver = GraphDatabase.driver("bolt://"+config.server,auth=auth_token)
+driver = GraphDatabase.driver("bolt://"+config.server+":"+config.port,auth=auth_token)
 
 #tmpDir="/vagrant/tmp/"
 tmpDir=settings.MEDIA_ROOT
