@@ -88,11 +88,14 @@ path.link {
         }
 
         function show_share_button(status){
+            userStatus = '{{ userStatus }}'
+            //console.log('userStatus = '+userStatus)
+            //console.log('show_share_button status = '+status)
             if (status == 'False') {
                 console.log('updating button to not share')
                 document.getElementById('share_yes').style.display = 'none';
                 document.getElementById('share_no').style.display = 'block';
-            } else {
+            } else if (userStatus != 'guest'){
                 console.log('updating button to share')
                 document.getElementById('share_yes').style.display = 'block';
                 document.getElementById('share_no').style.display = 'none';
