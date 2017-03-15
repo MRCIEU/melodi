@@ -18,8 +18,8 @@
 {% endcomment %}
 
 .node.fixed {
-    fill: #f00;
     stroke: #f00;
+    stroke-width: 1.0px;
 }
 
 text {
@@ -1014,10 +1014,12 @@ path.link {
             }
 
             function dblclick(d) {
+                //d3.select(this).style("stroke",'#000')
                 d3.select(this).classed("fixed", d.fixed = false);
             }
 
             function dragstart(d) {
+                //d3.select(this).style("stroke",'#FFF')
                 d3.select(this).classed("fixed", d.fixed = true);
             }
         }

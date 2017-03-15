@@ -135,52 +135,8 @@
 
 h2 { width:100%; text-align:center; border-bottom: 1px solid #000; line-height:0.1em; margin:10px 0 20px; }
 h2 span { background:#fff; padding:0 10px; }
-
-
   </style>
       <script>
-
-        //global graph metrics
-        //var chart1;
-        //var chart2;
-
-        function requestData() {
-            var d = new Date()
-                    var options = {
-                        hour: "2-digit", minute: "2-digit",
-                        day: "numeric",month: "short",year: "numeric",
-                    };
-                    //d = d.toLocaleString("en-GB")
-                    //d = d.getMinutes()+':'+d.getHours()+' '+d.getDate()+'/'+ (d.getMonth()+1)+'/'+ d.getFullYear()
-
-            $.ajax({
-                url: '{%  url 'ajax_graph_metrics' %}',
-                success: function(data) {
-                    console.log('data = '+data.metrics)
-                    chart1.series[0].setData(data.metrics)
-                    chart2.series[0].setData(data.uCounts)
-                    chart2.series[1].setData(data.aCounts)
-                    chart2.series[2].setData(data.cCounts)
-                    chart2.xAxis[0].setCategories(data.cats)
-
-                    document.getElementById("db1_time").textContent=d.toLocaleTimeString("en-GB", options);
-
-                    // call it every hour
-                    setTimeout(requestData, 3600000);
-                    //setTimeout(requestData, 1000);
-                },
-                error: function(xhr, status, error){
-                    console.log('ajax_graph_metrics error')
-                    $("#db_details").hide();
-                    $("#error_message").show();
-                    document.getElementById("db2_time").textContent=d.toLocaleTimeString("en-GB", options);
-                },
-                failure: function(data) {
-                    alert('Got an error dude');
-                },
-                cache: false
-            });
-        }
 
           $(function () {
               function split(val) {
@@ -511,112 +467,6 @@ h2 span { background:#fff; padding:0 10px; }
                     thousandsSep: ','
                 }
             });
-
-            //graph metrics chart
-                chart1 = new Highcharts.Chart({
-                    legend: {
-                        enabled: false
-                    },
-                    colors: [
-                        //'#4572A7',
-                        //'#68BDF6',
-                        '#6DCE9E',
-                        '#DE9BF9',
-                        '#FF756E',
-                        '#FFD86E',
-                        ],
-                    plotOptions: {
-                        bar: {
-                            colorByPoint: true,
-                            dataLabels: {
-                                enabled: true
-                            },
-                        }
-                    },
-                    chart: {
-                        backgroundColor: '#F9F9F9',
-                        height: 300,
-                        renderTo: 'graph_chart1',
-                        type: 'bar',
-                        events: {
-                            load: requestData
-                        },
-                    },
-                    title: {
-                        text: 'Graph details'
-                    },
-                    xAxis: {
-                        //categories: ['Users', 'Article sets', 'Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
-                        categories: ['Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
-                    },
-                    yAxis: {
-                        //min: 0,
-                        type: 'logarithmic',
-                        title: {
-                            text: 'Count'
-                        },
-
-                    },
-                    series: [{
-                        name: '#',
-                        data: []
-                    }]
-                });
-
-                //frequency chart
-                chart2 = new Highcharts.Chart({
-                    legend: {
-                        //enabled: false
-                    },
-                    chart: {
-                        backgroundColor: '#F9F9F9',
-                        width: 365,
-                        height: 300,
-                        renderTo: 'graph_chart2',
-                        events: {
-                            load: requestData
-                        },
-                    },
-                    title: {
-                        text: 'User details'
-                    },
-                    xAxis: {
-                        categories: [],
-                        labels: {
-                            rotation: -45
-                        },
-                    },
-                    yAxis: {
-                        //min: 0,
-                        //type: 'logarithmic',
-                        title: {
-                            text: 'Count'
-                        },
-
-                    },
-                    series: [
-                        {
-                            name: 'Users',
-                            data: []
-                        },
-                        {
-                            name: 'Article Sets',
-                            data: []
-                        },
-                        {
-                            name: 'Analyses ',
-                            data: []
-                        }
-                    ],
-                    plotOptions: {
-                        line: {
-                            dataLabels: {
-                                enabled: true
-                            },
-                            enableMouseTracking: false
-                        }
-                    },
-                });
         });
     </script>
 {% endblock %}
@@ -999,4 +849,151 @@ h2 span { background:#fff; padding:0 10px; }
     {% else %}
         <!--p>No search sets are available.</p-->
     {% endif %}
+    {% if not user.is_authenticated %}
+          <script>
+                    //global graph metrics
+        function requestData() {
+            var d = new Date()
+                    var options = {
+                        hour: "2-digit", minute: "2-digit",
+                        day: "numeric",month: "short",year: "numeric",
+                    };
+                    //d = d.toLocaleString("en-GB")
+                    //d = d.getMinutes()+':'+d.getHours()+' '+d.getDate()+'/'+ (d.getMonth()+1)+'/'+ d.getFullYear()
+
+            $.ajax({
+                url: '{%  url 'ajax_graph_metrics' %}',
+                success: function(data) {
+                    console.log('data = '+data.metrics)
+                    chart1.series[0].setData(data.metrics)
+                    chart2.series[0].setData(data.uCounts)
+                    chart2.series[1].setData(data.aCounts)
+                    chart2.series[2].setData(data.cCounts)
+                    chart2.xAxis[0].setCategories(data.cats)
+
+                    document.getElementById("db1_time").textContent=d.toLocaleTimeString("en-GB", options);
+
+                    // call it every hour
+                    setTimeout(requestData, 3600000);
+                    //setTimeout(requestData, 1000);
+                },
+                error: function(xhr, status, error){
+                    console.log('ajax_graph_metrics error')
+                    $("#db_details").hide();
+                    $("#error_message").show();
+                    document.getElementById("db2_time").textContent=d.toLocaleTimeString("en-GB", options);
+                },
+                failure: function(data) {
+                    alert('Got an error dude');
+                },
+                cache: false
+            });
+        }
+                   //graph metrics chart
+                chart1 = new Highcharts.Chart({
+                    legend: {
+                        enabled: false
+                    },
+                    colors: [
+                        //'#4572A7',
+                        //'#68BDF6',
+                        '#6DCE9E',
+                        '#DE9BF9',
+                        '#FF756E',
+                        '#FFD86E',
+                        ],
+                    plotOptions: {
+                        bar: {
+                            colorByPoint: true,
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    chart: {
+                        backgroundColor: '#F9F9F9',
+                        height: 300,
+                        renderTo: 'graph_chart1',
+                        type: 'bar',
+                        events: {
+                            load: requestData
+                        },
+                    },
+                    title: {
+                        text: 'Graph details'
+                    },
+                    xAxis: {
+                        //categories: ['Users', 'Article sets', 'Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
+                        categories: ['Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
+                    },
+                    yAxis: {
+                        //min: 0,
+                        type: 'logarithmic',
+                        title: {
+                            text: 'Count'
+                        },
+
+                    },
+                    series: [{
+                        name: '#',
+                        data: []
+                    }]
+                });
+
+                //frequency chart
+                chart2 = new Highcharts.Chart({
+                    legend: {
+                        //enabled: false
+                    },
+                    chart: {
+                        backgroundColor: '#F9F9F9',
+                        width: 365,
+                        height: 300,
+                        renderTo: 'graph_chart2',
+                        events: {
+                            load: requestData
+                        },
+                    },
+                    title: {
+                        text: 'User details'
+                    },
+                    xAxis: {
+                        categories: [],
+                        labels: {
+                            rotation: -45
+                        },
+                    },
+                    yAxis: {
+                        //min: 0,
+                        //type: 'logarithmic',
+                        title: {
+                            text: 'Count'
+                        },
+
+                    },
+                    series: [
+                        {
+                            name: 'Users',
+                            data: []
+                        },
+                        {
+                            name: 'Article Sets',
+                            data: []
+                        },
+                        {
+                            name: 'Analyses ',
+                            data: []
+                        }
+                    ],
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },
+                });
+          </script>
+     {%  endif %}
 {% endblock %}
