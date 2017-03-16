@@ -1226,9 +1226,20 @@ def export_to_csv(request, queryset, fields, resID):
 
 def download_result(request):
 	resID = request.POST.get('resID')
-	logger.debug('Downloading - '+str(resID))
+	type = request.POST.get('type')
+	logger.debug('Downloading - '+str(resID)+' : '+type)
 	calls = Overlap.objects.filter(mc_id_id=resID)
-	return export_to_csv(request, calls, fields = ('name','mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
+	#remove ids names
+	if type == 'st':
+		return export_to_csv(request, calls, fields = ('name1', 'name2', 'name3', 'name4', 'name5', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
+	elif type == 'mesh':
+		for c in calls:
+			c.name = c.name.rsplit(":",1)[0]
+		return export_to_csv(request, calls, fields = ('name', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
+	elif type == 'sc':
+		for c in calls:
+			c.name = c.name.rsplit(":",1)[0]
+		return export_to_csv(request, calls, fields = ('name', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score'), resID=resID)
 
 def download_filter(request):
 	fList = request.POST.get('fList')
