@@ -38,14 +38,25 @@
     margin-left: -17px;
 }
 
- .carousel-inner > .item > img,
+/* carousel formating */
+
+{% comment %} .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       width: 100%;
       margin: auto;
-  }
+  }{% endcomment %}
 
 .carousel-control.left, .carousel-control.right {
     background-image: none
+}
+
+.carousel-control.left .glyphicon {
+    left: 0;
+    margin-left: 0;
+}
+.carousel-control.right .glyphicon {
+    right: 0;
+    margin-right: 0;
 }
 
 .circle {
