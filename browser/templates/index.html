@@ -44,10 +44,9 @@
       margin: auto;
   }
 
-{% comment %}.carousel-control.left,
-.carousel-control.right {
+.carousel-control.left, .carousel-control.right {
     background-image: none
-}{% endcomment %}
+}
 
 .circle {
   width: 150px;
@@ -938,7 +937,14 @@ h2 span { background:#fff; padding:0 10px; }
                     series: [{
                         name: '#',
                         data: []
-                    }]
+                    }],
+                    navigation: {
+                        buttonOptions: {
+                            align: 'right',
+                            x: -45,
+                            y: -4
+                        }
+                    }
                 });
 
                 //frequency chart
@@ -986,6 +992,13 @@ h2 span { background:#fff; padding:0 10px; }
                             data: []
                         }
                     ],
+                    navigation: {
+                        buttonOptions: {
+                            align: 'right',
+                            x: -45,
+                            y: -4
+                        }
+                    },
                     plotOptions: {
                         line: {
                             dataLabels: {
