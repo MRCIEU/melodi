@@ -329,6 +329,12 @@ path.link {
                         //d.iDisplayLength=parseInt($("#maxTop").val())
                         //d.top=parseInt($("#maxTop").val())
                         d.pfr=parseInt($("#meshLevel").val())
+                        //console.log(d)
+                        $('#filt_results_n').val(d.n)
+                        $('#filt_results_p').val(d.p)
+                        $('#filt_results_pval').val(d.pval)
+                        $('#filt_results_odds').val(d.odds)
+                        $('#filt_results_pfr').val(d.pfr)
                     },
                 },
                 //oLanguage: {
@@ -1210,16 +1216,25 @@ path.link {
                     </div>
                     <div style="text-align: center;" id="reset_download">
                         <form action="{% url  'download_result' %}" method="post" style=" display:inline;margin:0px;padding:0px;">{% csrf_token %}
-                            <button type="submit" class="btn btn-info download_btn" id="download">
+                            <button type="submit" class="btn btn-info download_btn" name="download_res" value="filt">
                                 <span class="glyphicon glyphicon-download-alt" aria-hidden="true" id="download"></span>&nbsp;
-                                <span>Download Data</span>
+                                <span>Filtered</span>
+                            </button>
+                            <button type="submit" class="btn btn-info download_btn" name="download_res" value="all">
+                                <span class="glyphicon glyphicon-download-alt" aria-hidden="true" id="download"></span>&nbsp;
+                                <span>All</span>
                             </button>
                             <input type="hidden" name="resID" id="resID" value={{ res }}>
                             <input type="hidden" name="type" id="type" value='st'>
+                            <input type="hidden" name="filt_results_n" id="filt_results_n" value=''>
+                            <input type="hidden" name="filt_results_p" id="filt_results_p" value=''>
+                            <input type="hidden" name="filt_results_pval" id="filt_results_pval" value=''>
+                            <input type="hidden" name="filt_results_odds" id="filt_results_odds" value=''>
+                            <input type="hidden" name="filt_results_pfr" id="filt_results_pfr" value=''>
                         </form>
                         <button type="button" class="btn btn-info reset_btn">
                             <span class="glyphicon glyphicon-refresh" aria-hidden="true" id="reset"></span>&nbsp;
-                            <span>Reset Filtering</span>
+                            <span>Reset</span>
                         </button>
                     </div>
                 </div>

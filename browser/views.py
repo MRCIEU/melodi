@@ -865,32 +865,21 @@ class ajax_overlap(BaseDatatableView):
 					#neg = negVals[i]
 					negList = negVals[i].split('||')
 					logger.debug(i+":"+str(negList))
-					#s = v.split('|')
-					#for neg in s:
-						#if i == 'all':
-						#	qs = qs.exclude(name__icontains=neg)
 					if i == 's1':
-						#qs = qs.exclude(name__iregex=r'^('+neg+')\|\|.*\|\|.*\|\|.*\|\|.*$')
 						qs = qs.exclude(name1__in=negList)
 					elif i == 's2':
-						#qs = qs.exclude(name__iregex=r'^.*\|\|('+neg+')\|\|.*\|\|.*\|\|.*$')
 						qs = qs.exclude(name2__in=negList)
 					elif i == 's3':
-						#qs = qs.exclude(name__iregex=r'^.*\|\|.*\|\|('+neg+')\|\|.*\|\|.*$')
 						qs = qs.exclude(name3__in=negList)
 					elif i == 's4':
-						#qs = qs.exclude(name__iregex=r'^.*\|\|.*\|\|.*\|\|('+neg+')\|\|.*$')
 						qs = qs.exclude(name4__in=negList)
 					elif i == 's5':
-						#qs = qs.exclude(name__iregex=r'^.*\|\|.*\|\|.*\|\|.*\|\|('+neg+').*$')
 						qs = qs.exclude(name5__in=negList)
 		else:
 			if len(negVals)>0:
 				logger.debug('filtering on negVals '+negVals)
 				qs = qs.exclude(name__iregex=r''+negVals+'')
 				negList = negVals.split('||')
-				#logger.debug('filtering on negVals '+str(negList))
-				#qs = qs.exclude(name__in=negList)
 
 		#filter using positive search terms
 		posVals = self.request.GET.get('p',None)
@@ -1227,19 +1216,115 @@ def export_to_csv(request, queryset, fields, resID):
 def download_result(request):
 	resID = request.POST.get('resID')
 	type = request.POST.get('type')
-	logger.debug('Downloading - '+str(resID)+' : '+type)
-	calls = Overlap.objects.filter(mc_id_id=resID)
+	res_type = request.POST.get('download_res')
+	logger.debug('Downloading - '+str(resID)+' : '+type+ ' : '+res_type)
+
+	resID = request.POST.get('resID')
+	type = request.POST.get('type')
+	logger.debug('Downloading filtered - '+str(resID)+' : '+type)
+
+	qs = Overlap.objects.filter(mc_id_id=resID)
+
+	# using standard filter
+	#search = request.GET.get(u'search[value]', None)
+	#if search:
+	#	logger.debug('Searching with filter '+search)
+	#	qs = qs.filter(name__icontains=search)
+
+	#get analysis type
+	#aType = request.GET.get('t', None)
+	#logger.debug('Filter query on '+aType)
+
+	if res_type == 'filt':
+		#filter using negative search terms
+		negVals = request.POST.get('filt_results_n',None)
+		logger.debug(negVals)
+		if negVals:
+			negVals = json.loads(negVals)
+			#deal with thml
+			negVals = HTMLParser.HTMLParser().unescape(negVals)
+			#logger.debug('nVals = '+str(negVals))
+
+		if type == 'st':
+			for i in negVals:
+				if len(negVals[i])>0:
+					#neg = negVals[i]
+					negList = negVals[i].split('||')
+					#logger.debug(i+":"+str(negList))
+					if i == 's1':
+						qs = qs.exclude(name1__in=negList)
+					elif i == 's2':
+						qs = qs.exclude(name2__in=negList)
+					elif i == 's3':
+						qs = qs.exclude(name3__in=negList)
+					elif i == 's4':
+						qs = qs.exclude(name4__in=negList)
+					elif i == 's5':
+						qs = qs.exclude(name5__in=negList)
+		else:
+			if len(negVals)>0:
+				logger.debug('filtering on negVals '+negVals)
+				qs = qs.exclude(name__iregex=r''+negVals+'')
+				negList = negVals.split('||')
+
+		#filter using positive search terms
+		posVals = request.POST.get('filt_results_p', None)
+		if posVals:
+			posVals = json.loads(posVals)
+			posVals = HTMLParser.HTMLParser().unescape(posVals)
+
+		# logger.debug('pVals = '+str(posVals))
+		if type == 'st':
+			for i in posVals:
+				if len(posVals[i]) > 0:
+					# p = posVals[i]
+					posList = posVals[i].split('||')
+					# logger.debug(i+":"+p)
+					if i == 's1':
+						qs = qs.filter(name1__in=posList)
+					elif i == 's2':
+						qs = qs.filter(name2__in=posList)
+					elif i == 's3':
+						qs = qs.filter(name3__in=posList)
+					elif i == 's4':
+						qs = qs.filter(name4__in=posList)
+					elif i == 's5':
+						qs = qs.filter(name5__in=posList)
+					# reg = r'^'+r1+'\|\|'+r2+'\|\|'+r3+'\|\|'+r4+'\|\|'+r5
+					# logger.debug(reg)
+					# qs = qs.filter(name__iregex=r''+reg+'')
+		else:
+			if len(posVals) > 0:
+				posList = posVals.split('||')
+				logger.debug('filtering on posVals')
+				# qs = qs.filter(name__iregex=r''+posVals+'')
+				qs = qs.filter(name__in=posList)
+
+		# filter using sliders
+		pval = request.POST.get('filt_results_pval', None)
+		odds = request.POST.get('filt_results_odds', None)
+		pfr = request.POST.get('filt_results_pfr', None)
+		logger.debug('pval:'+pval+' odds:'+odds+' pfr:'+pfr)
+		if pval and pval != 'NaN':
+			qs = qs.filter(mean_cp__lte=pval)
+		if odds and odds != 'NaN':
+			qs = qs.filter(mean_odds__gte=odds)
+		if pfr and pfr != 'NaN':
+			qs = qs.filter(treeLevel__gte=pfr)
+
+	logger.debug('len(qs)=' + str(len(qs)))
+
 	#remove ids names
 	if type == 'st':
-		return export_to_csv(request, calls, fields = ('name1', 'name2', 'name3', 'name4', 'name5', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
+		return export_to_csv(request, qs, fields = ('name1', 'name2', 'name3', 'name4', 'name5', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
 	elif type == 'mesh':
-		for c in calls:
+		for c in qs:
 			c.name = c.name.rsplit(":",1)[0]
-		return export_to_csv(request, calls, fields = ('name', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
+		return export_to_csv(request, qs, fields = ('name', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score', 'treeLevel'), resID=resID)
 	elif type == 'sc':
-		for c in calls:
+		for c in qs:
 			c.name = c.name.rsplit(":",1)[0]
-		return export_to_csv(request, calls, fields = ('name', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score'), resID=resID)
+		return export_to_csv(request, qs, fields = ('name', 'mean_cp', 'mean_odds', 'uniq_a', 'uniq_b', 'shared', 'score'), resID=resID)
 
 def download_filter(request):
 	fList = request.POST.get('fList')
