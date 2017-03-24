@@ -53,6 +53,10 @@
                 max-width: 1280px;
                 min-width: 1280px;
             }
+        }
+        .container-fluid {
+    padding-right: 100px;
+    padding-left: 100px;
 }
     </style>
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
@@ -67,7 +71,7 @@
 
 <body>
         <nav class="navbar navbar-default" style="background-color: #D4D4D4;margin-bottom: 0px;">
-        <div class="container">
+        <div class="container-fluid">
             <div id = "ft_welcome">
           <div class="navbar-header">
               <a class="navbar-brand" href="{% url 'home' %}"><img src="/static/browser/img/melodi_logo.png" width="200" style="position: relative; top:-10px"></a>
@@ -77,7 +81,7 @@
              </div>
           <div id="navbar" class="navbar-collapse collapse">
              <div class="navbar-header">
-                 <span style="margin-right: 100px"></span>
+                 <span style="margin-right: 80px"></span>
              </div>
             <ul class="nav navbar-nav">
                 <li id="ft_home" class="{% if nbar == 'home' %}active{% endif %}"><a href="{% url 'home' %}">Home</a></li>
@@ -109,7 +113,7 @@
             </div><!--/tour -->
         </div><!--/.container-fluid -->
       </nav>
-   <div class="container">
+   <div class="container-fluid">
        <div id="content">
            {% block content %}
            {% endblock %}
