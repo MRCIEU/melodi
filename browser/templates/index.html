@@ -673,8 +673,8 @@ h2 span { background:#fff; padding:0 10px; }
                                         <div id="graph_chart1"></div>
                                     </div>
 
-                                    <div class="item">
-                                        <div id="graph_chart2"></div>
+                                    <div class="item" >
+                                        <div align="center" id="graph_chart2"></div>
                                     </div>
 
                                   </div>
@@ -862,6 +862,7 @@ h2 span { background:#fff; padding:0 10px; }
     {% endif %}
     {% if not user.is_authenticated %}
           <script>
+          var chart_width = document.getElementById("graph_chart1").offsetWidth
                     //global graph metrics
         function requestData() {
             var d = new Date()
@@ -967,7 +968,7 @@ h2 span { background:#fff; padding:0 10px; }
                     },
                     chart: {
                         backgroundColor: '#F9F9F9',
-                        width: 365,
+                        width: chart_width,
                         height: 300,
                         renderTo: 'graph_chart2',
                         events: {
