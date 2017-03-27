@@ -715,12 +715,10 @@ path.link {
                     out_score = d[2]
 
                     if (maxCounter < $("#maxTop").val()){
-                        //sData.push([s1Name,'s1s'+ss1_sub,parseInt(exp_score)])
-                        //sData.push(['s1s:'+ss1_sub,'s1p:'+ss1_pred,parseInt(exp_score)])
-                        //sData.push(['s1p:'+ss1_pred,'o:'+ss_overlap,parseInt(exp_score)])
-                        //sData.push(['o:'+ss_overlap,'s2p:'+ss2_pred,parseInt(out_score)])
-                        //sData.push(['s2p:'+ss2_pred,'s2o:'+ss2_obj,parseInt(out_score)])
-                        //sData.push(['s2o'+ss2_obj,s2Name,parseInt(out_score)])
+                        //sData.push([s1Name,ss1_sub+'['+ss1_pred+']',parseInt(exp_score)])
+                        //sData.push([ss1_sub+'['+ss1_pred+']','o:'+ss_overlap,parseInt(exp_score)])
+                        //sData.push(['o:'+ss_overlap,ss2_obj+'['+ss2_pred+']',parseInt(out_score)])
+                        //sData.push([ss2_obj+'['+ss2_pred+']',s2Name,parseInt(out_score)])
 
                         //sData.push([s1Name,ss1_sub+' ['+ss1_pred+']',parseInt(exp_score)])
                         if (rCheck.indexOf(ss1_sub+'_'+ss1_pred+'_'+ss_overlap) === -1) {
