@@ -739,7 +739,7 @@ h2 span { background:#fff; padding:0 10px; }
     {% endif %}
     <hr>
     {% if s and user.is_authenticated %}
-        <h3>2. Analyse article sets <span style="font-size:14px"> (Select <b>two</b> article sets from the table and click the <b><span style="color:#F0AD4E">big orange button</span></b> to identify enriched intermediate ojects)</span></h3>
+        <h3>2. Analyse article sets <span style="font-size:14px"> (Select <b>two</b> article sets from the table below and click the <b><span style="color:#F0AD4E">big orange button</span></b> to identify enriched intermediate ojects)</span></h3>
         <form  action="" id="ss_comp_form" method="post">{% csrf_token %}
             <!--p>Select one article set from the table to genreate enriched objects for that article set</p-->
             <input type="hidden" name="formType" value="com">
