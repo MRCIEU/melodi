@@ -542,7 +542,7 @@ def pmid_process(sp, file_name):
 		logger.debug("Number of pubmed articles = "+str(pCount))
 	except subprocess.CalledProcessError as grepexc:
 		logger.debug("error for pmid count", grepexc.returncode, grepexc.output)
-		SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_status='Failed - incorrect file format',job_progress=1)
+		SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_status='File format error',job_progress=1)
 		os.remove(file_name)
 		exit()
 	print "Adding data for ", file_name
