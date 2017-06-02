@@ -571,6 +571,9 @@ def pmid_process(sp, file_name):
 				if counter % 1000 == 0:
 					pc = round((float(counter)/float(pCount))*100)
 					SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_progress=pc)
+					logger.debug(pc)
+					tx.close()
+					tx = session.begin_transaction()
 			else:
 				print line+"is not a correct PubMed ID"
 		tx.commit()
