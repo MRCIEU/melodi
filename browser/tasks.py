@@ -26,6 +26,7 @@ from collections import defaultdict
 from retrying import retry
 from django.conf import settings
 
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 
 from neo4j.v1 import GraphDatabase,basic_auth
@@ -571,7 +572,6 @@ def pmid_process(sp, file_name):
 				if counter % 1000 == 0:
 					pc = round((float(counter)/float(pCount))*100)
 					SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_progress=pc)
-					logger.debug(pc)
 					tx.close()
 					tx = session.begin_transaction()
 			else:

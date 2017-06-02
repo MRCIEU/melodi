@@ -26,12 +26,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 
 #Add this for public
-#ALLOWED_HOSTS = ['melodi.biocompute.org.uk','www.melodi.biocompute.org.uk']
+ALLOWED_HOSTS = ['melodi.biocompute.org.uk','www.melodi.biocompute.org.uk']
 
 # Application definition
 
@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django.middleware.security.SecurityMiddleware',
@@ -179,7 +179,7 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'debug.log'),
             #'filename': '/tmp/debug.log',
-            #'formatter': 'verbose'
+            'formatter': 'verbose'
         },
 		'console': {
 			'level': 'DEBUG',
