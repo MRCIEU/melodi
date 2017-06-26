@@ -558,7 +558,7 @@ def pmid_process(sp, file_name):
 		logger.debug(com)
 		session.run(com)
 		#add new data
-		tx = session.begin_transaction()
+		#tx = session.begin_transaction()
 		statement = "MATCH (a:SearchSet),(b:Pubmed) where a.name = {name} and b.pmid={pmid} CREATE (a)-[r:INCLUDES]->(b)"
 		print statement
 		counter=0
@@ -567,16 +567,17 @@ def pmid_process(sp, file_name):
 		for line in infile:
 			line = line.strip("\r\n")
 			if line.isdigit():
-				tx.run(statement, {"name": sp[0]+"_"+sp[1], "pmid": int(line)})
+				session.run(statement, {"name": sp[0]+"_"+sp[1], "pmid": int(line)})
 				counter+=1
 				if counter % 1000 == 0:
 					pc = round((float(counter)/float(pCount))*100)
 					SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_progress=pc)
-					tx.close()
-					tx = session.begin_transaction()
+					session.close()
+					session = driver.session()
+					#tx = session.begin_transaction()
 			else:
 				print line+"is not a correct PubMed ID"
-		tx.commit()
+		#tx.commit()
 		end = time.time()
 		logger.debug("Total time taken: "+str(round(end - start, 3))+" seconds")
 		logger.debug("Deleting file "+str(file_name))
@@ -637,7 +638,7 @@ def pub_sem(sp):
 	end=time.time()
 	print "Time taken:",round((end-start)/60,3),"minutes"
 
-	tx = session.begin_transaction()
+	#tx = session.begin_transaction()
 	statement = "MATCH (a:SearchSet),(b:Pubmed) where a.name = {name} and b.pmid={pmid} CREATE (a)-[r:INCLUDES]->(b)"
 	print statement
 	counter=0
@@ -664,15 +665,17 @@ def pub_sem(sp):
 		for line in f:
 			l = re.search(r'.*?<Id>(.*?)</Id>', line)
 			if l:
-				tx.run(statement, {"name": sp[0]+"_"+sp[1], "pmid": int(l.group(1))})
+				session.run(statement, {"name": sp[0]+"_"+sp[1], "pmid": int(l.group(1))})
 				counter+=1
 				if counter % 1000 == 0:
 					pc = round((float(counter)/float(pCount))*100)
 					SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_progress=pc)
 					#this releases the lock on the database and allows multiple inserts at the same time
-					tx.commit()
-					tx = session.begin_transaction()
-		tx.commit()
+					session.close()
+					session = driver.session()
+					#tx.commit()
+					#tx = session.begin_transaction()
+		#tx.commit()
 
 
 		SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_status='Counting',job_progress=99)
