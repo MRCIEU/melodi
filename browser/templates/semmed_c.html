@@ -306,7 +306,7 @@
                 "columnDefs": [
                     {
                         "render": function ( data, type, row ) {
-                            s = data.split(":")[0]+' ('+row[9]+')'
+                            s = data.split(":")[0]
                             d = '<span class="sem_item" style="color:green; cursor: pointer">'+s+'</span>'
                             return d
                         },
@@ -415,12 +415,13 @@
                 d = jsonData.data
                 var conceptLists = {}
                 for (var i = 0; i < jsonData.data.length; i++) {
-                    var c = jsonData.data[i][9]
-                    console.log(c)
-                    var s = jsonData.data[i][0]
+                    //var c = jsonData.data[i][9]
+                    //console.log(c)
+                    var s_string = jsonData.data[i][0]
+                    var m = s_string.match(/(.*?)\s\((.*?)\)$/)
+                    var s = m[1]
+                    var c = m[2]
                     console.log(s)
-                    //check for multiple concept IDs
-                    cSplit = c.split(',').forEach(function(c){
                         if (c in conceptLists) {
                             if (conceptLists[c].indexOf(s) < 0) {
                                 conceptLists[c].push(s)
@@ -428,7 +429,6 @@
                         } else {
                             conceptLists[c] = [s]
                         }
-                    })
                 }
                 console.log(conceptLists)
                 var conceptCounts = {}
@@ -457,7 +457,7 @@
                     }
                     concept_info += '</ul>'
                     //$("#concept_boxes").append('<label data-toggle="tooltip" data-placement="top" data-original-title="'+conceptLists[key].join("\n")+'"><input type="checkbox" name="myCheckbox" checked/> '+name+' ('+conceptCounts[key]+')</span><br>');
-                    $("#concept_boxes").append('<span id='+key+'_header class="open_img" onclick="concept_div(\''+key+'\')" style="white-space: nowrap; overflow:auto;">'+conceptCounts[key]+' '+name+'</span><br><div id='+key+' style="display:none; white-space: nowrap; overflow:auto;">'+concept_info+'</div>');
+                    $("#concept_boxes").append('<span id='+key+'_header class="open_img" onclick="concept_div(\''+key+'\')" style="white-space: nowrap; overflow:auto;">'+conceptCounts[key]+' '+name+'('+key+')</span><br><div id='+key+' style="display:none; white-space: nowrap; overflow:auto;">'+concept_info+'</div>');
                 }
             }
 

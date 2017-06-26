@@ -981,13 +981,17 @@ def run_fet(c,ss1,ss2):
 	else:
 		return (ss1_fet)
 
-def overlap_query(query):
+def overlap_query(query,type):
 	session = driver.session()
 	oDic = defaultdict(dict)
+	semTypeDic = {}
 	for res in session.run(query):
 		ss = res[0].encode("ascii")
 		mn = res[1].encode("ascii")
 		pm = res[2]
+		#logger.debug(res)
+		if type == 'sem':
+			semTypeDic[mn]=res[3]
 		if mn in oDic:
 			if ss in oDic[mn]:
 				a = oDic[mn][ss]
@@ -998,7 +1002,7 @@ def overlap_query(query):
 				oDic[mn][ss] = [pm]
 		else:
 			oDic[mn][ss] = [pm]
-	return oDic
+	return oDic,semTypeDic
 
 def overlapper(c,fet_1,fet_2):
 	session = driver.session()
@@ -1057,6 +1061,7 @@ def overlapper(c,fet_1,fet_2):
 
 	qChunks = chunks(share_keys_list,1000)
 	counter=0
+	runType = 'mesh'
 	for chunk in qChunks:
 		counter+=1
 		if jobType == "meshMain":
@@ -1064,10 +1069,13 @@ def overlapper(c,fet_1,fet_2):
 		elif jobType == "notMeshMain":
 			gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:HAS_MESH]->(m:Mesh) using index s:SearchSet(name) where "+yearString+" s.name in ['"+s1+"','"+s2+"'] and m.mesh_name in "+str(chunk)+" return s.name,m.mesh_name,p.pmid;"
 		elif jobType == "semmed_c":
-			gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[:SEM]->(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) using index s:SearchSet(name) where "+yearString+" s.name in ['"+s1+"','"+s2+"'] and si.name in "+str(chunk)+" return distinct s.name,si.name,p.pmid;"
+			runType = 'sem'
+			gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[:SEM]->(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) using index s:SearchSet(name) where "+yearString+" s.name in ['"+s1+"','"+s2+"'] and si.name in "+str(chunk)+" return distinct s.name,si.name,p.pmid,si.type as stype;"
 		logger.debug(jobType+' chunk '+str(counter)+" : "+str(len(chunk)))
-		o = overlap_query(gCom)
+		o,s = overlap_query(gCom,runType)
 		oDic.update(o)
+		semTypeDic = s
+		#logger.debug(semTypeDic)
 
 	#print oDic
 	#logger.debug(jobType+" - "+str(len(oDic)))
@@ -1123,7 +1131,13 @@ def overlapper(c,fet_1,fet_2):
 					shareScore = oDicSum[mesh_name][shared]
 				else:
 					shareScore = 0
-				s = Overlap(name=i, mc_id=c, mean_cp=("%03.02e" % float(pMean)), mean_odds=("%4.2f" % float(oMean)),
+				name = i
+				if runType == 'sem':
+					if mesh_name in semTypeDic:
+						name = mesh_name+' ('+semTypeDic[mesh_name]+'):'+str(0)
+					else:
+						logger.debug(i+' not in dic')
+				s = Overlap(name=name, mc_id=c, mean_cp=("%03.02e" % float(pMean)), mean_odds=("%4.2f" % float(oMean)),
 							uniq_a=uniq_a, uniq_b=uniq_b, shared=shareScore, score=score,
 							treeLevel=treeMean)
 				s.save()
@@ -1252,8 +1266,8 @@ def semmed_triple_process(c,fet_1,fet_2):
 		#pCom="match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple)-[so:SEMO]->(si:SDB_item) where "+yearString+" s.user_id = '"+userID+"' and s.search_name = '"+s1_name+"' and toInt(si.i_freq)<"+str(semFreq)+" and sem.pid in "+str(shared_pids_1_1.keys())+" return s.search_name,sem.pid,p.pmid"
 		#pCom+=" UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple)-[so:SEMS]->(si:SDB_item) where "+yearString+" s.user_id = '"+userID+"' and s.search_name = '"+s2_name+"' and toInt(si.i_freq)<"+str(semFreq)+" and sem.pid in "+str(shared_pids_1_2.keys())+" return s.search_name,sem.pid,p.pmid;"
 
-		pCom="match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where "+yearString+" s.name = '"+s1_name+"' and sem.pid in "+str(s1_keys)+" return s.name,sem.pid,p.pmid"
-		pCom+=" UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where "+yearString+" s.name = '"+s2_name+"' and sem.pid in "+str(s2_keys)+" return s.name,sem.pid,p.pmid;"
+		pCom="match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where "+yearString+" s.name = '"+s1_name+"' and sem.pid in "+str(s1_keys)+" return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type"
+		pCom+=" UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where "+yearString+" s.name = '"+s2_name+"' and sem.pid in "+str(s2_keys)+" return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type"
 
 		print pCom
 		logger.debug('semmed overlapper')
@@ -1261,10 +1275,18 @@ def semmed_triple_process(c,fet_1,fet_2):
 		#share_keys = fet_1.viewkeys() & fet_2.viewkeys()
 		oDic = defaultdict(dict)
 
+		semTypeDic = {}
+
 		for res in session.run(pCom):
 			ss = res[0].encode("ascii")
 			mn = res[1]
 			pm = res[2]
+			sname = res[3]
+			oname = res[4]
+			stype = res[5]
+			otype = res[6]
+			semTypeDic[sname]=stype
+			semTypeDic[oname]=otype
 			if mn in oDic:
 				if ss in oDic[mn]:
 					a = oDic[mn][ss]
@@ -1278,6 +1300,7 @@ def semmed_triple_process(c,fet_1,fet_2):
 		#print oDic
 		#logger.debug(jobType+" - "+str(oDic))
 		logger.debug(jobType+" - Created oDic ("+str(len(oDic))+"), adding data to Overlap")
+		logger.debug(semTypeDic)
 
 		#get semmed predicate rank info
 		pfDic={}
@@ -1347,8 +1370,11 @@ def semmed_triple_process(c,fet_1,fet_2):
 						#			uniq_b=uniq_b, shared=oDicSum[i][s1_name + ":" + s2_name], score=score, treeLevel=pfVal)
 						s1,s2,s3 = semDic[sKey1].split("||")
 						s3,s4,s5 = semDic[sKey2].split("||")
-						s = Overlap(name=semDic[sKey1] + "||" + str(sKey1) + ":" + semDic[sKey2] + "||" + str(sKey2),
-									name1=s1,name2=s2,name3=s3,name4=s4,name5=s5, mc_id=c,
+						logger.debug(s1+' '+s2+' '+s3+' '+s4+' '+s5)
+						name = s1 +' ('+semTypeDic[s1]+')||'+s2+'||'+s3+' ('+semTypeDic[s3]+')' + "||" + str(sKey1) + ":" + s3 +' ('+semTypeDic[s3]+')||'+s4+'||'+s5+' ('+semTypeDic[s5]+')' + "||" + str(sKey2)
+						logger.debug(name)
+						s = Overlap(name=name,
+									name1=s1+' ('+semTypeDic[s1]+')',name2=s2,name3=s3+' ('+semTypeDic[s3]+')',name4=s4,name5=s5+' ('+semTypeDic[s5]+')', mc_id=c,
 									mean_cp=("%03.02e" % float(pMean)), mean_odds=("%4.2f" % float(oMean)), uniq_a=uniq_a,
 									uniq_b=uniq_b, shared=oDicSum[i][s1_name + ":" + s2_name], score=score, treeLevel=pfVal)
 						bi.append(s)

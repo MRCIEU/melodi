@@ -944,32 +944,32 @@ class ajax_overlap(BaseDatatableView):
 		if aType == 'semmed':
 
 			#Milk||PART_OF||Breast||261943:Breast||LOCATION_OF||Diphosphonates||10722541
-			termDic = {}
-			termSet = Set()
-
-			for item in qs:
-				#s = item.name.split("||")
-				termSet.add(item.name1)
-				termSet.add(item.name3)
-				termSet.add(item.name5)
-			termString = ', '.join('"' + item + '"' for item in termSet)
-			logger.debug('termString = '+str(termString))
-			session = driver.session()
-
-			gCom = "match (s:SDB_item) where s.name in ["+termString+"] return s.name,s.type";
-			logger.debug("gCom:"+gCom)
-			for res in session.run(gCom):
-				if res["s.name"] in termDic:
-					a=termDic[res["s.name"]]
-					termDic[res["s.name"]] = a+","+res["s.type"]
-				else:
-					termDic[res["s.name"]]=res["s.type"]
-			logger.debug(termDic)
+			# termDic = {}
+			# termSet = Set()
+			#
+			# for item in qs:
+			# 	#s = item.name.split("||")
+			# 	termSet.add(item.name1)
+			# 	termSet.add(item.name3)
+			# 	termSet.add(item.name5)
+			# termString = ', '.join('"' + item + '"' for item in termSet)
+			# logger.debug('termString = '+str(termString))
+			# session = driver.session()
+			#
+			# gCom = "match (s:SDB_item) where s.name in ["+termString+"] return s.name,s.type";
+			# logger.debug("gCom:"+gCom)
+			# for res in session.run(gCom):
+			# 	if res["s.name"] in termDic:
+			# 		a=termDic[res["s.name"]]
+			# 		termDic[res["s.name"]] = a+","+res["s.type"]
+			# 	else:
+			# 		termDic[res["s.name"]]=res["s.type"]
+			# logger.debug(termDic)
 
 			for item in qs:
 				#create type string
-				s = item.name.split("||")
-				ts = termDic[s[0]]+"||"+termDic[s[2]]+"||"+termDic[s[5]]
+				#s = item.name.split("||")
+				#ts = termDic[s[0]]+"||"+termDic[s[2]]+"||"+termDic[s[5]]
 				#if tCount<int(top):
 				json_data.append([
 					item.name,
@@ -981,35 +981,35 @@ class ajax_overlap(BaseDatatableView):
 					item.mean_odds,
 					item.treeLevel,
 					item.id,
-					ts
+					#ts
 				])
 				#tCount+=1
 		elif aType == 'semmed_c':
-			termDic = {}
-			termSet = Set()
-
-			for item in qs:
-				#s = item.name.split("||")
-				termSet.add(item.name.split(":")[0])
-			termString = ', '.join('"' + item + '"' for item in termSet)
-			logger.debug('termString = '+str(termString))
-			session = driver.session()
-
-			gCom = "match (s:SDB_item) where s.name in ["+termString+"] return s.name,s.type";
-			logger.debug("gCom:"+gCom)
-			for res in session.run(gCom):
-				name = res["s.name"].split(":")[0]
-				if name in termDic:
-					a=termDic[name]
-					termDic[name] = a+","+res["s.type"]
-				else:
-					termDic[name]=res["s.type"]
-			logger.debug(termDic)
+			# termDic = {}
+			# termSet = Set()
+			#
+			# for item in qs:
+			# 	#s = item.name.split("||")
+			# 	termSet.add(item.name.split(":")[0])
+			# termString = ', '.join('"' + item + '"' for item in termSet)
+			# logger.debug('termString = '+str(termString))
+			# session = driver.session()
+			#
+			# gCom = "match (s:SDB_item) where s.name in ["+termString+"] return s.name,s.type";
+			# logger.debug("gCom:"+gCom)
+			# for res in session.run(gCom):
+			# 	name = res["s.name"].split(":")[0]
+			# 	if name in termDic:
+			# 		a=termDic[name]
+			# 		termDic[name] = a+","+res["s.type"]
+			# 	else:
+			# 		termDic[name]=res["s.type"]
+			# logger.debug(termDic)
 
 			for item in qs:
 				#create type string
 				s = item.name.split(":")[0]
-				ts = termDic[s]
+				#ts = termDic[s]
 				#if tCount<int(top):
 				json_data.append([
 					s,
@@ -1021,7 +1021,7 @@ class ajax_overlap(BaseDatatableView):
 					item.mean_odds,
 					item.treeLevel,
 					item.id,
-					ts
+					#ts
 				])
 		else:
 			for item in qs:

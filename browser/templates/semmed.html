@@ -385,11 +385,11 @@ path.link {
                              d += '<span class="sem_item" data-num="s5" style="color:orange; cursor: pointer" >' + s[5] + '</span>'
                          }
                          {% endcomment %}
-                         d = '<span class="sem_item" data-num="s1" style="color:green; cursor: pointer">' + s[0] + ' ('+row[9].split('||')[0]+')</span> || '
+                         d = '<span class="sem_item" data-num="s1" style="color:green; cursor: pointer">' + s[0] + '</span> || '
                          d += '<span class="sem_item" data-num="s2" style="color:blue; cursor: pointer" >' + s[1] + '</span> || '
-                         d += '<span class="sem_item" data-num="s3" style="color:red; cursor: pointer">' + s[2] + ' ('+row[9].split('||')[1]+')</span> || '
+                         d += '<span class="sem_item" data-num="s3" style="color:red; cursor: pointer">' + s[2] + '</span> || '
                          d += '<span class="sem_item" data-num="s4" style="color:blue; cursor: pointer">' + s[4] + '</span> || '
-                         d += '<span class="sem_item" data-num="s5" style="color:orange; cursor: pointer" >' + s[5] + ' ('+row[9].split('||')[2]+')</span> '
+                         d += '<span class="sem_item" data-num="s5" style="color:orange; cursor: pointer" >' + s[5] + '</span>'
                          return d
                      },
                      targets: 0
@@ -515,15 +515,22 @@ path.link {
                 d = jsonData.data
                 var conceptLists = {}
                 for (var i = 0; i < jsonData.data.length; i++) {
-                    var c = jsonData.data[i][9].split("||")
-                    var s = jsonData.data[i][0].split("||")
+                    var cList = []
                     var sList = []
-                    sList.push(s[0])
-                    sList.push(s[2])
-                    sList.push(s[5])
+                    var s = jsonData.data[i][0].split("||")
+                    m0 = s[0].match(/(.*?)\s\((.*?)\)$/)
+                    m2 = s[2].match(/(.*?)\s\((.*?)\)$/)
+                    m5 = s[5].match(/(.*?)\s\((.*?)\)$/)
+                    sList.push(m0[1])
+                    sList.push(m2[1])
+                    sList.push(m5[1])
+                    cList.push(m0[2])
+                    cList.push(m2[2])
+                    cList.push(m5[2])
                     for (var j = 0; j < 3; j++) {
                         //check for multiple concept IDs
-                        cSplit = c[j].split(',').forEach(function(c){
+                        //cSplit = c[j].split(',').forEach(function(c){
+                        c = cList[j]
                             if (c in conceptLists) {
                                 if (conceptLists[c].indexOf(sList[j]) < 0) {
                                     conceptLists[c].push(sList[j])
@@ -531,7 +538,7 @@ path.link {
                             } else {
                                 conceptLists[c] = [sList[j]]
                             }
-                        })
+                        //})
                     }
                 }
                 var conceptCounts = {}
@@ -560,7 +567,7 @@ path.link {
                     }
                     concept_info += '</ul>'
                     //$("#concept_boxes").append('<label data-toggle="tooltip" data-placement="top" data-original-title="'+conceptLists[key].join("\n")+'"><input type="checkbox" name="myCheckbox" checked/> '+name+' ('+conceptCounts[key]+')</span><br>');
-                    $("#concept_boxes").append('<span id='+key+'_header class="open_img" onclick="concept_div(\''+key+'\')" style="white-space: nowrap; overflow:auto;">'+conceptCounts[key]+' '+name+'</span><br><div id='+key+' style="display:none; white-space: nowrap; overflow:auto;">'+concept_info+'</div>');
+                    $("#concept_boxes").append('<span id='+key+'_header class="open_img" onclick="concept_div(\''+key+'\')" style="white-space: nowrap; overflow:auto;">'+conceptCounts[key]+' '+name+'('+key+')</span><br><div id='+key+' style="display:none; white-space: nowrap; overflow:auto;">'+concept_info+'</div>');
                 }
             }
 
@@ -802,12 +809,12 @@ path.link {
                 maxCounter += 1
                 //mt = index.cells[0].innerHTML
                 var mt = d[0]
-                var st = d[9]
-                ss1_sub = mt.split("||")[0]+" ("+st.split("||")[0]+")"
+                //var st = d[9]
+                ss1_sub = mt.split("||")[0]
                 ss1_pred = mt.split("||")[1]
-                ss_overlap = mt.split("||")[2]+" ("+st.split("||")[1]+")"
+                ss_overlap = mt.split("||")[2]
                 ss2_pred = mt.split("||")[4]
-                ss2_obj = mt.split("||")[5]+" ("+st.split("||")[2]+")"
+                ss2_obj = mt.split("||")[5]
                 exp_score = d[1]
                 out_score = d[2]
 
