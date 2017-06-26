@@ -749,7 +749,7 @@ path.link {
 
                 // Set chart options
                 var options = {
-                    width: $("#sankey_div").width()-30,
+                    width: $("#graph_div").width()-30,
                     height: 500,
 
                     //iterations: 100,
@@ -921,10 +921,9 @@ path.link {
             //var graph = g
         }
         function d3_graph(graph){
-            var width = $("#sankey_div").width()-30,
+            var width = $("#graph_div").width()-30,
                 height = 500,
                 radius = 6;
-
             var force = d3.layout.force()
                     .size([width, height])
                     .charge(-3000)

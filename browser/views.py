@@ -845,6 +845,7 @@ class ajax_overlap(BaseDatatableView):
 		# using standard filter
 		search = self.request.GET.get(u'search[value]', None)
 		if search:
+			search = search
 			logger.debug('Searching with filter '+search)
 			qs = qs.filter(name__icontains=search)
 
@@ -864,6 +865,7 @@ class ajax_overlap(BaseDatatableView):
 			for i in negVals:
 				if len(negVals[i])>0:
 					#neg = negVals[i]
+					#negList = negVals[i].replace('(','\(').replace(')','\)').split('||')
 					negList = negVals[i].split('||')
 					logger.debug(i+":"+str(negList))
 					if i == 's1':
@@ -878,6 +880,7 @@ class ajax_overlap(BaseDatatableView):
 						qs = qs.exclude(name5__in=negList)
 		else:
 			if len(negVals)>0:
+				negVals = negVals.replace('(','\(').replace(')','\)')
 				logger.debug('filtering on negVals '+negVals)
 				qs = qs.exclude(name__iregex=r''+negVals+'')
 				negList = negVals.split('||')
@@ -893,6 +896,7 @@ class ajax_overlap(BaseDatatableView):
 			for i in posVals:
 				if len(posVals[i])>0:
 					#p = posVals[i]
+					#posList = posVals[i].replace('(','\(').replace(')','\)').split('||')
 					posList = posVals[i].split('||')
 					#logger.debug(i+":"+p)
 					if i == 's1':
@@ -910,10 +914,11 @@ class ajax_overlap(BaseDatatableView):
 					#qs = qs.filter(name__iregex=r''+reg+'')
 		else:
 			if len(posVals)>0:
-				posList = posVals.split('||')
-				logger.debug('filtering on posVals')
-				#qs = qs.filter(name__iregex=r''+posVals+'')
-				qs = qs.filter(name__in=posList)
+				posVals = posVals.replace('(','\(').replace(')','\)')
+				#posList = posVals.split('||')
+				logger.debug('filtering on posVals ' +posVals)
+				qs = qs.filter(name__iregex=r''+posVals+'')
+				#qs = qs.filter(name__in=posList)
 
 		#filter using sliders
 		pval = self.request.GET.get('pval',None)
