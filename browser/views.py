@@ -1222,7 +1222,6 @@ def download_result(request):
 
 	resID = request.POST.get('resID')
 	type = request.POST.get('type')
-	logger.debug('Downloading filtered - '+str(resID)+' : '+type)
 
 	qs = Overlap.objects.filter(mc_id_id=resID)
 
@@ -1237,6 +1236,7 @@ def download_result(request):
 	#logger.debug('Filter query on '+aType)
 
 	if res_type == 'filt':
+		logger.debug('Downloading filtered - '+str(resID)+' : '+type)
 		#filter using negative search terms
 		negVals = request.POST.get('filt_results_n',None)
 		logger.debug(negVals)

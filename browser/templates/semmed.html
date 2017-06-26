@@ -385,11 +385,11 @@ path.link {
                              d += '<span class="sem_item" data-num="s5" style="color:orange; cursor: pointer" >' + s[5] + '</span>'
                          }
                          {% endcomment %}
-                         d = '<span class="sem_item" data-num="s1" style="color:green; cursor: pointer">' + s[0] + '</span> || '
+                         d = '<span class="sem_item" data-num="s1" style="color:green; cursor: pointer">' + s[0] + ' ('+row[9].split('||')[0]+')</span> || '
                          d += '<span class="sem_item" data-num="s2" style="color:blue; cursor: pointer" >' + s[1] + '</span> || '
-                         d += '<span class="sem_item" data-num="s3" style="color:red; cursor: pointer">' + s[2] + '</span> || '
+                         d += '<span class="sem_item" data-num="s3" style="color:red; cursor: pointer">' + s[2] + ' ('+row[9].split('||')[1]+')</span> || '
                          d += '<span class="sem_item" data-num="s4" style="color:blue; cursor: pointer">' + s[4] + '</span> || '
-                         d += '<span class="sem_item" data-num="s5" style="color:orange; cursor: pointer" >' + s[5] + '</span>'
+                         d += '<span class="sem_item" data-num="s5" style="color:orange; cursor: pointer" >' + s[5] + ' ('+row[9].split('||')[2]+')</span> '
                          return d
                      },
                      targets: 0

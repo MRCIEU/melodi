@@ -306,8 +306,8 @@
                 "columnDefs": [
                     {
                         "render": function ( data, type, row ) {
-                            s = data.split(":")
-                            d = '<span class="sem_item" style="color:green; cursor: pointer">'+s[0]+'</span>'
+                            s = data.split(":")[0]+' ('+row[9]+')'
+                            d = '<span class="sem_item" style="color:green; cursor: pointer">'+s+'</span>'
                             return d
                         },
                         "targets": 0
