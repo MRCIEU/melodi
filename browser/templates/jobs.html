@@ -76,8 +76,9 @@
                             if (/Failed/.test(data)) {
                                 var d = '<span class=\'text-danger\'>' + data + '</span>'
                             }else if (data == 'Complete'){
-                                var url = '{% url 'articles' '123' %}'.replace('123',row[5])
-                                var d = "<a href="+url+">View summary</a>"
+                                //var url = '{% url 'articles' '123' %}'.replace('123',row[5])
+                                //var d = "<a href="+url+">View summary</a>"
+                                var d = data
                             }else{
                                 ssCheck = 'true'
                                 d=data
