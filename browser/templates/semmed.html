@@ -357,14 +357,19 @@ path.link {
                     'copy', 'csv','excel','colvis'
                 ],
                 "drawCallback": function( oSettings ) {
-                    console.log( 'DataTables has redrawn the table' );
+                  console.log( 'DataTables has redrawn the table' );
+                  //setTimeout( function () {
                     google.charts.setOnLoadCallback(drawChart);
-                    //setTimeout( function () {
-                        graph_data();
-                    //}, 500 );
                     res_header();
                     concepts();
                     $('[data-toggle="tooltip"]').tooltip()
+                  //}, 500 );
+
+                      //setTimeout( function () {
+                        graph_data();
+                        //}, 500 );
+
+                    //}, 1000 );
                 },
                 "columnDefs": [
                  {
@@ -690,7 +695,7 @@ path.link {
 
 
 
-            google.charts.load("current", {packages: ["sankey"]});
+            google.charts.load("45", {packages: ["sankey"]});
             //google.charts.setOnLoadCallback(drawChart);
             function drawChart() {
                 console.log('drawing chart with '+$("#maxTop").val()+' values')
@@ -774,6 +779,124 @@ path.link {
                     //    console.log('You selected node "' + sel[0].name + '"');
                 });
             }
+
+            function d3_graph(graph){
+                var width = $("#graph_div").width()-30,
+                    height = 500,
+                    radius = 6;
+                console.log(width,height,radius)
+                var force = d3.layout.force()
+                        .size([width, height])
+                        .charge(-3000)
+                        .linkDistance(40)
+                        .on("tick", tick)
+                        .nodes(graph.nodes)
+                        .links(graph.links)
+                        .start();
+
+                var drag = force.drag()
+                        .on("dragstart", dragstart);
+
+                //remove svg for redraw - should really do this the proper way but hey ho :)
+                d3.select("svg").remove();
+                var svg = d3.select("#graph")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+                /*
+                svg.append("svg:defs").selectAll("marker")
+                    .data(["end"])      // Different link/path types can be defined here
+                  .enter().append("svg:marker")    // This section adds in the arrows
+                    .attr("id", String)
+                    .attr("viewBox", "0 -5 10 10")
+                    .attr("refX", 15)
+                    .attr("refY", -1.5)
+                    .attr("markerWidth", 6)
+                    .attr("markerHeight", 6)
+                    .attr("orient", "auto")
+                  .append("svg:path")
+                    .attr("d", "M0,-5L10,0L0,5");
+                */
+                //remove previous data for reloads (not the correct way of doing this!!!)
+                //svg.selectAll(".link").remove();
+                //svg.selectAll(".node").remove();
+
+                var link = svg.selectAll(".link")
+                        .data(graph.links)
+                        .enter().append("line")
+                        .attr("class", "link")
+                        .style("stroke-width", function (d) {
+                            //return d.value / 5;
+                            //return Math.sqrt(d.value)-0.5;
+                            return d.value;
+                        })
+                        .style("stroke", function (d) {
+                            return d.color;
+                        })
+                        //.attr("marker-end", "url(#end)");
+
+
+                var node = svg.selectAll(".node")
+                        .data(graph.nodes)
+                        .enter().append("g")
+                        .attr("class", "node")
+                        .on("dblclick", dblclick)
+                        .call(drag);
+
+                node.append("circle")
+                        .attr("r", function (d) {
+                            return d.size * 3;
+                        })
+                        .style("fill", function (d) {
+                            return d.color;
+                        })
+                        .style("stroke",'#000')
+
+                node.append("text")
+                        .attr("dx", 12)
+                        .attr("dy", ".35em")
+                        .text(function (d) {
+                            return d.label
+                        })
+                //.style("font-size","12px")
+                //.style("font-family","trebuchet")
+
+                function tick() {
+                    link.attr("x1", function (d) {
+                                return d.source.x;
+                            })
+                            .attr("y1", function (d) {
+                                return d.source.y;
+                            })
+                            .attr("x2", function (d) {
+                                return d.target.x;
+                            })
+                            .attr("y2", function (d) {
+                                return d.target.y;
+                            });
+
+                    node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+                        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
+
+                        //for the g element
+                        .attr("transform", function (d) {
+                            return "translate(" + d.x + "," + d.y + ")";
+                        });
+                }
+
+                function dblclick(d) {
+                    //d3.select(this).style("stroke",'#000')
+                    d3.select(this).classed("fixed", d.fixed = false);
+                }
+
+                function dragstart(d) {
+                    //d3.select(this).style("stroke",'#FFF')
+                    d3.select(this).classed("fixed", d.fixed = true);
+                }
+            }
+            //graph_data()
+            //var graph = graph_data()
+            //var d = d3_graph(graph)
 
         function graph_data() {
             var i, v, s, g = {nodes: [], links: []};
@@ -914,128 +1037,13 @@ path.link {
                 link.value = link.value / linkAdjust
                 return link
             })
-            //console.log(g)
+            console.log(g)
             //console.log(nodeCheck)
             //return g
             d3_graph(g)
             //var graph = g
         }
-        function d3_graph(graph){
-            var width = $("#graph_div").width()-30,
-                height = 500,
-                radius = 6;
-            var force = d3.layout.force()
-                    .size([width, height])
-                    .charge(-3000)
-                    .linkDistance(40)
-                    .on("tick", tick)
-                    .nodes(graph.nodes)
-                    .links(graph.links)
-                    .start();
 
-            var drag = force.drag()
-                    .on("dragstart", dragstart);
-
-            //remove svg for redraw - should really do this the proper way but hey ho :)
-            d3.select("svg").remove();
-            var svg = d3.select("#graph")
-                    .append("svg")
-                    .attr("width", width)
-                    .attr("height", height);
-            /*
-            svg.append("svg:defs").selectAll("marker")
-                .data(["end"])      // Different link/path types can be defined here
-              .enter().append("svg:marker")    // This section adds in the arrows
-                .attr("id", String)
-                .attr("viewBox", "0 -5 10 10")
-                .attr("refX", 15)
-                .attr("refY", -1.5)
-                .attr("markerWidth", 6)
-                .attr("markerHeight", 6)
-                .attr("orient", "auto")
-              .append("svg:path")
-                .attr("d", "M0,-5L10,0L0,5");
-            */
-            //remove previous data for reloads (not the correct way of doing this!!!)
-            //svg.selectAll(".link").remove();
-            //svg.selectAll(".node").remove();
-
-            var link = svg.selectAll(".link")
-                    .data(graph.links)
-                    .enter().append("line")
-                    .attr("class", "link")
-                    .style("stroke-width", function (d) {
-                        //return d.value / 5;
-                        //return Math.sqrt(d.value)-0.5;
-                        return d.value;
-                    })
-                    .style("stroke", function (d) {
-                        return d.color;
-                    })
-                    //.attr("marker-end", "url(#end)");
-
-
-            var node = svg.selectAll(".node")
-                    .data(graph.nodes)
-                    .enter().append("g")
-                    .attr("class", "node")
-                    .on("dblclick", dblclick)
-                    .call(drag);
-
-            node.append("circle")
-                    .attr("r", function (d) {
-                        return d.size * 3;
-                    })
-                    .style("fill", function (d) {
-                        return d.color;
-                    })
-                    .style("stroke",'#000')
-
-            node.append("text")
-                    .attr("dx", 12)
-                    .attr("dy", ".35em")
-                    .text(function (d) {
-                        return d.label
-                    })
-            //.style("font-size","12px")
-            //.style("font-family","trebuchet")
-
-            function tick() {
-                link.attr("x1", function (d) {
-                            return d.source.x;
-                        })
-                        .attr("y1", function (d) {
-                            return d.source.y;
-                        })
-                        .attr("x2", function (d) {
-                            return d.target.x;
-                        })
-                        .attr("y2", function (d) {
-                            return d.target.y;
-                        });
-
-                node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-                    .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
-
-                    //for the g element
-                    .attr("transform", function (d) {
-                        return "translate(" + d.x + "," + d.y + ")";
-                    });
-            }
-
-            function dblclick(d) {
-                //d3.select(this).style("stroke",'#000')
-                d3.select(this).classed("fixed", d.fixed = false);
-            }
-
-            function dragstart(d) {
-                //d3.select(this).style("stroke",'#FFF')
-                d3.select(this).classed("fixed", d.fixed = true);
-            }
-        }
-        //graph_data()
-        //var graph = graph_data()
-        //var d = d3_graph(graph)
 
         //reset button
         $(".reset_btn").click(function() {
@@ -1355,6 +1363,3 @@ path.link {
 </div>
 
 {% endblock %}
-
-
-
