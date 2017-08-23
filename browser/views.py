@@ -725,7 +725,7 @@ def results(request,num):
 		context={'hash_id':hash_id, 'res':resID,'resA':d1, 'nbar': 'results','s1_name':q.job_desc,'year2':year2,'userStatus':userStatus,'shareStatus':shareStatus}
 		if q.job_type == 'meshMain':
 			return render_to_response('mesh_single.html', context, context_instance=RequestContext(request))
-		elif q.job_type == 'semmed':
+		elif q.job_type == 'semmed_t' or q.job_type == 'semmed_c':
 			return render_to_response('semmed_single.html', context, context_instance=RequestContext(request))
 
 class OrderListJson(BaseDatatableView):
