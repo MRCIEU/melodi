@@ -857,7 +857,7 @@ def setup_fet(c,ss,job_name,ssNum):
 		if not line.startswith("#"):
 			y,c = line.split(":")
 			#print y,c
-			if y == year2:
+			if y == year2+1:
 				pmid_total=int(c)
 				break
 			else:
