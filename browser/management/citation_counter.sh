@@ -10,4 +10,4 @@ for i in {1950..2017}; do echo 'year:'$i; neo4j-shell -c "match (p:Pubmed) where
 #if interested in numbers of concepts
 #for i in {1950..2017}; do echo 'year:'$i; neo4j-shell -c "match (p:Pubmed)-[r:SEM]-(s:SDB_triple) where p.da < '$i' return count(r);"; done > semmed_counts_per_year.txt;
 
-paste <(cat neo4j_citation_years.txt | grep 'year' | cut -d ':' -f2) <(cat neo4j_citation_years.txt | grep '| ' | grep -v 'count' | cut -d '|' -f2 | sed 's/ //g') > citation_years.txt
+paste <(cat pub_counts_per_year.txt | grep 'year' | cut -d ':' -f2) <(cat pub_counts_per_year.txt | grep '| ' | grep -v 'count' | cut -d '|' -f2 | sed 's/ //g') | tr '\t' ':' > citation_years.txt
