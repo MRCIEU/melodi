@@ -1079,7 +1079,7 @@ def pubDetails(request,num):
 	ss1=c.job_desc.split(":")[0].strip()+"_"+c.user_id
 	ss2=c.job_desc.split(":")[1].strip()+"_"+c.user_id
 
-	mName = o.name.split(":")[0]
+	mName = o.name.split(":")[0].split('(',1)[0].strip()
 
 	jobType = m.job_type
 
