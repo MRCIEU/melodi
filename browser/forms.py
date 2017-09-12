@@ -12,7 +12,8 @@ COMTYPES=(
 
 class ComSearchSets(forms.Form): #Note that it is not inheriting from forms.ModelForm
 	a = forms.CharField(max_length=200,widget=forms.HiddenInput(),required=True,error_messages={'required': 'Please select two article sets from the table'})
-	b = forms.CharField(max_length=200,widget=forms.HiddenInput(),required=False,error_messages={'required': 'Please select two article sets from the table'})
+	#change required to False if want to permit analysis on one article set
+	b = forms.CharField(max_length=200,widget=forms.HiddenInput(),required=True,error_messages={'required': 'Please select two article sets from the table'})
 	comType = forms.MultipleChoiceField(required=True,widget=forms.CheckboxSelectMultiple(attrs={'checked' : 'checked'}), choices=COMTYPES, error_messages={'required': 'Please select at least one search option'})
 
 class CreateSearchSet(forms.ModelForm):
