@@ -1,7 +1,7 @@
 import sys,os,re,gzip,time
 from collections import defaultdict
 
-home='home'
+home='./'
 
 import config
 from neo4j.v1 import GraphDatabase,basic_auth
@@ -108,10 +108,10 @@ def update_graph(file):
 
 
 def main():
-	#get_mesh()
-	#get_semmed()
+	get_mesh()
+	get_semmed()
 	#parse(home+'data/mesh_freqs')
-	parse(home+'data/semmed_freqs')
+	#parse(home+'data/semmed_freqs')
 	#update_graph(home+'data/mesh_freqs)
 	#update_graph(home+'data/semmed_freqs)
 

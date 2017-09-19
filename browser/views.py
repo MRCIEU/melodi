@@ -424,7 +424,7 @@ def index(request):
 				yearRange = request.POST["yearRange"]
 				logger.debug('yearRange:'+yearRange)
 				#add one year to upper bound to make it inclusive
-				year2 = int(yearRange.split("-")[1].strip())+1
+				year2 = int(yearRange.split("-")[1].strip())
 				yearRange = yearRange.split("-")[0].strip()+" - "+str(year2)
 				logger.debug('yearRange corrected:'+yearRange)
 
