@@ -799,7 +799,7 @@ def setup_fet(c,ss,job_name,ssNum):
 	year2 = c.year_range.split("-")[1].strip()
 	logger.debug('year1 = '+year1+' year2 = '+year2)
 	yearString = ''
-	if year1 != '1950' or year2 != '2017':
+	if year1 != '1950' or year2 != config.topYear:
 		yearString = "p.dp < '"+year2+"' "
 		if jobType != "semmed_t" and jobType != "semmed_c":
 			yearString = " where "+yearString
@@ -822,7 +822,7 @@ def setup_fet(c,ss,job_name,ssNum):
 
 	#count articles with search - need to consider how this changes with a time restriction!
 	article_number=SearchSet.objects.get(id=ss).pTotal
-	if year2 != '2017':
+	if year2 != config.topYear:
 		aCom = "match (s:SearchSet{name:'"+job_name+"_"+userID+"'})-[:INCLUDES]-(p:Pubmed) where p.dp < '"+year2+"' return count(distinct(p)) as pCount;"
 		aRes=session.run(aCom)
 		article_number=next(iter(aRes))['pCount']
@@ -857,7 +857,7 @@ def setup_fet(c,ss,job_name,ssNum):
 		if not line.startswith("#"):
 			y,c = line.split(":")
 			#print y,c
-			if y == year2+1:
+			if int(y) == int(year2)+1:
 				pmid_total=int(c)
 				break
 			else:
@@ -1028,7 +1028,7 @@ def overlapper(c,fet_1,fet_2):
 	year2 = c.year_range.split("-")[1].strip()
 	logger.debug('year1 = '+year1+' year2 = '+year2)
 	yearString = ''
-	if year1 != '1950' or year2 != '2017':
+	if year1 != '1950' or year2 != config.topYear:
 		yearString = "p.dp >= '"+year1+"' and p.dp < '"+year2+"' and"
 
 	tDict = dict()
@@ -1264,7 +1264,7 @@ def semmed_triple_process(c,fet_1,fet_2):
 		year2 = c.year_range.split("-")[1].strip()
 		logger.debug('year1 = '+year1+' year2 = '+year2)
 		yearString = ''
-		if year1 != '1950' or year2 != '2017':
+		if year1 != '1950' or year2 != config.topYear:
 			yearString = "p.dp >= '"+year1+"' and p.dp < '"+year2+"' and"
 		#pCom="match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple)-[so:SEMO]->(si:SDB_item) where "+yearString+" s.user_id = '"+userID+"' and s.search_name = '"+s1_name+"' and toInt(si.i_freq)<"+str(semFreq)+" and sem.pid in "+str(shared_pids_1_1.keys())+" return s.search_name,sem.pid,p.pmid"
 		#pCom+=" UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple)-[so:SEMS]->(si:SDB_item) where "+yearString+" s.user_id = '"+userID+"' and s.search_name = '"+s2_name+"' and toInt(si.i_freq)<"+str(semFreq)+" and sem.pid in "+str(shared_pids_1_2.keys())+" return s.search_name,sem.pid,p.pmid;"
