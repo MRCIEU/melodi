@@ -78,7 +78,7 @@ def parse(file):
 			f.write("\n"+term+"|")
 			f.write("|".join(freqDic[term]))
 
-def update_graph(file):
+def update_graph(file,type):
 	meshFreqs = file+'_neo4j.psv.gz'
 	countAdd=0
 	start = time.time()
@@ -101,7 +101,12 @@ def update_graph(file):
 				freqString+='m.freq_'+str(y)+"="+str(data[yCount])+","
 				yCount+=1
 			freqString = freqString[:-1]+";"
-			statement = "MERGE (m:Mesh {mesh_name:'" + name + "'}) ON MATCH SET "+freqString+""
+			if type == 'mesh':
+				#mesh
+				statement = "MERGE (m:Mesh {mesh_name:'" + name + "'}) ON MATCH SET "+freqString+""
+			else:
+				#semmed triples
+				statement = "MERGE (m:SDB_triple {pid:" + name + "}) ON MATCH SET "+freqString+""
 			#print statement
 			session.run(statement)
 
@@ -112,8 +117,8 @@ def main():
 	get_semmed()
 	#parse(home+'data/mesh_freqs')
 	#parse(home+'data/semmed_freqs')
-	#update_graph(home+'data/mesh_freqs)
-	#update_graph(home+'data/semmed_freqs)
+	#update_graph(home+'data/mesh_freqs,'mesh')
+	#update_graph(home+'data/semmed_freqs,'semmed')
 
 if __name__ == "__main__":
 	main()

@@ -621,14 +621,14 @@ def results(request,num):
 		#set resID back to ID
 		resID=q.id
 		if str(q.user_id) != str(request.user.id) and q.share==False:
-			logger.debug('wrong user access - user id = '+str(request.user.id)+' data id = '+q.user_id)
+			logger.debug('wrong user access - user id = '+str(request.user.id)+' data id = '+str(q.user_id))
 			return HttpResponseRedirect('/')
 		elif str(q.user_id) != str(request.user.id) and q.share==True:
 			userStatus = 'guest'
 	else:
 		q = Compare.objects.get(id=resID)
 		if str(q.user_id) != str(request.user.id):
-			logger.debug('wrong user access - user id = '+str(request.user.id)+' data id = '+q.user_id)
+			logger.debug('wrong user access - user id = '+str(request.user.id)+' data id = '+str(q.user_id))
 			return HttpResponseRedirect('/')
 
 	shareStatus = q.share
