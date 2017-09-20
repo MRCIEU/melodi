@@ -367,7 +367,7 @@
             })
              //check for low number of total records and adjust pfr
             function dynamic_filter(){
-                var info = table_all.page.info();
+                var info = v.page.info();
                 console.log(info)
                 console.log('total records: '+info.recordsTotal)
                 if ((info.recordsTotal > 0 && info.recordsTotal <= 10)){
@@ -419,16 +419,17 @@
                     //console.log(c)
                     var s_string = jsonData.data[i][0]
                     var m = s_string.match(/(.*?)\s\((.*?)\)$/)
-                    var s = m[1]
-                    var c = m[2]
-                    console.log(s)
-                        if (c in conceptLists) {
-                            if (conceptLists[c].indexOf(s) < 0) {
-                                conceptLists[c].push(s)
-                            }
-                        } else {
-                            conceptLists[c] = [s]
-                        }
+										if (m != null):
+											var s = m[1]
+                    	var c = m[2]
+	                    //console.log(s)
+	                        if (c in conceptLists) {
+	                            if (conceptLists[c].indexOf(s) < 0) {
+	                                conceptLists[c].push(s)
+	                            }
+	                        } else {
+	                            conceptLists[c] = [s]
+	                        }
                 }
                 console.log(conceptLists)
                 var conceptCounts = {}

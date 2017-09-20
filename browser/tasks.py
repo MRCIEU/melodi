@@ -1065,6 +1065,7 @@ def overlapper(c,fet_1,fet_2):
 	qChunks = chunks(share_keys_list,1000)
 	counter=0
 	runType = 'mesh'
+	semTypeDic = {}
 	for chunk in qChunks:
 		counter+=1
 		if jobType == "meshMain":
@@ -1077,7 +1078,7 @@ def overlapper(c,fet_1,fet_2):
 		logger.debug(jobType+' chunk '+str(counter)+" : "+str(len(chunk)))
 		o,s = overlap_query(gCom,runType)
 		oDic.update(o)
-		semTypeDic = s
+		semTypeDic.update(s)
 		#logger.debug(semTypeDic)
 
 	#print oDic
