@@ -11,20 +11,23 @@ driver = GraphDatabase.driver("bolt://"+config.server,auth=auth_token)
 
 session = driver.session()
 
-yRange = range(1950,2017)
+#yRange = range(1950,2017)
+yRange = range(2016,2018)
 
-def get_mesh():
+def get_mesh(yRange):
 	print "Getting MeSH data..."
-	cmd="MATCH (p:Pubmed)-[:HAS_MESH]-(m:Mesh) RETURN p.pmid,p.da,m.mesh_name;"
+	cmd="MATCH (p:Pubmed)-[:HAS_MESH]-(m:Mesh) where p.da < '"+str(yRange[-1]+1)+"' RETURN p.pmid,p.da,m.mesh_name;"
+	print cmd
 	result = session.run(cmd)
 
 	with gzip.open(home+'data/mesh_freqs.tsv.gz', 'wb') as f:
 		for r in result:
 			f.write(str(r['p.pmid'])+'\t'+r['p.da'].encode('utf-8')+'\t'+r['m.mesh_name'].encode('utf-8')+'\n')
 
-def get_semmed():
+def get_semmed(yRange):
 	print "Getting SemMedDB data..."
-	cmd="MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) RETURN p.pmid,p.da,s.pid;"
+	cmd="MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '"+str(yRange[0])+"' and p.da < '"+str(yRange[-1]+1)+"' RETURN p.pmid,p.da,s.pid;"
+	print cmd
 	result = session.run(cmd)
 
 	with gzip.open(home+'data/semmed_freqs.tsv.gz', 'wb') as f:
@@ -108,17 +111,17 @@ def update_graph(file,type):
 				#semmed triples
 				statement = "MERGE (m:SDB_triple {pid:" + name + "}) ON MATCH SET "+freqString+""
 			#print statement
-			session.run(statement)
+			#session.run(statement)
 
 
 
 def main():
-	get_mesh()
-	get_semmed()
+	get_mesh(yRange)
+	get_semmed(yRange)
 	#parse(home+'data/mesh_freqs')
 	#parse(home+'data/semmed_freqs')
-	#update_graph(home+'data/mesh_freqs,'mesh')
-	#update_graph(home+'data/semmed_freqs,'semmed')
+	#update_graph(home+'data/mesh_freqs','mesh')
+	#update_graph(home+'data/semmed_freqs','semmed')
 
 if __name__ == "__main__":
 	main()
