@@ -23,3 +23,4 @@ Steps to setup application
 
 6. Update year frequencies when new data added
     - calculate_year_freqs.py
+		- MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '2017'  with count(distinct(p)) as cp,s set s.freq_2017 = s.freq_2016+cp;

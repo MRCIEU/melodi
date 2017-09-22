@@ -11,12 +11,35 @@ driver = GraphDatabase.driver("bolt://"+config.server,auth=auth_token)
 
 session = driver.session()
 
-#yRange = range(1950,2017)
-yRange = range(2016,2018)
+yRange = range(1950,2018)
 
+#to just update
+#mesh
+#MATCH (p:Pubmed)-[:HAS_MESH]-(m:Mesh) where p.da < '2018' with m,count(distinct(p)) as cp match (m) set m.freq_2017 = cp;
+#semmed times out so need to modify
+#2016
+#MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '2016' and p.da < '2017' with count(distinct(p)) as cp,s set s.freq_2016 = s.freq_2015+cp;
+#2017
+#MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '2017' with count(distinct(p)) as cp,s set s.freq_2017 = s.freq_2016+cp;
+
+#semmed_c
+#neo4j-shell -c "MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where p.da > '2017' with si,count(distinct(p)) as cp set si.freq_2017 = cp+si.freq_2016;"
+
+def update_sem_c():
+	for y in yRange:
+		if y == yRange[0]:
+			com = "MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where p.da < '"+str(y+1)+"' with si,count(distinct(p)) as cp set si.freq_"+str(y)+" = cp;"
+		else:
+			com = "MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where p.da > '"+str(y)+"' and p.da < '"+str(y+1)+"' with si,count(distinct(p)) as cp set si.freq_"+str(y)+" = cp+si.freq_"+str(y-1)+";"
+		print com
+
+############## think all this could be done as above #################
+
+#retrieving the data needs to be done in full as can't restrict and count by date due to terrible date formatting :(
+#this could be fixed by tidying up the da property and chaning it to int
 def get_mesh(yRange):
 	print "Getting MeSH data..."
-	cmd="MATCH (p:Pubmed)-[:HAS_MESH]-(m:Mesh) where p.da < '"+str(yRange[-1]+1)+"' RETURN p.pmid,p.da,m.mesh_name;"
+	cmd="MATCH (p:Pubmed)-[:HAS_MESH]-(m:Mesh) RETURN p.pmid,p.da,m.mesh_name;"
 	print cmd
 	result = session.run(cmd)
 
@@ -26,7 +49,7 @@ def get_mesh(yRange):
 
 def get_semmed(yRange):
 	print "Getting SemMedDB data..."
-	cmd="MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '"+str(yRange[0])+"' and p.da < '"+str(yRange[-1]+1)+"' RETURN p.pmid,p.da,s.pid;"
+	cmd="MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) RETURN p.pmid,p.da,s.pid;"
 	print cmd
 	result = session.run(cmd)
 
@@ -116,8 +139,9 @@ def update_graph(file,type):
 
 
 def main():
-	get_mesh(yRange)
-	get_semmed(yRange)
+	update_sem_c()
+	#get_mesh(yRange)
+	#get_semmed(yRange)
 	#parse(home+'data/mesh_freqs')
 	#parse(home+'data/semmed_freqs')
 	#update_graph(home+'data/mesh_freqs','mesh')
