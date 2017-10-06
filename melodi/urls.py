@@ -20,8 +20,14 @@ from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse_lazy
 from browser.views import *
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'searchset', SearchSetViewSet)
 
 urlpatterns = [
+	url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^browser/', include('browser.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('social_auth.urls')),

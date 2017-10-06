@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'browser',
     'social_auth',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+	'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -241,6 +242,13 @@ CELERYBEAT_SCHEDULE = {
     #},
 
 }
+
+REST_FRAMEWORK = {
+	'DEFAULT_PERMISSION_CLASSES': [
+		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+	]
+}
+
 #  Logging
 # LOGGING = {
 #     'version': 1,

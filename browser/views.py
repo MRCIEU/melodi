@@ -53,10 +53,17 @@ from social_auth.views import complete
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
+#rest API
+from rest_framework import viewsets
+from browser.serializers import SearchSetSerializer
+
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 #logging.basicConfig(filename='run.log',level=logging.DEBUG)
 
+class SearchSetViewSet(viewsets.ModelViewSet):
+    queryset = SearchSet.objects.all()
+    serializer_class = SearchSetSerializer
 
 class AuthComplete(View):
     def get(self, request, *args, **kwargs):
