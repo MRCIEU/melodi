@@ -43,6 +43,7 @@ from settings import DATA_FOLDER
 from neo4j.v1 import GraphDatabase,basic_auth
 auth_token = basic_auth(config.user, config.password)
 driver = GraphDatabase.driver("bolt://"+config.server+":"+config.port,auth=auth_token)
+#logger.debug(config.server)
 
 #===============GoogleAuth Start
 from django.core.urlresolvers import reverse
@@ -62,8 +63,14 @@ logger = logging.getLogger(__name__)
 #logging.basicConfig(filename='run.log',level=logging.DEBUG)
 
 class SearchSetViewSet(viewsets.ModelViewSet):
-    queryset = SearchSet.objects.all()
-    serializer_class = SearchSetSerializer
+	#queryset = SearchSet.objects.all()
+	serializer_class = SearchSetSerializer
+
+	def get_queryset(self):
+		user = self.request.user
+		logger.debug('user.id = '+str(user.id))
+		return SearchSet.objects.filter(user_id=str(user.id))
+		#return SearchSet.objects.all()
 
 class AuthComplete(View):
     def get(self, request, *args, **kwargs):
@@ -501,11 +508,25 @@ def index(request):
 		form_pub = CreatePubSet()
 
 	#get search set data for table
-	s = list()
 	j=SearchSet.objects.filter(user_id=str(request.user.id),job_status='Complete')
 
-
-	context = {'s': j, 'form1': form1, 'form2': form2, 'form_sem':form_sem, 'form_pub':form_pub, 'nbar': 'home'}
+	#get example data for table
+	exampleData=[]
+	eCheck={}
+	e=Compare.objects.filter(user_id='None',job_status='View results')
+	for i in e:
+		eName = i.job_name
+		c1,c2=i.job_desc.split(':')
+		if eName in eCheck:
+			eCheck[eName].append(i.job_type+':'+str(i.id))
+		else:
+			eCheck[eName]=[c1,c2,i.job_start,i.job_type+':'+str(i.id)]
+	#sort the methods
+	for e in eCheck:
+		eCheck[e][3:6] = sorted(eCheck[e][3:6])
+		#exampleData[i.job_desc]=[c1,c2,i.job_start]
+	logger.debug(eCheck)
+	context = {'s': j, 'exampleData':eCheck, 'form1': form1, 'form2': form2, 'form_sem':form_sem, 'form_pub':form_pub, 'nbar': 'home'}
 	return render_to_response('index.html', context, context_instance=RequestContext(request))
 
 @cache_page(None)

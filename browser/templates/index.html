@@ -394,6 +394,44 @@ h2 span { background:#fff; padding:0 10px; }
    				 tour.restart();
 			})
 
+			var exampleData = $('#example_data').DataTable({
+				"order": [[1, "desc"]],
+                dom: 'frtip',
+                lengthChange: false,
+                scrollY:        400,
+                deferRender:    true,
+                scroller:       true,
+				"columnDefs": [
+					{
+                        "render": function ( data, type, row ) {
+							var result_num = data.split(':')[1]
+							var url = '{% url 'results' '123' %}'.replace('123',result_num)
+							var d = '<img src="/static/browser/img/MeSH.jpg" height="25"> <a href='+url+'>MeSH</a>'
+                            return d
+                        },
+                        "targets":3,
+                    },
+					{
+                        "render": function ( data, type, row ) {
+							var result_num = data.split(':')[1]
+							var url = '{% url 'results' '123' %}'.replace('123',result_num)
+                            var d = '<img src="/static/browser/img/lhncbc.jpg" height="25"> <a href='+url+'>SemMedDB Single</a>'
+                            return d
+                        },
+                        "targets":4,
+                    },
+					{
+                        "render": function ( data, type, row ) {
+							var result_num = data.split(':')[1]
+							var url = '{% url 'results' '123' %}'.replace('123',result_num)
+							var d = '<img src="/static/browser/img/lhncbc.jpg" height="25"> <a href='+url+'>SemMedDB Triple</a>'
+                            return d
+                        },
+                        "targets":5,
+                    },
+				]
+			})
+
             var table = $('#search_sets').DataTable({
                 "order": [[1, "desc"]],
                 dom: 'Bfrtip',
@@ -645,19 +683,34 @@ h2 span { background:#fff; padding:0 10px; }
                         <li>Please read the <a href = '{% url 'about' %}'>About</a> page to find out more about how to use the application and click on the blue information button at the top of any page
                             for more information.</li>
                         <li>Data are stored and investigated using a <a href="http://www.neo4j.com" target="_blank"><img src="/static/browser/img/neo4j_logo.png" height="30"/></a> graph.</li>
-                        <li><h5>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to just have a play with some pre-loaded data go to the <a href='{% url 'jobs' %}'>Results</a> page</h5></li>
                     </ul>
-
+				<br><h4>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to explore some pre-loaded analyses select some results from table below.</h3>
+				<br><br><table id="example_data" class="display" cellspacing="0" width="100%">
+		                <thead>
+		                <tr>
+		                    <th>Concept 1</th>
+		                    <th>Concept 2</th>
+		                    <th>Date</th>
+							<th>Method1</th>
+							<th>Method2</th>
+		                    <th>Method3</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+						{% for key, value in exampleData.items %}
+		                    <tr>
+								{% for v in value %}
+		                        	<td>{{v}}</td>
+								{% endfor %}
+		                    </tr>
+		                {% endfor %}
+		                </tbody>
+		            </table>
                 </div>
                 <div class="col-md-4">
-                    <img class="center-block" src="/static/browser/img/aspirin_three_pmids_no_background.png" height="230" style="padding: 10px "/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="panel panel-default" id="db_details">
+                    <div class="panel panel-default" style="height:240px;" id="db_details">
                         <div class="panel-heading">
-                            <h4 class="panel-title">Database Details (<span id="db1_time"></span>)</h4>
+                            <h4 class="panel-title">Database/User Details (<span id="db1_time"></span>)</h4>
                         </div>
                         <div class="panel-body">
                             <!--div id="graph_chart"></div-->
@@ -692,7 +745,7 @@ h2 span { background:#fff; padding:0 10px; }
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default" style="height:370px;overflow:scroll;display:none" id="error_message">
+                    <div class="panel panel-default" style="height:240px;overflow:scroll;display:none" id="error_message">
                         <div class="panel-heading">
                             <h4 class="panel-title">Database Details (<span id="db2_time"></span>)</h4>
                         </div>
@@ -700,9 +753,8 @@ h2 span { background:#fff; padding:0 10px; }
                             <span style="color:red">Unfortunately the database is down for maintenance :(</span>
                          </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default" style="height:370px;overflow:scroll">
+
+                    <div class="panel panel-default" style="height:240px;overflow:scroll">
                         <div class="panel-heading">
                             <h4 class="panel-title">News and Updates</h4>
                         </div>
@@ -724,9 +776,7 @@ h2 span { background:#fff; padding:0 10px; }
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default" style="height:370px;overflow:scroll">
+                    <div class="panel panel-default" style="height:240px;overflow:scroll">
                         <div class="panel-heading">
                              <a class="twitter-timeline" href="https://twitter.com/BrisCancerEpi"></a>
                         </div>
@@ -755,7 +805,7 @@ h2 span { background:#fff; padding:0 10px; }
                             {{ form2.comType.errors }}
                             {% for choice in form2.comType.field.choices %}
                                 {% if choice.0 == "semmed_c" %}
-                                    <label for="{{choice.0}}"><img src="/static/browser/img/lhncbc.jpg" height="25"> SemMedDB Concept </label>
+                                    <label for="{{choice.0}}"><img src="/static/browser/img/lhncbc.jpg" height="25"> SemMedDB Single </label>
                                 {% elif choice.0 == "semmed_t" %}
                                     <label for="{{choice.0}}"><img src="/static/browser/img/lhncbc.jpg" height="25"> SemmedDB Triple</label>
                                 {% elif choice.0 == "meshMain" %}
@@ -859,8 +909,6 @@ h2 span { background:#fff; padding:0 10px; }
             <!--button style="position:relative;left:580px;top:-25px;" type="submit" class="btn btn-success">Compare Article Sets</button-->
             </div>
         </form>
-    {% else %}
-        <!--p>No search sets are available.</p-->
     {% endif %}
     {% if not user.is_authenticated %}
           <script>
@@ -926,16 +974,17 @@ h2 span { background:#fff; padding:0 10px; }
                     },
                     chart: {
                         backgroundColor: '#F9F9F9',
-                        height: 300,
+                        height: 180,
                         renderTo: 'graph_chart1',
                         type: 'bar',
                         events: {
                             load: requestData
                         },
                     },
-                    title: {
-                        text: 'Graph details'
-                    },
+					title:false,
+                    //title: {
+                    //    text: 'Graph details'
+                    //},
                     xAxis: {
                         //categories: ['Users', 'Article sets', 'Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
                         categories: ['Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
@@ -958,7 +1007,7 @@ h2 span { background:#fff; padding:0 10px; }
                         buttonOptions: {
                             align: 'right',
                             x: -45,
-                            y: -4
+                            y: -40
                         }
                     }
                 });
@@ -967,19 +1016,23 @@ h2 span { background:#fff; padding:0 10px; }
                 chart2 = new Highcharts.Chart({
                     legend: {
                         //enabled: false
+						 align: 'center',
+						 verticalAlign: 'top',
+        				//layout: 'vertical',
                     },
                     chart: {
                         backgroundColor: '#F9F9F9',
                         width: chart_width,
-                        height: 300,
+                        height: 180,
                         renderTo: 'graph_chart2',
                         events: {
                             load: requestData
                         },
                     },
-                    title: {
-                        text: 'User details'
-                    },
+					title:false,
+                    //title: {
+                    //    text: 'User details'
+                    //},
                     xAxis: {
                         categories: [],
                         labels: {
@@ -1008,13 +1061,13 @@ h2 span { background:#fff; padding:0 10px; }
                             data: []
                         }
                     ],
-                    navigation: {
-                        buttonOptions: {
-                            align: 'right',
-                            x: -45,
-                            y: -4
-                        }
-                    },
+                    //navigation: {
+                    //    buttonOptions: {
+                    //        align: 'left',
+                    //        x: 0,
+                    //        y: 0
+                    //    }
+                    //},
                     plotOptions: {
                         line: {
                             dataLabels: {

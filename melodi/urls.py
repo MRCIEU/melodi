@@ -23,10 +23,10 @@ from browser.views import *
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'searchset', SearchSetViewSet)
+router.register(r'searchset', SearchSetViewSet, base_name="SearchSet")
 
 urlpatterns = [
-	url(r'^', include(router.urls)),
+	url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^browser/', include('browser.urls')),
     url(r'^admin/', include(admin.site.urls)),
