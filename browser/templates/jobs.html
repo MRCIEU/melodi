@@ -19,7 +19,7 @@
                     },
                     type: 'get', // This is the default though, you don't actually need to always mention it
                     success: function(data) {
-                        //ssTable.ajax.reload(null, false);
+                        ssTable.ajax.reload(null, false);
                     },
                     failure: function(data) {
                         alert('Got an error dude');
@@ -39,9 +39,9 @@
                 "serverSide": true,
                 "ajax": "{% url 'ajax_searchset' %}",
                 "order": [[ 2, "desc" ]],
-                scrollY:        200,
-                deferRender:    true,
-                scroller:       true,
+                //scrollY:        200,
+                //deferRender:    true,
+                //scroller:       true,
                 "columnDefs": [
                     {
                         "render": function ( data, type, row ) {
@@ -132,9 +132,9 @@
                 "serverSide": true,
                 "ajax": "{% url 'ajax_compare' %}",
                 "order": [[ 2, "desc" ],[1, "desc"]],
-                scrollY:        200,
-                deferRender:    true,
-                scroller:       true,
+                //scrollY:        200,
+                //deferRender:    true,
+                //scroller:       true,
                 "columnDefs": [
                     {
                         "render": function ( data, type, row ) {
@@ -208,7 +208,7 @@
                         if (mcCheck == 'false') {
                             clearInterval(s);
                         }
-                        mcTable.ajax.reload()
+                        mcTable.ajax.reload(null, false);
                         mcCheck = 'false'
                     }, 2000);
                 }
