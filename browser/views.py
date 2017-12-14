@@ -136,11 +136,6 @@ def ajax_graph_metrics(request):
 				aDic[t].append(u)
 			else:
 				aDic[t] = [u]
-		#logger.debug(sorted(aDic))
-		lastTop=10
-		aDic_top = {k: aDic[k] for k in sorted(aDic.keys())[-lastTop:len(aDic.keys())]}
-		#logger.debug(sorted(aDic_top))
-		aDic = aDic_top
 		c = Compare.objects.filter(job_status='View results').exclude(user_id='2')
 		cDic = {}
 		for i in c:
@@ -178,6 +173,11 @@ def ajax_graph_metrics(request):
 				cCountOld = cDic[a] + cCountOld
 			else:
 				cCounts.append(0)
+		lastTop=10
+		uCounts = uCounts[-lastTop:len(uCounts)]
+		aCounts = aCounts[-lastTop:len(aCounts)]
+		cCounts = cCounts[-lastTop:len(cCounts)]
+		#logger.debug(uCounts)
 
 	else:
 		data = 'fail'
