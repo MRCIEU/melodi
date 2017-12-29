@@ -177,6 +177,7 @@ def ajax_graph_metrics(request):
 		uCounts = uCounts[-lastTop:len(uCounts)]
 		aCounts = aCounts[-lastTop:len(aCounts)]
 		cCounts = cCounts[-lastTop:len(cCounts)]
+		cats = cats[-lastTop:len(cats)]
 		#logger.debug(uCounts)
 
 	else:
@@ -637,7 +638,7 @@ def jobs(request):
 	return render_to_response('jobs.html', context, context_instance=RequestContext(request))
 
 #@login_required
-#@cache_page(None)
+@cache_page(None)
 def results(request,num):
 	userInfo = "UserID:"+str(request.user.id)+" - "
 	logger.debug(userInfo+"In results")
