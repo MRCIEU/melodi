@@ -931,9 +931,9 @@ h2 span { background:#fff; padding:0 10px; }
                 success: function(data) {
                     console.log('data = '+data.metrics)
                     chart1.series[0].setData(data.metrics)
-                    chart2.series[0].setData(data.uCounts)
-                    chart2.series[1].setData(data.aCounts)
-                    chart2.series[2].setData(data.cCounts)
+                    chart2.series[2].setData(data.uCounts)
+                    chart2.series[0].setData(data.aCounts)
+                    chart2.series[1].setData(data.cCounts)
                     chart2.xAxis[0].setCategories(data.cats)
 
                     document.getElementById("db1_time").textContent=d.toLocaleTimeString("en-GB", options);
@@ -1055,15 +1055,15 @@ h2 span { background:#fff; padding:0 10px; }
                     },
                     series: [
                         {
-                            name: 'Users',
-                            data: []
-                        },
-                        {
                             name: 'Article Sets',
                             data: []
                         },
                         {
-                            name: 'Analyses ',
+                            name: 'Analyses',
+                            data: []
+                        },
+                        {
+                            name: 'Users',
                             data: []
                         }
                     ],
