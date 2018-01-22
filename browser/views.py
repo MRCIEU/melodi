@@ -1113,9 +1113,9 @@ def pubSingle(request,num):
 	jobType = c.job_type
 
 	if jobType == "meshMain":
-		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:HAS_MESH{mesh_type:'main'}]->(m:Mesh) where "+yearString+" s.name = '"+ss+"' and m.mesh_id = '"+p_id+"' return s.name,p.pmid,p.dcom,m.name as sname;"
+		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:HAS_MESH{mesh_type:'main'}]->(m:Mesh) where "+yearString+" s.name = '"+ss+"' and m.mesh_id = '"+p_id+"' return s.name,p.pmid,p.dcom,m.mesh_name as sname;"
 	elif jobType == "semmed_t" or jobType == 'semmed':
-		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:SEM]->(sdb:SDB_triple) where "+yearString+" s.name = '"+ss+"' and sdb.pid = "+p_id+" return s.name,p.pmid,p.dp,sdb.name as sname;"
+		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:SEM]->(sdb:SDB_triple) where "+yearString+" s.name = '"+ss+"' and sdb.pid = "+p_id+" return s.name,p.pmid,p.dp,sdb.s_name as sname;"
 	elif jobType == "semmed_c":
 		gCom = "match (s:SearchSet)-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where "+yearString+" s.name = '"+ss+"' and si.name = '"+mName+"' return s.name,p.pmid,p.dcom,si.name as sname;"
 
@@ -1158,14 +1158,14 @@ def pubSingle(request,num):
 	#logger.debug(userInfo+"pDic:"+str(pDic))
 	sDic = {}
 	sList = list()
-	for i in pDic:
+	for i in pDic[ss]:
 		e = {'pmid':i}
 		sList.append(e)
 	ss_name = ss.rsplit("_",1)[0]
-
+	#logger.debug(sList)
 	context = {'sList':sList,'ss_name':ss_name, 'tab':'single','mName':sName, 'pAllDic':pAllDic, 'nbar': 'results'}
 	session.close()
-	return render_to_response('pubs.html', context, context_instance=RequestContext(request))
+	return render_to_response('pubs_single.html', context, context_instance=RequestContext(request))
 
 @cache_page(None)
 def pubDetails(request,num):
