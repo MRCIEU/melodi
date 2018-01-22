@@ -556,6 +556,17 @@
                 "buttons": [
                     'copy', 'csv','excel','colvis'
                 ],
+				"columnDefs": [
+                    {
+                        render: function ( data, type, row ) {
+                            d = data.split(":")[0]
+                            //d = '<span class="sem_item" style="color:green; cursor: pointer">'+s+'</span>'
+                            return d
+                        },
+                        "targets": 0
+                    },
+				]
+
             })
             var table_s2 = $('#resB').DataTable({
                 "order": [[5, "asc"],[3,"desc"]],
@@ -564,6 +575,16 @@
                 "buttons": [
                    'copy', 'csv','excel','colvis'
                 ],
+				"columnDefs": [
+                    {
+                        render: function ( data, type, row ) {
+                            d = data.split(":")[0]
+                            //d = '<span class="sem_item" style="color:green; cursor: pointer">'+s+'</span>'
+                            return d
+                        },
+                        "targets": 0
+                    },
+				]
             })
 
              var oTable = $('#datatable').dataTable({

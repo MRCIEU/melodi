@@ -638,7 +638,7 @@ def jobs(request):
 	return render_to_response('jobs.html', context, context_instance=RequestContext(request))
 
 #@login_required
-@cache_page(None)
+#@cache_page(None)
 def results(request,num):
 	userInfo = "UserID:"+str(request.user.id)+" - "
 	logger.debug(userInfo+"In results")
