@@ -680,6 +680,17 @@ path.link {
                         },
                         "targets": 0
                     },
+					{
+                        render: function ( data, type, row ) {
+                            var [obs1,obs2] = data.split("/")
+							var concept_id = row[0].split(':')[1]
+							var resID = '{{res}}'
+							var url = '{% url 'pubss' '1_1_1' %}'.replace('1_1_1',concept_id+'_'+resID+'_1')
+							var d = '<a href="'+url+'" target=\"_blank\"">'+obs1+'</a>/'+obs2
+                            return d
+                        },
+                        "targets": 1
+                    },
 				]
             })
             var table_s2 = $('#resB').DataTable({
@@ -698,6 +709,17 @@ path.link {
                             return d
                         },
                         "targets": 0
+                    },
+					{
+                        render: function ( data, type, row ) {
+                            var [obs1,obs2] = data.split("/")
+							var concept_id = row[0].split(':')[1]
+							var resID = '{{res}}'
+							var url = '{% url 'pubss' '1_1_1' %}'.replace('1_1_1',concept_id+'_'+resID+'_2')
+							var d = '<a href="'+url+'" target=\"_blank\"">'+obs1+'</a>/'+obs2
+                            return d
+                        },
+                        "targets": 1
                     },
 				]
             })

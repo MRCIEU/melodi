@@ -1078,6 +1078,95 @@ class ajax_overlap(BaseDatatableView):
 
 		return json_data
 
+#@cache_page(None)
+def pubSingle(request,num):
+	session = driver.session()
+	userInfo = "UserID:"+str(request.user.id)+" - "
+	logger.debug(userInfo+"In pubSingle")
+	[p_id,c_id,s_id] = num.split("_")
+	logger.debug(p_id+' : '+c_id+' : '+s_id)
+
+	#o = Overlap.objects.get(pk=p_id)
+	#m = o.mc_id
+	#logger.debug(m)
+	c = Compare.objects.get(pk=c_id)
+
+	#get year range data
+	year1 = c.year_range.split("-")[0].strip()
+	year2 = c.year_range.split("-")[1].strip()
+	logger.debug('year1 = '+year1+' year2 = '+year2)
+	yearString = ''
+	if year1 != '1960' or year2 != '2016':
+		yearString = "p.dcom >= '"+year1+"' and p.dcom <= '"+year2+"' and"
+
+	#check user ids match
+	if str(c.user_id) != str(request.user.id):
+		logger.debug('wrong user access - user id = '+str(request.user.id)+' data id = '+c.user_id)
+		return HttpResponseRedirect('/')
+
+	ss = ''
+	if s_id == '1':
+		ss = c.job_desc.split(":")[0].strip()+"_"+c.user_id
+	else:
+		ss=c.job_desc.split(":")[1].strip()+"_"+c.user_id
+
+	jobType = c.job_type
+
+	if jobType == "meshMain":
+		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:HAS_MESH{mesh_type:'main'}]->(m:Mesh) where "+yearString+" s.name = '"+ss+"' and m.mesh_id = '"+p_id+"' return s.name,p.pmid,p.dcom,m.name as sname;"
+	elif jobType == "semmed_t" or jobType == 'semmed':
+		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:SEM]->(sdb:SDB_triple) where "+yearString+" s.name = '"+ss+"' and sdb.pid = "+p_id+" return s.name,p.pmid,p.dp,sdb.name as sname;"
+	elif jobType == "semmed_c":
+		gCom = "match (s:SearchSet)-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where "+yearString+" s.name = '"+ss+"' and si.name = '"+mName+"' return s.name,p.pmid,p.dcom,si.name as sname;"
+
+	logger.debug(userInfo+"gCom:"+gCom)
+
+	pAllDic = {}
+	pDic = {}
+	pmidList = []
+	for res in session.run(gCom):
+		ss=res[0].encode("ascii")
+		pm=str(res[1])
+		pd=res[2].encode("ascii")
+		pmidList.append(pm)
+		sName = res['sname']
+
+		pAllDic[pm] = pd
+		if ss in pDic:
+			a = pDic[ss]
+			if pm not in a:
+				a.append(pm)
+		else:
+			pDic[ss] = [pm]
+
+	#get titles
+	ptDic,pjDic = pmid_to_info(pmidList)
+
+	for i in pAllDic:
+		a = pAllDic[i]
+		t = 'n/a'
+		j = 'n/a'
+		if i in ptDic:
+			t = ptDic[i]
+		if i in pjDic:
+			j = pjDic[i]
+		b = (t,j,a)
+		pAllDic[i] = b
+
+
+	#print pDic
+	#logger.debug(userInfo+"pDic:"+str(pDic))
+	sDic = {}
+	sList = list()
+	for i in pDic:
+		e = {'pmid':i}
+		sList.append(e)
+	ss_name = ss.rsplit("_",1)[0]
+
+	context = {'sList':sList,'ss_name':ss_name, 'tab':'single','mName':sName, 'pAllDic':pAllDic, 'nbar': 'results'}
+	session.close()
+	return render_to_response('pubs.html', context, context_instance=RequestContext(request))
+
 @cache_page(None)
 def pubDetails(request,num):
 	session = driver.session()
