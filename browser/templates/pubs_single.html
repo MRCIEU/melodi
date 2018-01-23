@@ -1,0 +1,117 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}
+
+{% block scripts %}
+    <style>
+ td.details-control {
+    background: url("{% static "browser/img/details_open.png" %}") no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url("{% static "browser/img/details_close.png" %}") no-repeat center center;
+}
+    </style>
+    <script>
+
+        function format(value) {
+            return '<div>' +
+                        //pubmbed
+                        //'<iframe height="500" width="1100" src="http://www.ncbi.nlm.nih.gov/pubmed/'+value+'"></iframe>' +
+                        //europePMC
+                        '<iframe height="500" width="1100" src="http://europepmc.org/abstract/MED/'+value+'"></iframe>' +
+                    '</div>';
+        }
+
+        var meshSplit = function(meshData){
+            mesh = meshData.split(":")
+            meshName = mesh[0].split("/")
+            meshID = mesh[1].split("/")
+            d = []
+            for (i in meshName) {
+                d.push("<a href=\"http://www.ncbi.nlm.nih.gov/mesh/" + meshID[i] + "\" target=\"_blank\">" + meshName[i] + "</a> / ")
+            }
+            d = d.join("")
+            d = d.substring(0, d.length - 3);
+            return d
+        }
+
+        $(document).ready(function () {
+
+            var tab = document.getElementById("tabber").value;
+            console.log('t  = '+tab)
+            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+			var fileName = '{{ss_name}}'+' - '+'{{ mName }}'.replace('/','_')
+            var table_all = $('#resAll').DataTable({
+                "order": [[4, "desc"]],
+				dom: 'Bfrtip',
+                lengthChange: false,
+                "buttons": [
+					{extend: 'copy'},
+					{extend: 'csv',title: fileName},
+					{extend: 'excel',title: fileName},
+					'colvis'
+                ],
+                /*
+                "columnDefs": [
+                    {
+                        "render": function ( data, type, row ) {
+                            d = "<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/"+data+"\" target=\"_blank\">" + data + "</a>"
+                            return d
+                        },
+                        "targets": 1
+                    }],
+                 */
+            })
+
+
+            // Add event listener for opening and closing details
+          $('#resAll').on('click', 'td.details-control', function () {
+              var tr = $(this).closest('tr');
+              var row = table_all.row(tr);
+
+              if (row.child.isShown()) {
+                  // This row is already open - close it
+                  row.child.hide();
+                  tr.removeClass('shown');
+              } else {
+                  // Open this row
+                  row.child(format(tr.data('child-value'))).show();
+                  tr.addClass('shown');
+              }
+          });
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block title %}Publication Details{% endblock %}
+
+{% block content %}
+    <h3>Publication details for article set '{{ss_name}}' - {{ mName }}</h3>
+    <h5></h5>
+    <input type="hidden" id="tabber" name="variable" value="{{ tab }}">
+            <table id="resAll" class="display" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Pubmed ID</th>
+                    <th>Title</th>
+                    <th>Journal</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for a in sList %}
+                        <tr data-child-value="{{ a.pmid }}">
+                            <td class="details-control"></td>
+                            <td><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ a.pmid }}" target="_blank">{{ a.pmid }}</a></td>
+                            {%  for i in pAllDic|get_item:a.pmid %}
+                                <td>{{ i }}</td>
+                            {%  endfor %}
+                        </tr>
+                    {%  endfor %}
+                </tbody>
+            </table>
+
+{% endblock %}
