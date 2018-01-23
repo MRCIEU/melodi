@@ -88,6 +88,7 @@ neo4j-shell -c 'CREATE index on :SearchSet(name);'
 
 #mesh
 neo4j-shell -c 'CREATE index ON :Mesh(mesh_name);'
+neo4j-shell -c 'CREATE index ON :Mesh(mesh_id);'
 neo4j-shell -c 'CREATE index on :MeshTree(tree_id);'
 neo4j-shell -c 'CREATE index on :MeshTree(mesh_name);'
 

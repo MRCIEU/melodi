@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^login-error/$', LoginError.as_view()),
     url(r'^database/$', OrderListJson.as_view(), name='order_list_json'),
     url(r'^pubs/(?P<num>[0-9]+_[0-9])/$',pubDetails, name='pubs'),
-	url(r'^pubss/(?P<num>[0-9]+_[0-9]+_[0-9])/$',pubSingle, name='pubss'),
+	url(r'^pubss/(?P<num>.*_[0-9]+_[0-9])/$',pubSingle, name='pubss'),
     url(r'^ajax_searchset/$', ajax_searchset.as_view(), name='ajax_searchset'),
     url(r'^ajax_compare/$', ajax_compare.as_view(), name='ajax_compare'),
     url(r'^get_semmed_items/',get_semmed_items, name='get_semmed_items'),

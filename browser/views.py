@@ -1078,7 +1078,7 @@ class ajax_overlap(BaseDatatableView):
 
 		return json_data
 
-#@cache_page(None)
+@cache_page(None)
 def pubSingle(request,num):
 	session = driver.session()
 	userInfo = "UserID:"+str(request.user.id)+" - "
@@ -1113,11 +1113,11 @@ def pubSingle(request,num):
 	jobType = c.job_type
 
 	if jobType == "meshMain":
-		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:HAS_MESH{mesh_type:'main'}]->(m:Mesh) where "+yearString+" s.name = '"+ss+"' and m.mesh_id = '"+p_id+"' return s.name,p.pmid,p.dcom,m.mesh_name as sname;"
+		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:HAS_MESH{mesh_type:'main'}]->(m:Mesh) where "+yearString+" s.name = '"+ss+"' and m.mesh_id = '"+p_id.replace(':','/')+"' return s.name,p.pmid,p.dcom,m.mesh_name as sname;"
 	elif jobType == "semmed_t" or jobType == 'semmed':
 		gCom = "match (s:SearchSet)<-[r:INCLUDES]->(p:Pubmed)<-[h:SEM]->(sdb:SDB_triple) where "+yearString+" s.name = '"+ss+"' and sdb.pid = "+p_id+" return s.name,p.pmid,p.dp,sdb.s_name as sname;"
 	elif jobType == "semmed_c":
-		gCom = "match (s:SearchSet)-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where "+yearString+" s.name = '"+ss+"' and si.name = '"+mName+"' return s.name,p.pmid,p.dcom,si.name as sname;"
+		gCom = "match (s:SearchSet)-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where "+yearString+" s.name = '"+ss+"' and si.name = '"+p_id+"' return s.name,p.pmid,p.dcom,si.name as sname;"
 
 	logger.debug(userInfo+"gCom:"+gCom)
 
