@@ -398,11 +398,11 @@ h2 span { background:#fff; padding:0 10px; }
 
 			var exampleData = $('#example_data').DataTable({
 				"order": [[2, "desc"]],
-                dom: 'frtip',
-                lengthChange: false,
-                scrollY:        400,
-                deferRender:    true,
-                scroller:       true,
+                //dom: 'frtip',
+                //lengthChange: false,
+                //scrollY:        400,
+                //deferRender:    true,
+                //scroller:       true,
 				"columnDefs": [
 					{
                         "render": function ( data, type, row ) {
@@ -677,8 +677,10 @@ h2 span { background:#fff; padding:0 10px; }
         <div class="bImage">
             <div class="row">
                 <div class="col-md-8" style="height:230px">
+		<div class="row">
+			<div class="col-md-6">
                     <!-- br><br><p><font size="5" color="red">The server is currently down for maintenance</font><br><br-->
-                    <br>
+                    <br><br><br>
                     <ul class="music-bullet">
                         <li><b>MELODI</b> is a hypothesis generator. It identifies enriched overlapping objects which have been assigned to scientific literature and uses these to derive intermediate mechanisms.</li>
                         <li>The underlying annotation objects used for the analysis are semantic predications from the <a href="https://skr3.nlm.nih.gov/SemMedDB/" target="_blank">Semantic MEDLINE Datatabase</a> (SemMedDB) and <a href="https://www.nlm.nih.gov/mesh/" target="_blank">Medical Subject Headings</a> (MeSH).</li>
@@ -686,8 +688,15 @@ h2 span { background:#fff; padding:0 10px; }
                             for more information.</li>
                         <li>Data are stored and investigated using a <a href="http://www.neo4j.com" target="_blank"><img src="/static/browser/img/neo4j_logo.png" height="30"/></a> graph.</li>
                     </ul>
-				<br><h4>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to explore some pre-loaded analyses select some results from table below.</h3>
-				<br><br><table id="example_data" class="display" cellspacing="0" width="100%">
+		</div>
+		<div class="col-md-6">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/rEjnmXNLkWA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+		</div>	
+		</div>
+		<div style="text-align:center">
+		<br><h4>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to explore some pre-loaded analyses select some results from table below.</h3>	
+		</div>
+			<br><br><table id="example_data" class="display" cellspacing="0" width="100%">
 		                <thead>
 		                <tr>
 		                    <th>Concept 1</th>
@@ -1067,13 +1076,13 @@ h2 span { background:#fff; padding:0 10px; }
                             data: []
                         }
                     ],
-                    //navigation: {
-                    //    buttonOptions: {
-                    //        align: 'left',
-                    //        x: 0,
-                    //        y: 0
-                    //    }
-                    //},
+                    navigation: {
+                        buttonOptions: {
+                            align: 'right',
+                            x: -70,
+                            y: 0
+                        }
+                    },
                     plotOptions: {
                         line: {
                             dataLabels: {
