@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #ALLOWED_HOSTS = []
 
@@ -44,19 +44,20 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'browser',
     'social_auth',
-    'django.contrib.humanize',
-	'rest_framework',
+    'django.contrib.humanize'
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.cache.UpdateCacheMiddleware', #need this for cache
+    'django.middleware.common.CommonMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware', #need this for cache
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -207,19 +208,29 @@ LOGGING = {
     }
 }
 
-# CACHE_MIDDLEWARE_ALIAS = 'default'
-# CACHE_MIDDLEWARE_SECONDS = 60480000
-# CACHE_MIDDLEWARE_KEY_PREFIX = ''
-#
+#CACHE_MIDDLEWARE_ALIAS = 'default'
+#CACHE_MIDDLEWARE_SECONDS = 60480000
+#CACHE_MIDDLEWARE_KEY_PREFIX = ''
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            #"SOCKET_TIMEOUT": 50,
+        },
+        "KEY_PREFIX": "melodi",
+        'TIMEOUT': None
+    }
+}
+
+
 #CACHES = {
-#    "default": {
-#        "BACKEND": "django_redis.cache.RedisCache",
-#        "LOCATION": "redis://127.0.0.1:6379/1",
-#        "OPTIONS": {
-#            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#            #"SOCKET_TIMEOUT": 50,
-#        },
-#        "KEY_PREFIX": "melodi",
+#    'default': {
+#        #'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#        'LOCATION': 'melodi_cache',
 #        'TIMEOUT': None
 #    }
 #}
@@ -242,13 +253,6 @@ CELERYBEAT_SCHEDULE = {
     #},
 
 }
-
-REST_FRAMEWORK = {
-	'DEFAULT_PERMISSION_CLASSES': [
-		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-	]
-}
-
 #  Logging
 # LOGGING = {
 #     'version': 1,
