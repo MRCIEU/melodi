@@ -598,7 +598,10 @@ def pmid_process(sp, file_name):
 		SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_status='Too many articles (max 1 million)',job_progress=0)
 
 	#remove file
-	os.remove(file_name)
+	try:
+		os.remove(file_name)
+	except OSError:
+    	pass
 
 @task
 #@retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=3)

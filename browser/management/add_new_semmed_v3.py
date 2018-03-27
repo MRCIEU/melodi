@@ -5,12 +5,14 @@ sys.path.append("/Users/be15516/projects/melodi/")
 
 import config
 
-#3 steps
-#1. Convert each sql table to a pipe separated format
+#4 steps
+#1. Download num_files
+#   Citations and Predication
+#2. Convert each sql table to a pipe separated format
 #	for i in *sql.gz; do echo $i; python ~/scripts/bristol/mysql_to_csv.py <(gunzip -c $i) | gzip > ${i%%.*}.psv.gz; done
-#2. Get rid of double quotest in citations
+#3. Get rid of double quotest in citations
 #	gunzip -c semmedVER30_R_CITATIONS_to12312016.csv.gz | sed "s/'//g" | gzip > semmedVER30_R_CITATIONS_to12312016_edit.csv.gz
-#3. Add new data - change file locations in script and run this script
+#4. Add new data - change file locations in script and run this script
 #	python browser/management/add_new_semmed.py
 
 #neo4j
@@ -225,4 +227,3 @@ if __name__ == "__main__":
 #| count(distinct(p.pmid)) |
 #+-------------------------+
 #| 15841558
-
