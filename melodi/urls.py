@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('social_auth.urls')),
     url(r'^about', about, name='about'),
+    url(r'^citation', citation, name='citation'),
     url(r'^help', help, name='help'),
     url(r'^contact', contact, name='contact'),
     url(r'^logout/', logout, {'next_page': reverse_lazy('home')}, name='logout'),

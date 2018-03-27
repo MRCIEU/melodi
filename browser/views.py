@@ -288,6 +288,10 @@ def about(request):
 	context = {'nbar': 'about'}
 	return render_to_response('about.html', context, context_instance=RequestContext(request))
 
+def citation(request):
+        context = {'nbar': 'citation'}
+        return render_to_response('citation.html', context, context_instance=RequestContext(request))
+
 def help(request):
 	context = {'nbar': 'help'}
 	return render_to_response('help.html', context, context_instance=RequestContext(request))
