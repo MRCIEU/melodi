@@ -601,7 +601,7 @@ def pmid_process(sp, file_name):
 	try:
 		os.remove(file_name)
 	except OSError:
-    	pass
+		pass
 
 @task
 #@retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=3)
