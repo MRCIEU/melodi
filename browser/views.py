@@ -173,7 +173,7 @@ def ajax_graph_metrics(request):
 				cCountOld = cDic[a] + cCountOld
 			else:
 				cCounts.append(0)
-		lastTop=10
+		lastTop=12
 		uCounts = uCounts[-lastTop:len(uCounts)]
 		aCounts = aCounts[-lastTop:len(aCounts)]
 		cCounts = cCounts[-lastTop:len(cCounts)]
