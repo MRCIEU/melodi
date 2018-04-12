@@ -11,9 +11,9 @@ import config
 #2. Convert each sql table to a pipe separated format
 #	for i in *sql.gz; do echo $i; python ~/scripts/bristol/mysql_to_csv.py <(gunzip -c $i) | gzip > ${i%%.*}.psv.gz; done
 #3. Get rid of double quotest in citations
-#	gunzip -c semmedVER30_R_CITATIONS_to12312016.csv.gz | sed "s/'//g" | gzip > semmedVER30_R_CITATIONS_to12312016_edit.csv.gz
+#	gunzip -c semmedVER30_R_CITATIONS_to12312016.psv.gz | sed "s/'//g" | gzip > semmedVER30_R_CITATIONS_to12312016_edit.psv.gz
 #4. Add new data - change file locations in script and run this script
-#	python browser/management/add_new_semmed.py
+#	python browser/management/add_new_semmed_v3.py
 
 #neo4j
 from neo4j.v1 import GraphDatabase,basic_auth

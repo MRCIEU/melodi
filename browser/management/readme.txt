@@ -1,4 +1,4 @@
-Steps to setup application
+Steps to setup and update application
 
 1. Download SemMedDB data
     - https://skr3.nlm.nih.gov/SemMedDB/
@@ -21,6 +21,11 @@ Steps to setup application
 5. Create graph
     - load_db.sh
 
-6. Update year frequencies when new data added
-    - calculate_year_freqs.py
-		- MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '2017'  with count(distinct(p)) as cp,s set s.freq_2017 = s.freq_2016+cp;
+6. Calculate year frequencies for enrichment
+	- calculate_year_freqs.py
+	- MATCH (p:Pubmed)-[:SEM]-(s:SDB_triple) where p.da > '2017'  with count(distinct(p)) as cp,s set s.freq_2017 = s.freq_2016+cp;
+
+7. Add new data
+	- SemMed: add_new_semmed_v3.py
+	- MeSH: add_new_mesh.py
+	- calculate_year_freqs.py
