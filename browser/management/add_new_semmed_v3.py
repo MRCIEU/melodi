@@ -32,7 +32,7 @@ new_pmids='data/new_pmids.txt.gz'
 #getData metrics
 #memory: 2973Mb
 #Time taken: 16 minutes
-def getData():
+def getpubmedData():
 	print "Getting PubMed data from MELODI graph..."
 	session2 = driver.session()
 	pDic = {}
@@ -203,7 +203,7 @@ def fix():
 def main():
 	#get the existing set of PubMed IDs
 	#~15 minutes
-	getData()
+	getpubmedData()
 
 	#check for new ones using new SemMedDB data
 	#~10 minutes
