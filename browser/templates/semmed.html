@@ -682,11 +682,11 @@ path.link {
                     },
 					{
                         render: function ( data, type, row ) {
-                            var [obs1,obs2] = data.split("/")
+                            var obs = data.split("/")
 							var concept_id = row[0].split(':')[1]
 							var resID = '{{res}}'
 							var url = '{% url 'pubss' '1_1_1' %}'.replace('1_1_1',concept_id+'_'+resID+'_1')
-							var d = '<a href="'+url+'" target=\"_blank\"">'+obs1+'</a>/'+obs2
+							var d = '<a href="'+url+'" target=\"_blank\"">'+obs[0]+'</a>/'+obs[1]
                             return d
                         },
                         "targets": 1
@@ -712,11 +712,11 @@ path.link {
                     },
 					{
                         render: function ( data, type, row ) {
-                            var [obs1,obs2] = data.split("/")
+                            var obs = data.split("/")
 							var concept_id = row[0].split(':')[1]
 							var resID = '{{res}}'
 							var url = '{% url 'pubss' '1_1_1' %}'.replace('1_1_1',concept_id+'_'+resID+'_2')
-							var d = '<a href="'+url+'" target=\"_blank\"">'+obs1+'</a>/'+obs2
+							var d = '<a href="'+url+'" target=\"_blank\"">'+obs[0]+'</a>/'+obs[1]
                             return d
                         },
                         "targets": 1
