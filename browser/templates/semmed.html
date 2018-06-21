@@ -1338,13 +1338,13 @@ path.link {
                 <thead>
                 <tr>
                     <th>Overlapping Semantic MEDLINE Objects</th>
-                    <th>{{ s1_name|truncatechars:10 }}</th>
-                    <th>{{ s2_name|truncatechars:10 }}</th>
-                    <th>Shared</th>
-                    <th>Score</th>
-                    <th width="10%">Mean CP</th>
-                    <th>Mean Odds</th>
-                    <th>Min PFR</th>
+                    <th>{{ s1_name|truncatechars:10 }}<label for="max" data-toggle="tooltip" title="Number of articles supporting the {{s1_name}} article set"><img src="/static/browser/img/information-icon-md.png"  height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>{{ s2_name|truncatechars:10 }}<label for="max" data-toggle="tooltip" title="Number of articles supporting the {{s2_name}} article set"><img src="/static/browser/img/information-icon-md.png"  height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Shared<label for="max" data-toggle="tooltip" title="Number of articles shared across both article sets"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Score<label for="max" data-toggle="tooltip" title="Evidence score (larger score = more balanced evidence across the two article sets)"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Mean CP<label for="max" data-toggle="tooltip" title="Mean corrected P-Value for the enrichment analysis across both search sets"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Mean Odds<label for="max" data-toggle="tooltip" title="Mean odds ratio for the enrichment analysis across both search sets"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Min PFR<label for="max" data-toggle="tooltip" title="Minimum SemMedDB predicate frequency rank"><img src="/static/browser/img/information-icon-md.png"  height="14" style="margin: 0px 0px 3px 5px"></label></th>
                 </tr>
                 </thead>
 
