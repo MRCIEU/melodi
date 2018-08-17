@@ -26,7 +26,7 @@ from collections import defaultdict
 from retrying import retry
 from django.conf import settings
 
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 from neo4j.v1 import GraphDatabase,basic_auth
