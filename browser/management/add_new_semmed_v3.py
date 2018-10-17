@@ -183,7 +183,7 @@ def addNewSemMed():
 				#check for dodgy pubmed ids with [2] in
 				if pmid.isdigit():
 					#statement="match (p:Pubmed{pmid:"+pmid+"}),(s:SDB_triple{s_name:'"+s_name+"',s_type:'"+s_type+"',o_name:'"+o_name+"',o_type:'"+o_type+"',predicate:'"+predicate+"'}) merge (p)-[:SEM]-(s);"
-					o.write(pmid+'\t'+s_name+'\t'+o_name+'\t'+predicate+'\n')
+					o.write(pmid+'\t'+pid+'\n')
 					#statement='match (p:Pubmed{pmid:'+pmid+'}),(s:SDB_triple{s_name:"'+s_name+'",o_name:"'+o_name+'",predicate:"'+predicate+'"}) merge (p)-[:SEM]-(s);'
 					#session2.run(statement)
 
