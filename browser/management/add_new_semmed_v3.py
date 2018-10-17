@@ -1,12 +1,12 @@
 import sys,gzip,time,resource,os
 from csv import reader
 
-sys.path.append("/Users/be15516/projects/melodi/")
+sys.path.append("/data/be15516/projects/melodi/")
 
 import config
 
 #4 steps
-#1. Download num_files
+#1. Download new files
 #   Citations and Predication
 #2. Convert each sql table to a pipe separated format
 #	for i in *sql.gz; do echo $i; python ~/scripts/bristol/mysql_to_csv.py <(gunzip -c $i) | gzip > ${i%%.*}.psv.gz; done
@@ -21,13 +21,17 @@ auth_token = basic_auth(config.user, config.password)
 driver = GraphDatabase.driver("bolt://"+config.server+":"+config.port,auth=auth_token)
 
 #files
-baseDir='/Users/be15516/mounts/rdfs_be15516/data/SemMedDB/v30_R_31-12-16/'
+baseDir='/projects/MRC-IEU/users/be15516/data/SemMedDB/v31_R_30_06_18/'
 #SemMed
-semCitation = baseDir+'semmedVER30_R_CITATIONS_to12312016_edit.csv.gz'
-semPA = baseDir+'semmedVER30_R_PREDICATION_to12312016.csv.gz'
+semCitation = baseDir+'semmedVER31_R_CITATIONS_06302018_edit.psv.gz'
+semPA = baseDir+'semmedVER31_R_PREDICATION_06302018.psv.gz'
 
 old_pmids='data/old_pmids.txt.gz'
 new_pmids='data/new_pmids.txt.gz'
+
+#####################################################
+#### Don't run locally, go to epif version!!!!! #####
+#####################################################
 
 #getData metrics
 #memory: 2973Mb
@@ -152,6 +156,7 @@ def addNewSemMed():
 	session2 = driver.session()
 	#117403|248343|13930367|ISA|C0008059|Child|inpr|1|C0018684|Health|idcn|1
 	#don't split inside quoted sections, e.g. 49963|341414|1|21065029|COEXISTS_WITH|"708|925"|"C1QBP|CD8A"|gngm|1|C0771648|Poractant alfa|orch|1
+	o=gzip.open('data/new-semmed.tsv.gz','w')
 	with gzip.open(semPA, 'rb') as f:
 		for line in reader(f, delimiter='|'):
 			counter+=1
@@ -178,8 +183,9 @@ def addNewSemMed():
 				#check for dodgy pubmed ids with [2] in
 				if pmid.isdigit():
 					#statement="match (p:Pubmed{pmid:"+pmid+"}),(s:SDB_triple{s_name:'"+s_name+"',s_type:'"+s_type+"',o_name:'"+o_name+"',o_type:'"+o_type+"',predicate:'"+predicate+"'}) merge (p)-[:SEM]-(s);"
-					statement='match (p:Pubmed{pmid:'+pmid+'}),(s:SDB_triple{s_name:"'+s_name+'",o_name:"'+o_name+'",predicate:"'+predicate+'"}) merge (p)-[:SEM]-(s);'
-					session2.run(statement)
+					o.write(pmid+'\t'+s_name+'\t'+o_name+'\t'+predicate+'\n')
+					#statement='match (p:Pubmed{pmid:'+pmid+'}),(s:SDB_triple{s_name:"'+s_name+'",o_name:"'+o_name+'",predicate:"'+predicate+'"}) merge (p)-[:SEM]-(s);'
+					#session2.run(statement)
 
 def fix():
 	print "Fixing..."
@@ -203,15 +209,15 @@ def fix():
 def main():
 	#get the existing set of PubMed IDs
 	#~15 minutes
-	getData()
+	#getData()
 
 	#check for new ones using new SemMedDB data
 	#~10 minutes
-	getNewPmids()
+	#getNewPmids()
 
 	#add/update PubMed nodes
 	#~130 minutes
-	addNewPmids()
+	#addNewPmids()
 
 	#add new PubMed-SemMed relationships
 	addNewSemMed()
