@@ -353,6 +353,7 @@
                     //console.log( 'DataTables has redrawn the table' );
                     google.charts.setOnLoadCallback(drawChart);
                     res_header();
+		    $('[data-toggle="tooltip"]').tooltip()
                 }
             })
              //check for low number of total records and adjust pfr
@@ -497,11 +498,11 @@
                     },
 					{
 	                        render: function ( data, type, row ) {
-	                            var [obs1,obs2] = data.split("/")
+	                            var obs = data.split("/")
 								var concept_id = row[0].split(':')[1].replace('/',':')
 								var resID = '{{res}}'
 								var url = '{% url 'pubss' '1_1_1' %}'.replace('1_1_1',concept_id+'_'+resID+'_1')
-								var d = '<a href="'+url+'" target=\"_blank\"">'+obs1+'</a>/'+obs2
+								var d = '<a href="'+url+'" target=\"_blank\"">'+obs[0]+'</a>/'+obs[1]
 	                            return d
 	                        },
 	                        "targets": 1
@@ -525,11 +526,11 @@
                     },
 						{
                         render: function ( data, type, row ) {
-                            var [obs1,obs2] = data.split("/")
+                            var obs = data.split("/")
 							var concept_id = row[0].split(':')[1]
 							var resID = '{{res}}'
 							var url = '{% url 'pubss' '1_1_1' %}'.replace('1_1_1',concept_id+'_'+resID+'_2')
-							var d = '<a href="'+url+'" target=\"_blank\"">'+obs1+'</a>/'+obs2
+							var d = '<a href="'+url+'" target=\"_blank\"">'+obs[0]+'</a>/'+obs[1]
                             return d
                         },
                         "targets": 1
@@ -579,7 +580,7 @@
                 //console.log(sData)
                 data.addColumn('string', 'From');
                 data.addColumn('string', 'To');
-                data.addColumn('number', 'Artciles');
+                data.addColumn('number', 'Articles');
                 data.addRows(sData)
 
                 // Set chart options
@@ -824,13 +825,13 @@
                     <thead>
                     <tr>
                         <th width="20%">Mesh Term</th>
-                        <th>{{ s1_name|truncatechars:10 }}</th>
-                        <th>{{ s2_name|truncatechars:10 }}</th>
-                        <th>Shared</th>
-                        <th>Score</th>
-                        <th>Mean CP</th>
-                        <th>Mean Odds</th>
-                        <th width="10%">Hierarchy</th>
+                        <th>{{ s1_name|truncatechars:10 }}<label for="max" data-toggle="tooltip" title="Number of articles supporting the {{s1_name}} article set"><img src="/static/browser/img/information-icon-md.png"  height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>{{ s2_name|truncatechars:10 }}<label for="max" data-toggle="tooltip" title="Number of articles supporting the {{s2_name}} article set"><img src="/static/browser/img/information-icon-md.png"  height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Shared<label for="max" data-toggle="tooltip" title="Number of articles shared across both article sets"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Score<label for="max" data-toggle="tooltip" title="Evidence score (larger score = more balanced evidence across the two article sets)"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Mean CP<label for="max" data-toggle="tooltip" title="Mean corrected P-Value for the enrichment analysis across both search sets"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+                    <th>Mean Odds<label for="max" data-toggle="tooltip" title="Mean odds ratio for the enrichment analysis across both search sets"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
+			<th width="10%">Hierarchy<label for="max" data-toggle="tooltip" title="The position of the MeSH term in the MeSH hierarchy"><img src="/static/browser/img/information-icon-md.png" height="14" style="margin: 0px 0px 3px 5px"></label></th>
                     </tr>
                     </thead>
                     <tbody>

@@ -544,7 +544,7 @@ h2 span { background:#fff; padding:0 10px; }
 
     {% if user.is_authenticated %}
 <div id='add_ss'>
-<h3>Step 1. Create new article set</h3>
+<h3>Step 1. Create new article set (at least two article sets are required)</h3>
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#ss_pubSearch">PubMed Search</a></li>
         <li><a data-toggle="tab" href="#ss_med">Upload Article Set</a></li>
@@ -694,18 +694,19 @@ h2 span { background:#fff; padding:0 10px; }
                 <div class="col-md-8" style="height:230px">
 		<div class="row">
 		<div class="col-md-6" ><br>
-                <div class="video-container"><iframe  src="https://www.youtube.com/embed/rEjnmXNLkWA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                <br><div class="video-container"><iframe  src="https://www.youtube.com/embed/rEjnmXNLkWA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
                 </div>
 			<div class="col-md-6">
-                    <!-- br><br><p><font size="5" color="red">The server is currently down for maintenance</font><br><br-->
-                    <br><br><br><br>
+                    <!--br><br><p><font size="5" color="red">The server is currently down for maintenance</font><br><br-->
                     <ul class="music-bullet">
-                        <li><b>MELODI</b> is a hypothesis generator. It identifies enriched overlapping objects which have been assigned to scientific literature and uses these to derive intermediate mechanisms.</li>
+                        <br><br><br>
+			<li><b>MELODI</b> is a hypothesis generator. It identifies enriched overlapping objects which have been assigned to scientific literature and uses these to derive intermediate mechanisms.</li>
                         <li>The underlying annotation objects used for the analysis are semantic predications from the <a href="https://skr3.nlm.nih.gov/SemMedDB/" target="_blank">Semantic MEDLINE Datatabase</a> (SemMedDB) and <a href="https://www.nlm.nih.gov/mesh/" target="_blank">Medical Subject Headings</a> (MeSH).</li>
                         <li>Please read the <a href = '{% url 'about' %}'>About</a> page to find out more about how to use the application and click on the blue information button at the top of any page
                             for more information.</li>
                         <li>Data are stored and investigated using a <a href="http://www.neo4j.com" target="_blank"><img src="/static/browser/img/neo4j_logo.png" height="30"/></a> graph.</li>
                     </ul>
+			<!--br><p><font size="4" color="red">Warning: the NCBI servers are down so pubmed lookup not working! </font><br><br-->
 		</div>
 		</div>
 		<div style="text-align:center">
@@ -777,18 +778,20 @@ h2 span { background:#fff; padding:0 10px; }
                             <h4 class="panel-title">Database Details (<span id="db2_time"></span>)</h4>
                         </div>
                          <div class="panel-body">
-                            <span style="color:red">Unfortunately the database is down for maintenance :(</span>
+                            <span style="color:red">Unfortunately the database is down for maintenance :( <br>You can still view existing results but can't run new analyses.</span>
                          </div>
                     </div>
 
-                    <div class="panel panel-default" style="height:240px;overflow:scroll">
+                    <div class="panel panel-default" style="height:280px;overflow:scroll">
                         <div class="panel-heading">
                             <h4 class="panel-title">News and Updates</h4>
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped">
                             <tbody>
-							  <tr><td width="20%"><strong>12/01/18</strong></td><td>MELODI Published in IJE - <a href='https://academic.oup.com/ije/advance-article/doi/10.1093/ije/dyx251/4803214' target='_blank'>https://academic.oup.com/ije/advance-article-abstract/doi/10.1093/ije/dyx251/4803214</a></td></tr>
+			      <tr><td width="20%"><strong>29/03/18</strong></td><td>Updated <a href='https://skr3.nlm.nih.gov/SemMedDB/download/download.html' target='_blank'>SemMedDB</a> to latest version (December 31 2017). Graph now contains data from ~<b>400,000</b> more PubMed articles.</td></tr>
+			      <tr><td width="20%"><strong>27/03/18</strong></td><td>NCBI server downtime was bad news for MELODI today. Apologies if any jobs did not run :(</td></tr>
+			      <tr><td width="20%"><strong>12/01/18</strong></td><td>MELODI Published in IJE - <a href='https://academic.oup.com/ije/advance-article/doi/10.1093/ije/dyx251/4803214' target='_blank'>https://academic.oup.com/ije/advance-article-abstract/doi/10.1093/ije/dyx251/4803214</a></td></tr>
                               <tr><td width="20%"><strong>23/08/17</strong></td><td>Updated <a href='https://skr3.nlm.nih.gov/SemMedDB/download/download.html' target='_blank'>SemMedDB</a> to Version 30.2 (June 30 2017). Graph now contains data from ~<b>700,000</b> more PubMed articles.</td></tr>
                               <tr><td width="20%"><strong>20/03/17</strong></td><td>MELODI Published in biorxiv - <a href="http://biorxiv.org/content/early/2017/03/20/118513" target="_blank">http://biorxiv.org/content/early/2017/03/20/118513</a></td></tr>
                               <tr><td width="20%"><strong>30/01/17</strong></td><td>List of filtered concepts now available to download.</td></tr>

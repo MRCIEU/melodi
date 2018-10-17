@@ -58,7 +58,7 @@ from django.conf import settings
 from rest_framework import viewsets
 from browser.serializers import SearchSetSerializer
 
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',level=logging.INFO)
 logger = logging.getLogger(__name__)
 #logging.basicConfig(filename='run.log',level=logging.DEBUG)
 
@@ -173,7 +173,7 @@ def ajax_graph_metrics(request):
 				cCountOld = cDic[a] + cCountOld
 			else:
 				cCounts.append(0)
-		lastTop=10
+		lastTop=12
 		uCounts = uCounts[-lastTop:len(uCounts)]
 		aCounts = aCounts[-lastTop:len(aCounts)]
 		cCounts = cCounts[-lastTop:len(cCounts)]
