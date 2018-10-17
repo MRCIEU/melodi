@@ -650,6 +650,7 @@ def pub_sem(sp):
 
 	#count the number of pmids
 	cmd = "grep -c '<Id>' "+ranFile
+	pCount=0
 	print cmd
 	#check for empty searches
 	try:

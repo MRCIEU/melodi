@@ -177,14 +177,14 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            #'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'debug.log'),
             #'filename': '/tmp/debug.log',
             'formatter': 'verbose'
         },
-		'console': {
-			'level': 'DEBUG',
+	'console': {
+	    'level': 'WARNING',
             'class': 'logging.StreamHandler',
         },
     },
@@ -195,10 +195,10 @@ LOGGING = {
         #    'level':'INFO',
         #},
 
-		'celery': {
-        	'handlers': ['console'],
-            'propagate': True,
-            'level': 'INFO',
+	'celery': {
+            'handlers': ['console'],
+            'propagate': False,
+            'level': 'WARNING',
         },
 
         'browser': {
