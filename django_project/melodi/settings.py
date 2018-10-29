@@ -162,7 +162,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/var/django/melodi/'
+MEDIA_ROOT = '/app/django_project/'
 DATA_FOLDER = os.path.join(BASE_DIR,"data/")
 
 # Redis

@@ -147,3 +147,581 @@
 [29/Oct/2018 17:01:40] DEBUG [browser.tasks:127] getting time data...
 [29/Oct/2018 17:01:40] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
 [29/Oct/2018 17:01:40] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:49:05] DEBUG [browser.tasks:333] UserID:None - In index
+[29/Oct/2018 17:49:05] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:49:07] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:49:07] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:49:08] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:49:08] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:49:08] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:49:08] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:49:08] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:49:08] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:49:29] DEBUG [browser.tasks:333] UserID:None - In index
+[29/Oct/2018 17:49:29] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:49:30] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:50:58] DEBUG [browser.tasks:333] UserID:None - In index
+[29/Oct/2018 17:50:58] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:50:58] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:50:58] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:50:58] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:50:58] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:50:59] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:50:59] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:50:59] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:50:59] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:50:59] DEBUG [browser.tasks:333] UserID:None - In index
+[29/Oct/2018 17:50:59] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:00] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:14] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:15] DEBUG [browser.tasks:640] UserID:None - In jobs
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:18] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:21] DEBUG [browser.tasks:640] UserID:None - In jobs
+[29/Oct/2018 17:51:57] DEBUG [browser.tasks:333] UserID:None - In index
+[29/Oct/2018 17:51:57] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:51:57] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:57] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:58] DEBUG [browser.tasks:110] getting graph metrics
+[29/Oct/2018 17:51:58] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:58] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:51:58] DEBUG [browser.tasks:117] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[29/Oct/2018 17:51:58] DEBUG [browser.tasks:123] [27834091, 464122, 17713742, 284801]
+[29/Oct/2018 17:51:58] DEBUG [browser.tasks:127] getting time data...
+[29/Oct/2018 17:56:13] DEBUG [browser.tasks:333] UserID:None - In index
+[29/Oct/2018 17:56:13] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:56:17] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 17:56:17] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:56:27] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 17:56:27] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:56:31] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 17:56:31] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 17:56:33] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:419] job_name = pap
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:420] desc = pcsk9
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:428] UserID:1 - Running pub_sem
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:610] in db_pub
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:611] id = pap
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:612] user_id = 1
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:613] desc = pcsk9
+[29/Oct/2018 17:56:52] DEBUG [browser.tasks:617] match (s:SearchSet)-[r]-(p:Pubmed) where s.name = 'pap_1' delete s,r;
+[29/Oct/2018 17:56:56] DEBUG [browser.tasks:690] MATCH (s:SearchSet)-[:INCLUDES]-(p:Pubmed) where s.name = 'pap_1' return count(p) as p;
+[29/Oct/2018 17:56:56] DEBUG [browser.tasks:693] record = 1991
+[29/Oct/2018 17:58:37] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 17:58:43] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 17:58:43] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:02:19] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:02:19] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:02:25] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:02:43] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:02:43] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:02:54] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:03:27] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:04:17] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:04:50] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:04:59] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:04:59] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:05:04] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:05:09] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:05:09] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:05:33] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:10:23] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:11:17] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:11:29] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:11:29] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:419] job_name = mf1
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:420] desc = marfan syndrome
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:428] UserID:1 - Running pub_sem
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:610] in db_pub
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:611] id = mf1
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:612] user_id = 1
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:613] desc = marfan syndrome
+[29/Oct/2018 18:11:38] DEBUG [browser.tasks:617] match (s:SearchSet)-[r]-(p:Pubmed) where s.name = 'mf1_1' delete s,r;
+[29/Oct/2018 18:11:46] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:11:49] DEBUG [browser.tasks:690] MATCH (s:SearchSet)-[:INCLUDES]-(p:Pubmed) where s.name = 'mf1_1' return count(p) as p;
+[29/Oct/2018 18:11:49] DEBUG [browser.tasks:693] record = 6866
+[29/Oct/2018 18:12:53] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:12:53] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:439] UserID:1 - Comparing search sets
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:448] yearRange:1950 - 2017
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:452] yearRange corrected:1950 - 2017
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:481] UserID:1 - analysing two search sets
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:482] ss1 - pap
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:483] ss2 - mf1
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:492] jobType = meshMain
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:492] jobType = semmed_c
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : meshMain
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:492] jobType = semmed_t
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_c
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where si.i_freq <150000 return count(distinct(p)) as pc,si.name,si.i_freq;
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_t
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:12:56] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMO]-(si1:SDB_item) where si1.i_freq <150000 with distinct p,si1,st match (st)-[:SEMS]-(si2:SDB_item) where si2.i_freq <150000 with  count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_2016;
+[29/Oct/2018 18:12:57] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:13:00] DEBUG [browser.tasks:900] Correcting pvals with 3985 values
+[29/Oct/2018 18:15:42] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:16:31] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:16:31] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:439] UserID:1 - Comparing search sets
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:448] yearRange:1950 - 2017
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:452] yearRange corrected:1950 - 2017
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:481] UserID:1 - analysing two search sets
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:482] ss1 - pap
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:483] ss2 - mf1
+[29/Oct/2018 18:16:34] DEBUG [browser.tasks:492] jobType = meshMain
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:492] jobType = semmed_c
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:492] jobType = semmed_t
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : meshMain
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_c
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where si.i_freq <150000 return count(distinct(p)) as pc,si.name,si.i_freq;
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:16:35] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:16:36] DEBUG [browser.tasks:900] Correcting pvals with 1032 values
+[29/Oct/2018 18:16:36] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_t
+[29/Oct/2018 18:16:36] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:16:36] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMO]-(si1:SDB_item) where si1.i_freq <150000 with distinct p,si1,st match (st)-[:SEMS]-(si2:SDB_item) where si2.i_freq <150000 with  count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_2016;
+[29/Oct/2018 18:16:37] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:16:39] DEBUG [browser.tasks:900] Correcting pvals with 3985 values
+[29/Oct/2018 18:16:41] DEBUG [browser.tasks:900] Correcting pvals with 1895 values
+[29/Oct/2018 18:19:17] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:19:17] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:19:18] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:19:18] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:439] UserID:1 - Comparing search sets
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:448] yearRange:1950 - 2017
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:452] yearRange corrected:1950 - 2017
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:481] UserID:1 - analysing two search sets
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:482] ss1 - pap
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:483] ss2 - mf1
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:492] jobType = meshMain
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:492] jobType = semmed_c
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : meshMain
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:492] jobType = semmed_t
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_c
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_t
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where si.i_freq <150000 return count(distinct(p)) as pc,si.name,si.i_freq;
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:19:21] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMO]-(si1:SDB_item) where si1.i_freq <150000 with distinct p,si1,st match (st)-[:SEMS]-(si2:SDB_item) where si2.i_freq <150000 with  count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_2016;
+[29/Oct/2018 18:19:22] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:19:22] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:19:22] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:19:23] DEBUG [browser.tasks:900] Correcting pvals with 1032 values
+[29/Oct/2018 18:19:25] DEBUG [browser.tasks:900] Correcting pvals with 3985 values
+[29/Oct/2018 18:19:28] DEBUG [browser.tasks:900] Correcting pvals with 1895 values
+[29/Oct/2018 18:19:33] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:22:08] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:22:08] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:22:12] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:22:13] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:22:13] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:439] UserID:1 - Comparing search sets
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:448] yearRange:1950 - 2017
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:452] yearRange corrected:1950 - 2017
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:481] UserID:1 - analysing two search sets
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:482] ss1 - pap
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:483] ss2 - mf1
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:492] jobType = meshMain
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:492] jobType = semmed_c
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:492] jobType = semmed_t
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : meshMain
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_c
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:22:17] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where si.i_freq <150000 return count(distinct(p)) as pc,si.name,si.i_freq;
+[29/Oct/2018 18:22:18] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_t
+[29/Oct/2018 18:22:18] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:22:18] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMO]-(si1:SDB_item) where si1.i_freq <150000 with distinct p,si1,st match (st)-[:SEMS]-(si2:SDB_item) where si2.i_freq <150000 with  count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_2016;
+[29/Oct/2018 18:22:18] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:22:20] DEBUG [browser.tasks:900] Correcting pvals with 3985 values
+[29/Oct/2018 18:22:20] DEBUG [browser.tasks:929] Number of FET after cpval = 491
+[29/Oct/2018 18:22:20] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:22:20] DEBUG [browser.tasks:855] match (s:SearchSet{name:'mf1_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMO]-(si1:SDB_item) where si1.i_freq <150000 with distinct p,si1,st match (st)-[:SEMS]-(si2:SDB_item) where si2.i_freq <150000 with  count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_2016;
+[29/Oct/2018 18:22:22] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:22:27] DEBUG [browser.tasks:900] Correcting pvals with 8595 values
+[29/Oct/2018 18:22:27] DEBUG [browser.tasks:929] Number of FET after cpval = 712
+[29/Oct/2018 18:22:27] DEBUG [browser.tasks:1171] Processing SemMed triple data...
+[29/Oct/2018 18:22:28] DEBUG [browser.tasks:1271] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:22:28] DEBUG [browser.tasks:1282] semmed overlapper
+[29/Oct/2018 18:22:28] DEBUG [browser.tasks:1283] match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where  s.name = 'pap_1' and sem.pid in [6787179, 14780172, 2799507, 14222100, 12307864, 16843804, 7672005, 1268128, 14798634, 1491755, 1804974, 68151, 16252600, 10373695, 10401745, 11540421, 1354057, 9183159, 15352780, 16818257, 5553874, 14902993, 6952427, 2969718, 4315641] return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where  s.name = 'mf1_1' and sem.pid in [783456, 712129, 13248418, 12751331, 431819, 457495, 3379308, 6012706, 8629967, 5849683, 5657430, 12809367, 783514, 110747, 5371804] return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1311] semmed_t - Created oDic (40), adding data to Overlap
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1312] {u'Lipoproteins': u'aapp', u'PCSK9': u'gngm', u'hypercholesterolemia': u'dsyn', u'Marfan Syndrome': u'dsyn', u'Cultured skin': u'bpoc', u'LDL Cholesterol Lipoproteins': u'bacs', u'Pathogenesis': u'patf', u'Fibrates': u'phsu', u'Collagen': u'aapp', u'Aortic Aneurysm, Thoracic': u'dsyn', u'Scoliosis, unspecified': u'anab', u'Cardiovascular Diseases': u'dsyn', u'Epidermal Growth Factor|EGF': u'aapp', u'Homocystinuria': u'dsyn', u'Hypocholesterolemia': u'patf', u'Cardiovascular arteriosclerosis unspecified': u'dsyn', u'Hypercholesterolemia, Familial': u'dsyn', u'Hydroxymethylglutaryl-CoA Reductase Inhibitors': u'orch', u'Hereditary Diseases': u'dsyn', u'FBN1': u'gngm', u'Fibroblasts': u'cell', u'Familial hypercholesterolemia - homozygous': u'dsyn', u'Apolipoproteins B|APOB': u'bacs', u'Cholesterol': u'bacs', u'Dyslipidemias': u'dsyn', u'Anticholesteremic Agents': u'phsu', u'Cessation of life': u'orgf', u'fibrillin': u'aapp'}
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Dyslipidemias PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Dyslipidemias (dsyn)||PREDISPOSES||Cardiovascular Diseases (dsyn)||6952427:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Lipoproteins PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Lipoproteins (aapp)||PREDISPOSES||Cardiovascular Diseases (dsyn)||1804974:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Cardiovascular arteriosclerosis unspecified CAUSES Cessation of life ASSOCIATED_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Cardiovascular arteriosclerosis unspecified (dsyn)||CAUSES||Cessation of life (orgf)||1491755:Cessation of life (orgf)||ASSOCIATED_WITH||Marfan Syndrome (dsyn)||712129
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial CAUSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||CAUSES||Cardiovascular Diseases (dsyn)||6787179:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] hypercholesterolemia PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||PREDISPOSES||Cardiovascular Diseases (dsyn)||4315641:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hydroxymethylglutaryl-CoA Reductase Inhibitors PREVENTS Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hydroxymethylglutaryl-CoA Reductase Inhibitors (orch)||PREVENTS||Cardiovascular Diseases (dsyn)||12307864:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 INTERACTS_WITH Epidermal Growth Factor|EGF CAUSES Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||INTERACTS_WITH||Epidermal Growth Factor|EGF (aapp)||14222100:Epidermal Growth Factor|EGF (aapp)||CAUSES||Marfan Syndrome (dsyn)||5657430
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hypocholesterolemia PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hypocholesterolemia (patf)||PREDISPOSES||Cardiovascular Diseases (dsyn)||14902993:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||2969718:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Anticholesteremic Agents PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Anticholesteremic Agents (phsu)||PREDISPOSES||Cardiovascular Diseases (dsyn)||16252600:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Cardiovascular Diseases CAUSES Cessation of life ASSOCIATED_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Cardiovascular Diseases (dsyn)||CAUSES||Cessation of life (orgf)||68151:Cessation of life (orgf)||ASSOCIATED_WITH||Marfan Syndrome (dsyn)||712129
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hydroxymethylglutaryl-CoA Reductase Inhibitors PREVENTS Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hydroxymethylglutaryl-CoA Reductase Inhibitors (orch)||PREVENTS||Cardiovascular Diseases (dsyn)||7672005:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 ASSOCIATED_WITH Pathogenesis ASSOCIATED_WITH FBN1
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||ASSOCIATED_WITH||Pathogenesis (patf)||14780172:Pathogenesis (patf)||ASSOCIATED_WITH||FBN1 (gngm)||12751331
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 ASSOCIATED_WITH Pathogenesis COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||ASSOCIATED_WITH||Pathogenesis (patf)||14780172:Pathogenesis (patf)||COEXISTS_WITH||Marfan Syndrome (dsyn)||8629967
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 ASSOCIATED_WITH Pathogenesis AFFECTS Homocystinuria
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||ASSOCIATED_WITH||Pathogenesis (patf)||14780172:Pathogenesis (patf)||AFFECTS||Homocystinuria (dsyn)||783514
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Cholesterol PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Cholesterol (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||2799507:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Apolipoproteins B|APOB PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Apolipoproteins B|APOB (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||14798634:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF fibrillin
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||fibrillin (aapp)||5371804
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||Marfan Syndrome (dsyn)||783456
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF FBN1
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||FBN1 (gngm)||6012706
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts PART_OF Cultured skin
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||PART_OF||Cultured skin (bpoc)||457495
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF Collagen
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||Collagen (aapp)||431819
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Fibrates PREVENTS Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Fibrates (phsu)||PREVENTS||Cardiovascular Diseases (dsyn)||10373695:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] Hydroxymethylglutaryl-CoA Reductase Inhibitors PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] Hydroxymethylglutaryl-CoA Reductase Inhibitors (orch)||PREDISPOSES||Cardiovascular Diseases (dsyn)||9183159:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||5553874:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1382] PCSK9 PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1384] PCSK9 (gngm)||PREDISPOSES||Cardiovascular Diseases (dsyn)||15352780:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:22:29] DEBUG [browser.tasks:1393] semmed_t - Finished
+[29/Oct/2018 18:22:30] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:22:42] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:22:54] DEBUG [browser.tasks:648] UserID:1 - In results
+[29/Oct/2018 18:22:54] DEBUG [browser.tasks:650] UserID:1 - 6
+[29/Oct/2018 18:22:54] DEBUG [browser.tasks:691] UserID:1 - two ss results
+[29/Oct/2018 18:22:54] DEBUG [browser.tasks:717] Reding data from /app/django_project/saved_data/fet/1_2017.semmed_t.fet.gz
+[29/Oct/2018 18:22:55] DEBUG [browser.tasks:875] resID: 6
+[29/Oct/2018 18:22:55] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:22:55] DEBUG [browser.tasks:891] Filter query on semmed
+[29/Oct/2018 18:22:55] DEBUG [browser.tasks:972] len(qs)=24
+[29/Oct/2018 18:22:56] DEBUG [browser.tasks:875] resID: 6
+[29/Oct/2018 18:22:56] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:22:56] DEBUG [browser.tasks:891] Filter query on semmed
+[29/Oct/2018 18:22:56] DEBUG [browser.tasks:972] len(qs)=11
+[29/Oct/2018 18:25:31] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:25:34] DEBUG [browser.tasks:875] resID: 6
+[29/Oct/2018 18:25:34] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:25:34] DEBUG [browser.tasks:891] Filter query on semmed
+[29/Oct/2018 18:25:34] DEBUG [browser.tasks:972] len(qs)=24
+[29/Oct/2018 18:25:35] DEBUG [browser.tasks:875] resID: 6
+[29/Oct/2018 18:25:35] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:25:35] DEBUG [browser.tasks:891] Filter query on semmed
+[29/Oct/2018 18:25:35] DEBUG [browser.tasks:972] len(qs)=11
+[29/Oct/2018 18:25:38] DEBUG [browser.tasks:875] resID: 6
+[29/Oct/2018 18:25:38] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:25:38] DEBUG [browser.tasks:891] Filter query on semmed
+[29/Oct/2018 18:25:38] DEBUG [browser.tasks:972] len(qs)=11
+[29/Oct/2018 18:25:46] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:26:11] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:26:11] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:439] UserID:1 - Comparing search sets
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:448] yearRange:1950 - 2017
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:452] yearRange corrected:1950 - 2017
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:481] UserID:1 - analysing two search sets
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:482] ss1 - pap
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:483] ss2 - mf1
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:492] jobType = meshMain
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:492] jobType = semmed_c
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:492] jobType = semmed_t
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_c
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : meshMain
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_t
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where si.i_freq <150000 return count(distinct(p)) as pc,si.name,si.i_freq;
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:1171] Processing SemMed triple data...
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:26:50] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:26:52] DEBUG [browser.tasks:1271] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:26:52] DEBUG [browser.tasks:1282] semmed overlapper
+[29/Oct/2018 18:26:52] DEBUG [browser.tasks:1283] match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where  s.name = 'pap_1' and sem.pid in [6787179, 14780172, 2799507, 14222100, 12307864, 16843804, 7672005, 1268128, 14798634, 1491755, 1804974, 68151, 16252600, 10373695, 10401745, 11540421, 1354057, 9183159, 15352780, 16818257, 5553874, 14902993, 6952427, 2969718, 4315641] return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where  s.name = 'mf1_1' and sem.pid in [783456, 712129, 13248418, 12751331, 431819, 457495, 3379308, 6012706, 8629967, 5849683, 5657430, 12809367, 783514, 110747, 5371804] return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type
+[29/Oct/2018 18:26:56] DEBUG [browser.tasks:900] Correcting pvals with 1895 values
+[29/Oct/2018 18:26:56] DEBUG [browser.tasks:929] Number of FET after cpval = 168
+[29/Oct/2018 18:26:56] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:26:56] DEBUG [browser.tasks:855] match (s:SearchSet{name:'mf1_1'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMS|:SEMO]-(si:SDB_item) where si.i_freq <150000 return count(distinct(p)) as pc,si.name,si.i_freq;
+[29/Oct/2018 18:26:57] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:27:09] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:27:11] DEBUG [browser.tasks:900] Correcting pvals with 5011 values
+[29/Oct/2018 18:27:11] DEBUG [browser.tasks:929] Number of FET after cpval = 420
+[29/Oct/2018 18:27:11] DEBUG [browser.tasks:1019] semmed_c - Finding shared terms
+[29/Oct/2018 18:27:11] DEBUG [browser.tasks:1024] semmed_c - Number of shared sig terms = 5
+[29/Oct/2018 18:27:11] DEBUG [browser.tasks:1034] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:27:11] DEBUG [browser.tasks:1083] semmed_c chunk 1 : 5
+[29/Oct/2018 18:27:14] DEBUG [browser.tasks:1091] semmed_c - Created oDic (5), adding data to Overlap
+[29/Oct/2018 18:27:14] DEBUG [browser.tasks:1153] semmed_c - Finished
+[29/Oct/2018 18:27:31] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:36:51] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:36:51] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:439] UserID:1 - Comparing search sets
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:448] yearRange:1950 - 2017
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:452] yearRange corrected:1950 - 2017
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:481] UserID:1 - analysing two search sets
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:482] ss1 - pap
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:483] ss2 - mf1
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:492] jobType = meshMain
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:492] jobType = semmed_c
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:492] jobType = semmed_t
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : meshMain
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_c
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1410] Comparing search sets 1 and 2 : semmed_t
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:855] match (s:SearchSet{name:'pap_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1019] semmed_c - Finding shared terms
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1024] semmed_c - Number of shared sig terms = 5
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1034] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1083] semmed_c chunk 1 : 5
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:1171] Processing SemMed triple data...
+[29/Oct/2018 18:36:55] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:36:56] DEBUG [browser.tasks:1271] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:36:56] DEBUG [browser.tasks:1282] semmed overlapper
+[29/Oct/2018 18:36:56] DEBUG [browser.tasks:1283] match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where  s.name = 'pap_1' and sem.pid in [6787179, 14780172, 2799507, 14222100, 12307864, 16843804, 7672005, 1268128, 14798634, 1491755, 1804974, 68151, 16252600, 10373695, 10401745, 11540421, 1354057, 9183159, 15352780, 16818257, 5553874, 14902993, 6952427, 2969718, 4315641] return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type UNION match (s:SearchSet)<-[i:INCLUDES]->(p:Pubmed)<-[se:SEM]->(sem:SDB_triple) where  s.name = 'mf1_1' and sem.pid in [783456, 712129, 13248418, 12751331, 431819, 457495, 3379308, 6012706, 8629967, 5849683, 5657430, 12809367, 783514, 110747, 5371804] return s.name,sem.pid,p.pmid,sem.s_name,sem.o_name,sem.s_type,sem.o_type
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:900] Correcting pvals with 1032 values
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:929] Number of FET after cpval = 123
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:805] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:855] match (s:SearchSet{name:'mf1_1'})<-[r:INCLUDES]->(p:Pubmed)<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh) with count(distinct(p.pmid)) as pc,m return pc, m.mesh_id, m.mesh_name, m.freq_2016
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1311] semmed_t - Created oDic (40), adding data to Overlap
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1312] {u'Lipoproteins': u'aapp', u'PCSK9': u'gngm', u'hypercholesterolemia': u'dsyn', u'Marfan Syndrome': u'dsyn', u'Cultured skin': u'bpoc', u'LDL Cholesterol Lipoproteins': u'bacs', u'Pathogenesis': u'patf', u'Fibrates': u'phsu', u'Collagen': u'aapp', u'Aortic Aneurysm, Thoracic': u'dsyn', u'Scoliosis, unspecified': u'anab', u'Cardiovascular Diseases': u'dsyn', u'Epidermal Growth Factor|EGF': u'aapp', u'Homocystinuria': u'dsyn', u'Hypocholesterolemia': u'patf', u'Cardiovascular arteriosclerosis unspecified': u'dsyn', u'Hypercholesterolemia, Familial': u'dsyn', u'Hydroxymethylglutaryl-CoA Reductase Inhibitors': u'orch', u'Hereditary Diseases': u'dsyn', u'FBN1': u'gngm', u'Fibroblasts': u'cell', u'Familial hypercholesterolemia - homozygous': u'dsyn', u'Apolipoproteins B|APOB': u'bacs', u'Cholesterol': u'bacs', u'Dyslipidemias': u'dsyn', u'Anticholesteremic Agents': u'phsu', u'Cessation of life': u'orgf', u'fibrillin': u'aapp'}
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Dyslipidemias PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Dyslipidemias (dsyn)||PREDISPOSES||Cardiovascular Diseases (dsyn)||6952427:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] hypercholesterolemia ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||ISA||Hereditary Diseases (dsyn)||1268128:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins ASSOCIATED_WITH Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||ASSOCIATED_WITH||Hereditary Diseases (dsyn)||11540421:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||10401745:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Lipoproteins PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Lipoproteins (aapp)||PREDISPOSES||Cardiovascular Diseases (dsyn)||1804974:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Cardiovascular arteriosclerosis unspecified CAUSES Cessation of life ASSOCIATED_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Cardiovascular arteriosclerosis unspecified (dsyn)||CAUSES||Cessation of life (orgf)||1491755:Cessation of life (orgf)||ASSOCIATED_WITH||Marfan Syndrome (dsyn)||712129
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial CAUSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||CAUSES||Cardiovascular Diseases (dsyn)||6787179:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Familial hypercholesterolemia - homozygous ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Familial hypercholesterolemia - homozygous (dsyn)||ISA||Hereditary Diseases (dsyn)||16843804:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases COEXISTS_WITH Scoliosis, unspecified
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||COEXISTS_WITH||Scoliosis, unspecified (anab)||13248418
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases CAUSES Aortic Aneurysm, Thoracic
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||CAUSES||Aortic Aneurysm, Thoracic (dsyn)||12809367
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases ISA Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||ISA||Marfan Syndrome (dsyn)||5849683
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hypercholesterolemia, Familial ISA Hereditary Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hypercholesterolemia, Familial (dsyn)||ISA||Hereditary Diseases (dsyn)||1354057:Hereditary Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||3379308
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] hypercholesterolemia PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] hypercholesterolemia (dsyn)||PREDISPOSES||Cardiovascular Diseases (dsyn)||4315641:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hydroxymethylglutaryl-CoA Reductase Inhibitors PREVENTS Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hydroxymethylglutaryl-CoA Reductase Inhibitors (orch)||PREVENTS||Cardiovascular Diseases (dsyn)||12307864:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 INTERACTS_WITH Epidermal Growth Factor|EGF CAUSES Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||INTERACTS_WITH||Epidermal Growth Factor|EGF (aapp)||14222100:Epidermal Growth Factor|EGF (aapp)||CAUSES||Marfan Syndrome (dsyn)||5657430
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hypocholesterolemia PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hypocholesterolemia (patf)||PREDISPOSES||Cardiovascular Diseases (dsyn)||14902993:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||2969718:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Anticholesteremic Agents PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Anticholesteremic Agents (phsu)||PREDISPOSES||Cardiovascular Diseases (dsyn)||16252600:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Cardiovascular Diseases CAUSES Cessation of life ASSOCIATED_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Cardiovascular Diseases (dsyn)||CAUSES||Cessation of life (orgf)||68151:Cessation of life (orgf)||ASSOCIATED_WITH||Marfan Syndrome (dsyn)||712129
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hydroxymethylglutaryl-CoA Reductase Inhibitors PREVENTS Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hydroxymethylglutaryl-CoA Reductase Inhibitors (orch)||PREVENTS||Cardiovascular Diseases (dsyn)||7672005:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 ASSOCIATED_WITH Pathogenesis ASSOCIATED_WITH FBN1
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||ASSOCIATED_WITH||Pathogenesis (patf)||14780172:Pathogenesis (patf)||ASSOCIATED_WITH||FBN1 (gngm)||12751331
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 ASSOCIATED_WITH Pathogenesis COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||ASSOCIATED_WITH||Pathogenesis (patf)||14780172:Pathogenesis (patf)||COEXISTS_WITH||Marfan Syndrome (dsyn)||8629967
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 ASSOCIATED_WITH Pathogenesis AFFECTS Homocystinuria
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||ASSOCIATED_WITH||Pathogenesis (patf)||14780172:Pathogenesis (patf)||AFFECTS||Homocystinuria (dsyn)||783514
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Cholesterol PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Cholesterol (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||2799507:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Apolipoproteins B|APOB PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Apolipoproteins B|APOB (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||14798634:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF fibrillin
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||fibrillin (aapp)||5371804
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||Marfan Syndrome (dsyn)||783456
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF FBN1
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||FBN1 (gngm)||6012706
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts PART_OF Cultured skin
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||PART_OF||Cultured skin (bpoc)||457495
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 DISRUPTS Fibroblasts LOCATION_OF Collagen
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||DISRUPTS||Fibroblasts (cell)||16818257:Fibroblasts (cell)||LOCATION_OF||Collagen (aapp)||431819
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Fibrates PREVENTS Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Fibrates (phsu)||PREVENTS||Cardiovascular Diseases (dsyn)||10373695:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] Hydroxymethylglutaryl-CoA Reductase Inhibitors PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] Hydroxymethylglutaryl-CoA Reductase Inhibitors (orch)||PREDISPOSES||Cardiovascular Diseases (dsyn)||9183159:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] LDL Cholesterol Lipoproteins PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] LDL Cholesterol Lipoproteins (bacs)||PREDISPOSES||Cardiovascular Diseases (dsyn)||5553874:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1382] PCSK9 PREDISPOSES Cardiovascular Diseases COEXISTS_WITH Marfan Syndrome
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1384] PCSK9 (gngm)||PREDISPOSES||Cardiovascular Diseases (dsyn)||15352780:Cardiovascular Diseases (dsyn)||COEXISTS_WITH||Marfan Syndrome (dsyn)||110747
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:1393] semmed_t - Finished
+[29/Oct/2018 18:36:57] DEBUG [browser.tasks:871] pmid_total for 2017 = 26987949
+[29/Oct/2018 18:36:58] DEBUG [browser.tasks:1091] semmed_c - Created oDic (5), adding data to Overlap
+[29/Oct/2018 18:36:58] DEBUG [browser.tasks:1153] semmed_c - Finished
+[29/Oct/2018 18:37:01] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:900] Correcting pvals with 4969 values
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:929] Number of FET after cpval = 473
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:1019] meshMain - Finding shared terms
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:1024] meshMain - Number of shared sig terms = 3
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:1034] year1 = 1950 year2 = 2017
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:1066] meshMain - Created tDict
+[29/Oct/2018 18:37:03] DEBUG [browser.tasks:1083] meshMain chunk 1 : 3
+[29/Oct/2018 18:37:05] DEBUG [browser.tasks:1091] meshMain - Created oDic (3), adding data to Overlap
+[29/Oct/2018 18:37:05] DEBUG [browser.tasks:1153] meshMain - Finished
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:648] UserID:1 - In results
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:650] UserID:1 - 2
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:691] UserID:1 - two ss results
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:717] Reding data from /app/django_project/saved_data/fet/1_2017.semmed_c.fet.gz
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:875] resID: 2
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:891] Filter query on semmed_c
+[29/Oct/2018 18:38:37] DEBUG [browser.tasks:972] len(qs)=5
+[29/Oct/2018 18:38:38] DEBUG [browser.tasks:875] resID: 2
+[29/Oct/2018 18:38:38] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:38:38] DEBUG [browser.tasks:891] Filter query on semmed_c
+[29/Oct/2018 18:38:38] DEBUG [browser.tasks:972] len(qs)=5
+[29/Oct/2018 18:38:39] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:38:40] DEBUG [browser.tasks:648] UserID:1 - In results
+[29/Oct/2018 18:38:40] DEBUG [browser.tasks:650] UserID:1 - 1
+[29/Oct/2018 18:38:40] DEBUG [browser.tasks:691] UserID:1 - two ss results
+[29/Oct/2018 18:38:40] DEBUG [browser.tasks:717] Reding data from /app/django_project/saved_data/fet/1_2017.meshMain.fet.gz
+[29/Oct/2018 18:38:41] DEBUG [browser.tasks:875] resID: 1
+[29/Oct/2018 18:38:41] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:38:41] DEBUG [browser.tasks:891] Filter query on mesh
+[29/Oct/2018 18:38:41] DEBUG [browser.tasks:972] len(qs)=3
+[29/Oct/2018 18:38:42] DEBUG [browser.tasks:875] resID: 1
+[29/Oct/2018 18:38:42] DEBUG [browser.tasks:879] filter_queryset
+[29/Oct/2018 18:38:42] DEBUG [browser.tasks:891] Filter query on mesh
+[29/Oct/2018 18:38:42] DEBUG [browser.tasks:972] len(qs)=3
+[29/Oct/2018 18:38:42] DEBUG [browser.tasks:640] UserID:1 - In jobs
+[29/Oct/2018 18:38:43] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:38:43] DEBUG [browser.tasks:537] {}
+[29/Oct/2018 18:38:55] DEBUG [browser.tasks:333] UserID:1 - In index
+[29/Oct/2018 18:38:55] DEBUG [browser.tasks:419] job_name = pap1
+[29/Oct/2018 18:38:55] DEBUG [browser.tasks:420] desc = pcsk9
+[29/Oct/2018 18:38:55] DEBUG [browser.tasks:428] UserID:1 - Running pub_sem
+[29/Oct/2018 18:38:56] DEBUG [browser.tasks:610] in db_pub
+[29/Oct/2018 18:38:56] DEBUG [browser.tasks:611] id = pap1
+[29/Oct/2018 18:38:56] DEBUG [browser.tasks:612] user_id = 1
+[29/Oct/2018 18:38:56] DEBUG [browser.tasks:613] desc = pcsk9
+[29/Oct/2018 18:38:56] DEBUG [browser.tasks:617] match (s:SearchSet)-[r]-(p:Pubmed) where s.name = 'pap1_1' delete s,r;
+[29/Oct/2018 18:39:02] DEBUG [browser.tasks:640] UserID:1 - In jobs
