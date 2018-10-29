@@ -139,13 +139,13 @@ def update_graph(file,type):
 
 
 def main():
-	update_sem_c()
-	#get_mesh(yRange)
-	#get_semmed(yRange)
-	#parse(home+'data/mesh_freqs')
-	#parse(home+'data/semmed_freqs')
-	#update_graph(home+'data/mesh_freqs','mesh')
-	#update_graph(home+'data/semmed_freqs','semmed')
+	#update_sem_c()
+	get_mesh(yRange)
+	get_semmed(yRange)
+	parse(home+'data/mesh_freqs')
+	parse(home+'data/semmed_freqs')
+	update_graph(home+'data/mesh_freqs','mesh')
+	update_graph(home+'data/semmed_freqs','semmed')
 
 if __name__ == "__main__":
 	main()

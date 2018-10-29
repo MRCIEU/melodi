@@ -34,7 +34,7 @@ class Compare(models.Model):
 	job_type = models.CharField(max_length=20)
 	year_range = models.CharField(max_length=12)
 	share = models.BooleanField(default=False)
-	hash_id = models.UUIDField(default=uuid.uuid4, editable=False)
+	hash_id = models.UUIDField(db_index=True,default=uuid.uuid4, editable=False)
 
 #class Fet(models.Model):
 #	ssa_id = models.ForeignKey(SearchSetAnalysis)
@@ -78,4 +78,3 @@ class Sliders(models.Model):
 	odds = models.FloatField(blank=True)
 	level = models.IntegerField(blank=True)
 	top = models.IntegerField(blank=True)
-
