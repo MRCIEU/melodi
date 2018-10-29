@@ -1,0 +1,110 @@
+version: '2'
+
+services:
+  #mysql
+  db:
+    image: mysql
+    restart: always
+    container_name: melodi-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: melodi
+      MYSQL_USER: melodi
+      MYSQL_PASSWORD: melodi
+      MYSQL_DATABASE: melodi
+    volumes:
+     - ./data/mysql:/var/lib/mysql
+    networks:
+     - general
+
+  # Redis
+  redis:
+    image: redis:2.8.19
+    hostname: redis
+    container_name: melodi-redis
+    networks:
+      - general
+
+  # RabbitMQ
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3.6.0
+    container_name: melodi-rabbit
+    networks:
+      - general
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"  # we forward this port because it's useful for debugging
+      - "15672:15672"  # here, we can access rabbitmq management plugin
+
+  # Django web server
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: melodi-django
+    hostname: web
+    command: ./run_web.sh
+    command: ./start.sh
+    networks:
+      - dsne-django-nginx
+      - general
+    volumes:
+      - dsne-django-static:/usr/src/app/static
+      - .:/app  # mount current directory inside container
+      #- django_project:/usr/src/app/django_project
+    ports:
+      - "8000:8000"
+    # set up links so that web knows about db, rabbit and redis
+    links:
+      - db
+      - rabbit
+      - redis
+    depends_on:
+      - db
+
+  # Celery worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - general
+    command: ./run_celery.sh
+    #container_name: melodi-celery
+    volumes:
+      - .:/app
+    links:
+      - db
+      - rabbit
+      - redis
+    depends_on:
+      - rabbit
+
+  nginx:
+    image: melodi/nginx
+    container_name: melodi-nginx
+    build:
+      context: ./nginx
+      dockerfile: nginx.dockerfile
+    networks:
+      - dsne-django-nginx
+    volumes:
+      - dsne-django-static:/usr/src/app/static
+    ports:
+      - 5119:80
+    depends_on:
+      - django
+
+volumes:
+  dsne-django-static:
+  django_project:
+
+networks:
+  dsne-django-nginx:
+    driver: bridge
+  general:
+    driver: bridge

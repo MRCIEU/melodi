@@ -1,0 +1,1119 @@
+{% extends "base_generic.html" %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block scripts %}
+	<!--script src="https://code.highcharts.com/highcharts.js"></script-->
+	<script src="https://code.highcharts.com/6.0.0/highcharts.js"></script>
+	<!--script src="{% static 'browser/js/highcharts-6.0.4/code/highcharts.js' %}"></script-->
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+<style>
+.video-container {
+	position:relative;
+	padding-bottom:56.25%;
+	padding-top:0px;
+	height:0;
+	overflow:hidden;
+}
+
+.video-container iframe, .video-container object, .video-container embed {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+}
+  .ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+  .ui-autocomplete-loading {
+    background: white url("static/browser/img/spiffygif_22x22.gif") right center no-repeat;
+  }
+  {% comment %}
+  .bImage  {
+        background-image: url("/static/browser/img/aspirin_three_pmids.png");
+        background-color: #cccccc;
+    }
+    {% endcomment %}
+
+.music-bullet li {
+    display: block;
+}
+
+.music-bullet li:before
+{
+    /*Using a Bootstrap glyphicon as the bullet point*/
+    /*content: "\e080";*/
+    content: "\e002";
+    font-family: 'Glyphicons Halflings';
+    font-size: 9px;
+    float: left;
+    margin-top: 4px;
+    margin-left: -17px;
+}
+
+/* carousel formating */
+
+{% comment %} .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 100%;
+      margin: auto;
+  }{% endcomment %}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+.carousel-control.left .glyphicon {
+    left: 0;
+    margin-left: 0;
+}
+.carousel-control.right .glyphicon {
+    right: 0;
+    margin-right: 0;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1.5px solid black;
+  font-size: 15px;
+  color: white;
+  line-height: 150px;
+  text-align: center;
+  background: #31B0D5;
+  margin:0 auto;
+    max-width: 200px;
+
+}
+
+.rectangle {
+	width: 200px;
+	height: 100px;
+	background: #CCCCCC;
+    text-align: center;
+    font-size: 20px;
+}
+
+.rectangle-box{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #CCCCCC;
+    margin:0 auto;
+    border: 1.5px solid black;
+    font-size: 20px;
+    max-width: 200px;
+}
+.rectangle-box:before{
+    content: "";
+    display: block;
+    padding-top: 50%;
+}
+.rectangle-content{
+    position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    color: white;
+}
+.rectangle-content div {
+   display: table;
+   width: 100%;
+   height: 100%;
+}
+.rectangle-content span {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: white
+}
+
+.arrow {
+    width:120px;
+    margin:50px auto;
+}
+
+.line {
+    margin-top:14px;
+    width:90px;
+    background:#449D44;
+    height:10px;
+    float:left;
+}
+.point {
+    width: 0;
+	height: 0;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 30px solid #449D44;
+    float:right;
+}
+
+.btn-huge{
+    padding-top:40px;
+    padding-bottom:40px;
+}
+
+h2 { width:100%; text-align:center; border-bottom: 1px solid #000; line-height:0.1em; margin:10px 0 20px; }
+h2 span { background:#fff; padding:0 10px; }
+
+  </style>
+      <script>
+
+          $(function () {
+              function split(val) {
+                  return val.split(/,\s*/);
+              }
+
+              function extractLast(term) {
+                  return split(term).pop();
+              }
+
+              $("#tags")
+              // don't navigate away from the field on tab when selecting an item
+                      .bind("keydown", function (event) {
+                          if (event.keyCode === $.ui.keyCode.TAB &&
+                                  $(this).autocomplete("instance").menu.active) {
+                              event.preventDefault();
+                          }
+                      })
+                      .autocomplete({
+                          minLength: 3,
+                          source: function( request, response ) {
+                              $.getJSON("/get_semmed_items/", {
+                                term: extractLast( request.term )
+                              }, response );
+                            },
+                          search: function () {
+                              // custom minLength
+                              var term = extractLast(this.value);
+                              if (term.length < 2) {
+                                  return false;
+                              }
+                          },
+                          focus: function () {
+                              // prevent value inserted on focus
+                              return false;
+                          },
+                          select: function (event, ui) {
+                              var terms = split(this.value);
+                              // remove the current input
+                              terms.pop();
+                              // add the selected item
+                              terms.push(ui.item.value);
+                              // add placeholder to get the comma-and-space at the end
+                              terms.push("");
+                              this.value = terms.join(", ");
+                              return false;
+                          }
+                      });
+          });
+      $(function() {
+          $( "#tags" ).autocomplete({
+                source: "/get_semmed_items/",
+                minLength: 3,
+                //source: sListItems
+          });
+      });
+
+        $(document).ready(function () {
+            //show additional options
+            $('#show_add_options').click(function() {
+                $('#add_options').toggle('fast', function() {
+                // Animation complete.
+                });
+            });
+
+            $("#year-range").slider({
+                //range: true,
+                range: "max",
+                min: 1950,
+                max: 2017,
+                //values: [1950,2016],
+                value: 2017,
+                slide: function (event, ui) {
+                    //$( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                    $( "#amount" ).val( "1950 - " + ui.value );
+                }
+            });
+            //$( "#amount" ).val( $( "#year-range" ).slider( "values", 0 ) + " - " + $( "#year-range" ).slider( "values", 1 ) );
+            $( "#amount" ).val( "1950 - " + $( "#year-range" ).slider( "value" ) );
+
+            // Instance the auto tour
+			var first_tour = new Tour({
+                backdrop: true,
+                backdropPadding: 5,
+			  steps: [
+                  {
+			    element: "#ft_welcome",
+			    title: "MELODI tour",
+			    content: "Welcome to MELODI. This is a very quick, one time only, tour of the application",
+			    placement: "bottom"
+			  },
+			  {
+			    element: "#ft_about",
+			    title: "About",
+			    content: "Some information about the application",
+			    placement: "bottom"
+			  },
+			  {
+			    element: "#ft_contact",
+			    title: "Contact",
+			    content: "Contact details",
+			    placement: "bottom"
+
+			  },
+			  {
+			    element: "#ft_results",
+			    title: "Results",
+			    content: "Displays results of user specific jobs",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#startTour",
+			    title: "Information",
+			    content: "Hitting this button will give page specific information",
+			    placement: "bottom"
+
+			  },
+			]});
+
+			// Clear session data
+			//localStorage.clear();
+
+			// Initialize the tour
+			first_tour.init();
+
+			// Start the tour
+			first_tour.start();
+
+            // Instance the tour for the button
+			var tour = new Tour({
+                backdrop: true,
+                backdropPadding: 5,
+                onEnd: function(tour){$('.nav-tabs a[href="#ss_pubSearch"]').tab('show');},
+			  steps: [
+                  {
+			    element: "#add_ss",
+			    title: "Add an article set",
+			    content: "There are three methods for adding article sets:<br>1. PubMed Search<br>2. Upload a set of PubMed IDs<br>3. Search the SemMed database",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#t1_pub",
+			    title: "1. Unique ID",
+			    content: "Create a unique ID for your article set with no spaces",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#t2_pub",
+			    title: "1. Description",
+			    content: "The actual text to use for the PubMed search, e.g. Prostatic neoplasms [Mesh]",
+			    placement: "bottom"
+
+			  },
+                  {
+                      onShow: function(tour){$('.nav-tabs a[href="#ss_med"]').tab('show');},
+			    element: "#add_ss",
+			    title: "Upload MEDLINE data",
+			    content: "The second method for creating an article set",
+			    placement: "bottom"
+
+			  },
+			   {
+			    element: "#t1",
+			    title: "2. Unique ID",
+			    content: "Create a unique ID for your article set with no spaces",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#t2",
+			    title: "2. Description",
+			    content: "Add a description, e.g. PubMed search for prostate cancer - 01/03/16",
+			    placement: "bottom"
+
+			  },
+                  {
+                      onShow: function(tour){$('.nav-tabs a[href="#ss_med"]').tab('show');},
+			    element: "#t3",
+			    title: "2. File",
+			    content: "Add a file of PubMed IDs: <br>" +
+                         "This can be done by downloading PubMed search results in PMID List format",
+			    placement: "bottom",
+
+			  },
+                  {
+                      onShow: function(tour){$('.nav-tabs a[href="#ss_semSearch"]').tab('show');},
+			    element: "#add_ss",
+			    title: "Search the existing data",
+			    content: "The third method for creating an article set",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#t1_sem",
+			    title: "3. Unique ID",
+			    content: "Create a unique ID for your article set with no spaces",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#t2_sem",
+			    title: "3. SemMed triple position",
+			    content: "Each SemMed triple is a subject-predicate-object. Select subject,object or either for the position of the items.",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#t3_sem",
+			    title: "3. SemMed items",
+			    content: "Search the database of SemMed items for terms of interest. Multiple terms can be selected.",
+			    placement: "bottom"
+
+			  },
+                  {
+			    element: "#options-div",
+			    title: "Analysis options",
+			    content: "Article sets can be compared in one of two ways, using MeSH termns or SemMedDB data",
+			    placement: "top"
+
+			  },
+                  {
+			    element: "#t4",
+			    title: "Select article sets",
+			    content: "Click on two table rows to select article sets and then hit the big orange button",
+			    placement: "top"
+
+			  },
+			]});
+
+			// Clear session data
+			//localStorage.clear();
+
+			// Initialize the tour
+			//tour.init();
+
+			// Start the tour
+			//tour.start();
+
+			$("#startTour").click(function(){
+                console.log('restarting tour')
+   				 tour.restart();
+			})
+
+			var exampleData = $('#example_data').DataTable({
+				"order": [[2, "desc"]],
+                //dom: 'frtip',
+                //lengthChange: false,
+                //scrollY:        400,
+                //deferRender:    true,
+                //scroller:       true,
+				"columnDefs": [
+					{
+                        "render": function ( data, type, row ) {
+							var result_num = data.split(':')[1]
+							var url = '{% url 'results' '123' %}'.replace('123',result_num)
+							var d = '<img src="/static/browser/img/MeSH.jpg" height="25"> <a href='+url+'>MeSH</a>'
+                            return d
+                        },
+                        "targets":3,
+                    },
+					{
+                        "render": function ( data, type, row ) {
+							var result_num = data.split(':')[1]
+							var url = '{% url 'results' '123' %}'.replace('123',result_num)
+                            var d = '<img src="/static/browser/img/lhncbc.jpg" height="25"> <a href='+url+'>SemMedDB Single</a>'
+                            return d
+                        },
+                        "targets":4,
+                    },
+					{
+                        "render": function ( data, type, row ) {
+							var result_num = data.split(':')[1]
+							var url = '{% url 'results' '123' %}'.replace('123',result_num)
+							var d = '<img src="/static/browser/img/lhncbc.jpg" height="25"> <a href='+url+'>SemMedDB Triple</a>'
+                            return d
+                        },
+                        "targets":5,
+                    },
+				]
+			})
+
+            var table = $('#search_sets').DataTable({
+                "order": [[1, "desc"]],
+                dom: 'Bfrtip',
+                lengthChange: false,
+                "buttons": [
+                    'copy', 'csv','excel','colvis'
+                ],
+                scrollY:        200,
+                deferRender:    true,
+                scroller:       true
+            })
+
+            /*
+            $('#search_sets tbody').on( 'click', 'delete_image.png', function () {
+                table
+                    .row( $(this).parents('tr') )
+                    .remove()
+                    .draw();
+            } );
+            */
+            //table.buttons().container()
+            //    .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
+
+            $('#search_sets tbody').on('click', 'tr', function () {
+                var numItems = $('.selected').length
+                if (numItems < 3) {
+                    d = table.row(this).data()[0]
+                    $(this).toggleClass('selected');
+                    //check if A again and clear
+                    if (d == $('#circle1').text()){
+                        //console.log('comA again')
+                        $('#circle1').text('?')
+                        $('#id_a').val('')
+                    }
+                    //check if B again and clear
+                    else if (d == $('#circle2').text()){
+                        $('#circle2').text('?')
+                        $('#id_b').val('')
+                    }
+                    //check if A is empty
+                    else if ($('#circle1').text().length < 1 || $('#circle1').text() == '?'){
+                        $('#circle1').text(d)
+                        $('#id_a').val(d)
+                    }
+                    //check if B is empty
+                    else if ($('#circle2').text().length < 1 || $('#circle2').text() == '?'){
+                        $('#circle2').text(d)
+                        $('#id_b').val(d)
+                    }else{
+                        $(this).removeClass('selected');
+                    }
+                }
+            });
+            $('#options_button').click(function() {
+                $("#options-div").toggle();
+            });
+
+            //{% comment %}data_from_django = {{ s|safe }}
+
+                //for (i in data_from_django){
+                //   console.log(data_from_django[i])
+                //}
+                //check search set name is unique
+//                    $.getJSON(data_from_django, function (json) {
+//                        $('#ss_form').on('submit', function (evt) {
+//                            alert('s')
+//                            var user = $('#id_search_set_id').val(), error;
+//                            if (!user)
+//                                error = 'no username entered';
+//                            else if (json.search_name.indexOf(user) != -1)
+//                                error = 'username already taken';
+//                            if (error) {
+//                                evt.preventDefault();
+//                                alert(error);
+//                            }
+//                        });
+//                    });
+            //{% endcomment %}
+
+            Highcharts.setOptions({
+                lang: {
+                    thousandsSep: ','
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+    {% if user.is_authenticated %}
+<div id='add_ss'>
+<h3>Step 1. Create new article set (at least two article sets are required)</h3>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#ss_pubSearch">PubMed Search</a></li>
+        <li><a data-toggle="tab" href="#ss_med">Upload Article Set</a></li>
+        <!--li><a data-toggle="tab" href="#ss_semSearch">Database Search</a></li-->
+    </ul>
+    <div class="tab-content">
+        <div id="ss_pubSearch" class="tab-pane fade in active">
+            Create an article set by searching PubMed:
+            <form id="ss_pub" method="post" enctype="multipart/form-data">{% csrf_token %}
+               <input type="hidden" name="formType" value="ss_pub">
+                <div class="row">
+                    {{ form_pub.non_field_errors }}
+                    <input type="hidden" name="user_id" value={{ user.id }}>
+                    <div class="col-md-3">
+                        <div class="fieldWrapper">
+                            <div class="form_error">
+                                {{ form_pub.job_name.errors }}
+                            </div>
+                            <div id="t1_pub">
+                                <label for="{{ form_pub.job_name.id_for_label }}">Unique ID</label><br>
+                                {{ form_pub.job_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                         <div class="fieldWrapper">
+                             <div class="form_error">
+                                {{ form_pub.ss_desc.errors }}
+                             </div>
+                             <div id="t2_pub">
+                                <label for="{{ form_pub.ss_desc.id_for_label }}">PubMed search terms (as you would search <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank">PubMed</a>) - maximum 1,000,000 </label><br>
+                                {{ form_pub.ss_desc }}
+                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <button type="submit" class="btn btn-success">Add Article Set</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="ss_med" class="tab-pane fade">
+            Upload a set of PubMed IDs <a href="static/browser/files/pmids.txt">(example file)</a> - maximum 1,000,000:
+           <form id="ss_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+               <input type="hidden" name="formType" value="ss">
+                <div class="row">
+                    {{ form1.non_field_errors }}
+                    <input type="hidden" name="user_id" value={{ user.id }}>
+                    <div class="col-md-3">
+                        <div class="fieldWrapper">
+                            <div class="form_error">
+                                {{ form1.job_name.errors }}
+                            </div>
+                            <div id="t1">
+                                <label for="{{ form1.job_name.id_for_label }}">Unique ID</label><br>
+                                {{ form1.job_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                         <div class="fieldWrapper">
+                             <div class="form_error">
+                                {{ form1.ss_desc.errors }}
+                             </div>
+                             <div id="t2">
+                                <label for="{{ form1.ss_desc.id_for_label }}">Description</label><br>
+                                {{ form1.ss_desc }}
+                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="fieldWrapper">
+                            <div class="form_error">
+                                {{ form1.ss_file.errors }}
+                            </div>
+                            <div id="t3">
+                                <label for="{{ form1.ss_file.id_for_label }}">Select a file</label>
+                                {{ form1.ss_file }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <button type="submit" class="btn btn-success">Add Article Set</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% comment %}<div id="ss_semSearch" class="tab-pane fade">
+            Create an article set by selecting a subset of the SemMed data:
+            <form id="ss_sem" method="post" enctype="multipart/form-data">{% csrf_token %}
+               <input type="hidden" name="formType" value="ss_sem">
+                <div class="row">
+                    {{ form_sem.non_field_errors }}
+                    <input type="hidden" name="user_id" value={{ user.id }}>
+                    <div class="col-md-3">
+                        <div class="fieldWrapper">
+                            <div class="form_error">
+                                {{ form_sem.job_name.errors }}
+                            </div>
+                            <div id="t1_sem">
+                                <label for="{{ form_sem.job_name.id_for_label }}">Unique ID</label><br>
+                                {{ form_sem.job_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                         <div class="fieldWrapper">
+                             <div class="form_error">
+                                {{ form_sem.ss_desc.errors }}
+                             </div>
+                             <div id="t2_sem">
+                                <label for="{{ form_sem.ss_desc.id_for_label }}">SemMed Items (select one or more items)</label><br>
+                                {{ form_sem.ss_desc }}
+                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="fieldWrapper">
+                            <div class="form_error">
+                                {{ form_sem.ss_file.errors }}
+                            </div>
+                            <div id="t3_sem">
+                                <label>SemMed Position</label>
+                                    <br><input type="radio" name="ss_sem" value="Subject" id="sub" checked> <label for="sub">Subject</label>
+                                    <input type="radio" name="ss_sem" value="Object" id="obj"> <label for="obj">Object</label>
+                                    <input type="radio" name="ss_sem" value="Either" id="either"> <label for="either">Either</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <button type="submit" class="btn btn-success">Add Search Set</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>{% endcomment %}
+    </div>
+</div>
+    {%  else %}
+        <div class="bImage">
+            <div class="row">
+                <div class="col-md-8" style="height:230px">
+		<div class="row">
+		<div class="col-md-6" ><br>
+                <br><div class="video-container"><iframe  src="https://www.youtube.com/embed/rEjnmXNLkWA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                </div>
+			<div class="col-md-6">
+                    <!--br><br><p><font size="5" color="red">The server is currently down for maintenance</font><br><br-->
+                    <ul class="music-bullet">
+                        <br><br><br>
+			<li><b>MELODI</b> is a hypothesis generator. It identifies enriched overlapping objects which have been assigned to scientific literature and uses these to derive intermediate mechanisms.</li>
+                        <li>The underlying annotation objects used for the analysis are semantic predications from the <a href="https://skr3.nlm.nih.gov/SemMedDB/" target="_blank">Semantic MEDLINE Datatabase</a> (SemMedDB) and <a href="https://www.nlm.nih.gov/mesh/" target="_blank">Medical Subject Headings</a> (MeSH).</li>
+                        <li>Please read the <a href = '{% url 'about' %}'>About</a> page to find out more about how to use the application and click on the blue information button at the top of any page
+                            for more information.</li>
+                        <li>Data are stored and investigated using a <a href="http://www.neo4j.com" target="_blank"><img src="/static/browser/img/neo4j_logo.png" height="30"/></a> graph.</li>
+                    </ul>
+			<!--br><p><font size="4" color="red">Warning: the NCBI servers are down so pubmed lookup not working! </font><br><br-->
+		</div>
+		</div>
+		<div style="text-align:center">
+		<br><h4>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to explore some pre-loaded analyses select some results from table below.</h3>
+		</div>
+			<br><br><table id="example_data" class="display" cellspacing="0" width="100%">
+		                <thead>
+		                <tr>
+		                    <th>Concept 1</th>
+		                    <th>Concept 2</th>
+		                    <th>Date</th>
+							<th>Method1</th>
+							<th>Method2</th>
+		                    <th>Method3</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+						{% for key, value in exampleData.items %}
+		                    <tr>
+								{% for v in value %}
+		                        	<td>{{v}}</td>
+								{% endfor %}
+		                    </tr>
+		                {% endfor %}
+		                </tbody>
+		            </table>
+                </div>
+                <div class="col-md-4">
+		  <br>
+                    <div class="panel panel-default" style="height:240px;" id="db_details">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Database/User Details (<span id="db1_time"></span>)</h4>
+                        </div>
+                        <div class="panel-body">
+                            <!--div id="graph_chart"></div-->
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                  <!-- Indicators -->
+                                  <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                  </ol>
+
+                                  <!-- Wrapper for slides -->
+                                  <div class="carousel-inner" role="listbox">
+                                    <div class="item active">
+                                        <div id="graph_chart1"></div>
+                                    </div>
+
+                                    <div class="item" >
+                                        <div align="center" id="graph_chart2"></div>
+                                    </div>
+
+                                  </div>
+
+                                  <!-- Left and right controls -->
+                                  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                  </a>
+                                  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                  </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" style="height:240px;overflow:scroll;display:none" id="error_message">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Database Details (<span id="db2_time"></span>)</h4>
+                        </div>
+                         <div class="panel-body">
+                            <span style="color:red">Unfortunately the database is down for maintenance :( </span>
+                         </div>
+                    </div>
+
+                    <div class="panel panel-default" style="height:280px;overflow:scroll">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">News and Updates</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped">
+                            <tbody>
+			      <tr><td width="20%"><strong>29/03/18</strong></td><td>Updated <a href='https://skr3.nlm.nih.gov/SemMedDB/download/download.html' target='_blank'>SemMedDB</a> to latest version (December 31 2017). Graph now contains data from ~<b>400,000</b> more PubMed articles.</td></tr>
+			      <tr><td width="20%"><strong>27/03/18</strong></td><td>NCBI server downtime was bad news for MELODI today. Apologies if any jobs did not run :(</td></tr>
+			      <tr><td width="20%"><strong>12/01/18</strong></td><td>MELODI Published in IJE - <a href='https://academic.oup.com/ije/advance-article/doi/10.1093/ije/dyx251/4803214' target='_blank'>https://academic.oup.com/ije/advance-article-abstract/doi/10.1093/ije/dyx251/4803214</a></td></tr>
+                              <tr><td width="20%"><strong>23/08/17</strong></td><td>Updated <a href='https://skr3.nlm.nih.gov/SemMedDB/download/download.html' target='_blank'>SemMedDB</a> to Version 30.2 (June 30 2017). Graph now contains data from ~<b>700,000</b> more PubMed articles.</td></tr>
+                              <tr><td width="20%"><strong>20/03/17</strong></td><td>MELODI Published in biorxiv - <a href="http://biorxiv.org/content/early/2017/03/20/118513" target="_blank">http://biorxiv.org/content/early/2017/03/20/118513</a></td></tr>
+                              <tr><td width="20%"><strong>30/01/17</strong></td><td>List of filtered concepts now available to download.</td></tr>
+                              <tr><td width="20%"><strong>23/01/17</strong></td><td>Third analysis option included - SemMedDB concepts.</td></tr>
+                              <tr><td width="20%"><strong>18/01/17</strong></td><td>Can now delete unwanted article sets</td></tr>
+                              <tr><td width="20%"><strong>13/12/16</strong></td><td>Switched multiple correction method to Benjamini/Hochberg  (non-negative) with a 1e-5 cutoff</td></tr>
+                              <tr><td width="20%"><strong>09/12/16</strong></td><td>Updated concept frequencies per year for MeSH data</td></tr>
+                              <tr><td width="20%"><strong>21/11/16</strong></td><td>Updated <a href='https://skr3.nlm.nih.gov/SemMedDB/download/download.html' target='_blank'>SemMedDB</a> to Version 26 (April 30th 2016). Graph now contains ~<b>700,000</b> more PubMed articles.</td></tr>
+                              <tr><td><strong>09/11/16</strong></td><td>Added option to share a results page.</td></tr>
+                              <tr><td><strong>26/09/16</strong></td><td>MELODI presented at <a href="http://www.embl.de/training/events/2016/BIG16-01/">Big Data in Biology and Health</a>.</td></tr>
+                              <tr><td><strong>06/09/16</strong></td><td>Improved performance by modifying graph installation.</td></tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" style="height:240px;overflow:scroll">
+                        <div class="panel-heading">
+                             <a class="twitter-timeline" href="https://twitter.com/BrisCancerEpi"></a>
+                        </div>
+                        <div class="panel-body">
+                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <hr>
+    {% if s and user.is_authenticated %}
+        <h3>Step 2. Analyse article sets <span style="font-size:14px"> (Select <b>two</b> article sets from the table below and click the <b><span style="color:#F0AD4E">big orange button</span></b> to identify enriched intermediate ojects)</span></h3>
+        <form  action="" id="ss_comp_form" method="post">{% csrf_token %}
+            <!--p>Select one article set from the table to genreate enriched objects for that article set</p-->
+            <input type="hidden" name="formType" value="com">
+
+            <div class="panel panel-default">
+                <div id="options-div" class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <b>Literature annotation method: </b>
+                        </div>
+                        <div class="col-lg-8">
+                            {{ form2.comType.errors }}
+                            {% for choice in form2.comType.field.choices %}
+                                {% if choice.0 == "semmed_c" %}
+                                    <label for="{{choice.0}}"><img src="/static/browser/img/lhncbc.jpg" height="25"> SemMedDB Single </label>
+                                {% elif choice.0 == "semmed_t" %}
+                                    <label for="{{choice.0}}"><img src="/static/browser/img/lhncbc.jpg" height="25"> SemmedDB Triple</label>
+                                {% elif choice.0 == "meshMain" %}
+                                    <label for="{{choice.0}}"><img src="/static/browser/img/MeSH.jpg" height="25"> MeSH</label>
+                                {% else %}
+                                    <label for="{{choice.0}}">{{choice.1}}</label>
+                                {% endif %}
+                                <input type="checkbox" name="comType" id="{{choice.0}}" value="{{choice.0}}" checked="checked">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="amount">Year range (optional) :</label>
+                            <input type="text" id="amount" name="yearRange" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        </div>
+                        <div class="col-lg-5">
+                            <div id="year-range" style="position: relative; top:10px"></div>
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                <br>
+                    <div class="row no-gutter">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2">
+                            <div class="circle" id="circle1">?</div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="arrow">
+                                <div class="line"></div>
+                                <div class="point"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <br>
+                                <!--span>
+                                    <div class='rectangle-box'>
+                                        <div class='rectangle-content'><div><span><a href="#" onclick="$(this).closest('form').submit();">submit form</a></span></div></div>
+                                    </div>
+                                </span-->
+                            <!--a href="javascript:void(0);" class="btn btn-warning btn-lg btn-block btn-huge">Find Intermediates</a-->
+                            <input type="submit" class="btn btn-warning btn-lg btn-block btn-huge" value="Find Intermediates">
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="arrow">
+                                <div class="line"></div>
+                                <div class="point"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="circle" id="circle2">?</div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </div>
+            </div>
+
+               <!--p id="show_add_options" style="cursor: pointer;"><b>Additional options (click to show):</b>
+                <div id="add_options" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>
+                                <label for="amount">Year range:</label>
+                                <input type="text" id="amount" name="yearRange" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                            </p>
+                            <div id="year-range"></div>
+                        </div>
+                    </div>
+                </div-->
+
+            <!--hr-->
+            {% comment %}{{ s }}{% endcomment %}
+            {% for hidden in form2.hidden_fields %}
+                <div class="form_error">
+                    {{ hidden.errors }}
+                </div>
+                {{ hidden }}
+            {% endfor %}
+            <div id="t4">
+            <table id="search_sets" class="display" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date added</th>
+                    <th>Description</th>
+                    <th>Pubmed articles</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for a in s %}
+                    <tr>
+                        <!--td><a href="/articles/{{a.id}}/">{{ a.job_name }}</a></td-->
+                        <td>{{ a.job_name }}</td>
+                        <td>{{ a.job_start }}</td>
+                        <td>{{ a.ss_desc|truncatechars:40 }}</td>
+                        <td>{{ a.pTotal | intcomma}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!--button style="position:relative;left:580px;top:-25px;" type="submit" class="btn btn-success">Compare Article Sets</button-->
+            </div>
+        </form>
+    {% endif %}
+    {% if not user.is_authenticated %}
+          <script>
+          var chart_width = document.getElementById("graph_chart1").offsetWidth
+                    //global graph metrics
+        function requestData() {
+            var d = new Date()
+                    var options = {
+                        hour: "2-digit", minute: "2-digit",
+                        day: "numeric",month: "short",year: "numeric",
+                    };
+                    //d = d.toLocaleString("en-GB")
+                    //d = d.getMinutes()+':'+d.getHours()+' '+d.getDate()+'/'+ (d.getMonth()+1)+'/'+ d.getFullYear()
+
+            $.ajax({
+                url: '{%  url 'ajax_graph_metrics' %}',
+                success: function(data) {
+                    console.log('data = '+data.metrics)
+                    chart1.series[0].setData(data.metrics)
+                    chart2.series[2].setData(data.uCounts)
+                    chart2.series[0].setData(data.aCounts)
+                    chart2.series[1].setData(data.cCounts)
+                    chart2.xAxis[0].setCategories(data.cats)
+
+                    document.getElementById("db1_time").textContent=d.toLocaleTimeString("en-GB", options);
+
+                    // call it every hour
+                    setTimeout(requestData, 3600000);
+                    //setTimeout(requestData, 1000);
+                },
+                error: function(xhr, status, error){
+                    console.log('ajax_graph_metrics error')
+                    $("#db_details").hide();
+                    $("#error_message").show();
+                    document.getElementById("db2_time").textContent=d.toLocaleTimeString("en-GB", options);
+                },
+                failure: function(data) {
+                    alert('Got an error dude');
+                },
+                cache: false
+            });
+        }
+                   //graph metrics chart
+                chart1 = new Highcharts.Chart({
+                    legend: {
+                        enabled: false
+                    },
+                    colors: [
+                        //'#4572A7',
+                        //'#68BDF6',
+                        '#6DCE9E',
+                        '#DE9BF9',
+                        '#FF756E',
+                        '#FFD86E',
+                        ],
+                    plotOptions: {
+                        bar: {
+                            colorByPoint: true,
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    chart: {
+                        backgroundColor: '#F9F9F9',
+                        height: 180,
+                        renderTo: 'graph_chart1',
+                        type: 'bar',
+                        events: {
+                            load: requestData
+                        },
+                    },
+					title:false,
+                    //title: {
+                    //    text: 'Graph details'
+                    //},
+                    xAxis: {
+                        //categories: ['Users', 'Article sets', 'Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
+                        categories: ['Pubmed', 'MeSH Terms', 'SemMed Triples','SemMed Concepts'],
+                    },
+                    yAxis: {
+                        //min: 0,
+                        type: 'logarithmic',
+                        type: 'logarithmic',
+                        sdsdfddsdfdsfdsfdsdsffdstype: 'logarithmic',
+                        title: {
+                            text: 'Count'
+                        },
+
+                    },
+                    series: [{
+                        name: '#',
+                        data: []
+                    }],
+                    navigation: {
+                        buttonOptions: {
+                            align: 'right',
+                            x: -45,
+                            y: -40
+                        }
+                    }
+                });
+
+                //frequency chart
+                chart2 = new Highcharts.Chart({
+                    legend: {
+                        //enabled: false
+						 align: 'right',
+						 verticalAlign: 'middle',
+        				 layout: 'vertical',
+						 itemMarginTop: -10,
+	   					 itemMarginBottom: 25,
+						 margin: -5
+                    },
+                    chart: {
+                        backgroundColor: '#F9F9F9',
+                        width: chart_width,
+                        height: 180,
+                        renderTo: 'graph_chart2',
+                        events: {
+                            load: requestData
+                        },
+                    },
+					title:false,
+                    //title: {
+                    //    text: 'User details'
+                    //},
+                    xAxis: {
+                        categories: [],
+                        labels: {
+                            rotation: -45
+                        },
+                    },
+                    yAxis: {
+                        //min: 0,
+                        //type: 'logarithmic',
+                        title: {
+                            text: 'Count'
+                        },
+
+                    },
+                    series: [
+                        {
+                            name: 'Article Sets',
+                            data: []
+                        },
+                        {
+                            name: 'Analyses',
+                            data: []
+                        },
+                        {
+                            name: 'Users',
+                            data: []
+                        }
+                    ],
+                    navigation: {
+                        buttonOptions: {
+                            align: 'right',
+                            x: -70,
+                            y: 0
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true,
+                                style:{
+                                        fontSize: "10px"
+                                }
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                });
+          </script>
+     {%  endif %}
+{% endblock %}

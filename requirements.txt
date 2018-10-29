@@ -1,0 +1,16 @@
+Django==1.8.5
+djangorestframework==3.3.1
+neo4j-driver
+celery==3.1.20
+numpy
+scipy
+mysqlclient
+redis==2.10.5
+gunicorn==19.7.0
+django-social-auth
+importlib
+six
+pytz
+requests
+retrying
+django-datatables-view
