@@ -275,18 +275,18 @@ LOGGING = {
 #CACHE_MIDDLEWARE_SECONDS = 60480000
 #CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            #"SOCKET_TIMEOUT": 50,
-        },
-        "KEY_PREFIX": "melodi",
-        'TIMEOUT': None
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             #"SOCKET_TIMEOUT": 50,
+#         },
+#         "KEY_PREFIX": "melodi",
+#         'TIMEOUT': None
+#     }
+# }
 
 
 #CACHES = {

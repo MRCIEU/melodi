@@ -53,9 +53,9 @@ services:
       - dsne-django-nginx
       - general
     volumes:
-      - dsne-django-static:/usr/src/app/static
+      - dsne-django-static:/app/django_project/static
       - .:/app  # mount current directory inside container
-      #- django_project:/usr/src/app/django_project
+      #- django_project:/app/django_project
     ports:
       - "8000:8000"
     # set up links so that web knows about db, rabbit and redis
@@ -93,7 +93,7 @@ services:
     networks:
       - dsne-django-nginx
     volumes:
-      - dsne-django-static:/usr/src/app/static
+      - dsne-django-static:/app/django_project/static
     ports:
       - 5119:80
     depends_on:
