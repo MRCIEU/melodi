@@ -79,11 +79,20 @@ class SearchSets(viewsets.ModelViewSet):
 		return SearchSet.objects.filter(user_id=str(user.id))
 		#return SearchSet.objects.all()
 
+	def create(self, request):
+		logger.debug('post')
+		serializer = SearchSetSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		#api_result = sets_list.create_new_set(request.data)
+		#return Response(api_result)
+
 class SearchSetDetail(APIView):
 	"""
 	Retrieve, update or delete an article set instance.
 	"""
-	serializer_class = SearchSetSerializer
+	#serializer_class = SearchSetSerializer
 
 	def get_object(self,pk):
 		set_id = self.kwargs['pk']

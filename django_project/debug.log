@@ -1406,3 +1406,82 @@
 [31/Oct/2018 22:00:16] DEBUG [browser.tasks:78] user.id = None
 [31/Oct/2018 22:00:22] DEBUG [browser.tasks:78] user.id = None
 [31/Oct/2018 22:00:22] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:02:53] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 22:02:53] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 22:02:53] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:03:03] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:03:03] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:04:04] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 22:04:04] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 22:04:17] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:04:22] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:04:22] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:05:26] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:05:26] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:08:55] DEBUG [browser.tasks:94] user:None set_id:1
+[31/Oct/2018 22:08:55] DEBUG [browser.tasks:108] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 22:08:55] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:14:17] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 22:14:17] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 22:14:17] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:14:54] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 22:14:54] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 22:14:54] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:17:39] DEBUG [browser.tasks:83] post
+[31/Oct/2018 22:21:02] DEBUG [browser.tasks:83] post
+[31/Oct/2018 22:21:40] DEBUG [browser.tasks:83] post

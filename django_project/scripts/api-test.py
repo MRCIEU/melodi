@@ -44,6 +44,6 @@ def create_new_set():
 	r = requests.post(api_url+'sets/', data=params, headers=headers)
 	print(r.text)
 
-get_set()
-get_sets()
+#get_set()
+#get_sets()
 create_new_set()
