@@ -48,7 +48,7 @@ services:
     container_name: melodi-django
     hostname: web
     command: ./run_web.sh
-    command: ./start.sh
+    #command: ./start.sh
     networks:
       - dsne-django-nginx
       - general

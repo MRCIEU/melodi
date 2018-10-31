@@ -56,14 +56,20 @@ from django.conf import settings
 
 #rest API
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from browser.serializers import SearchSetSerializer
+from rest_framework.response import Response
+
 
 #logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',level=logging.WARNING)
 #logger = logging.getLogger(__name__)
 #logging.basicConfig(filename='run.log',level=logging.DEBUG)
 
-class SearchSetViewSet(viewsets.ModelViewSet):
-	#queryset = SearchSet.objects.all()
+class SearchSets(viewsets.ModelViewSet):
+	"""
+	Retrieve all article sets for a user.
+	"""
+
 	serializer_class = SearchSetSerializer
 
 	def get_queryset(self):
@@ -71,6 +77,46 @@ class SearchSetViewSet(viewsets.ModelViewSet):
 		logger.debug('user.id = '+str(user.id))
 		return SearchSet.objects.filter(user_id=str(user.id))
 		#return SearchSet.objects.all()
+
+class SearchSetDetail(viewsets.ModelViewSet):
+	"""
+	Retrieve, update or delete an article set instance.
+	"""
+	serializer_class = SearchSetSerializer
+
+	def get_object(self):
+		set_id = self.kwargs['pk']
+		user = self.request.user
+		logger.debug('user:'+str(user.id)+' set_id:'+str(set_id))
+		try:
+			#user = self.request.user
+			o = SearchSet.objects.get(id=str(set_id),user_id=str(user.id))
+			#for i in o:
+			#	logger.debug(i.ss_desc)
+			#logger.debug(o)
+			return o
+		except SearchSet.DoesNotExist:
+			raise Http404
+
+	def get(self, request, pk, format=None):
+		snippet = self.get_object(pk)
+		serializer = SearchSetSerializer(snippet)
+		logger.debug(serializer)
+		return Response(serializer.data)
+
+	def put(self, request, pk, format=None):
+		snippet = self.get_object(pk)
+		serializer = SnippetSerializer(snippet, data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	#
+	def delete(self, request, pk, format=None):
+		snippet = self.get_object(pk)
+		snippet.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class AuthComplete(View):
     def get(self, request, *args, **kwargs):
@@ -400,7 +446,7 @@ def index(request):
 					SearchSet.objects.filter(user_id=str(request.user.id),job_name=id).update(job_id=j)
 
 					# redirect to a new URL:
-					return HttpResponseRedirect('jobs/')
+					return HttpResponseRedirect(reverse('jobs'))
 			else:
 				logger.debug(userInfo+"User authentication problem")
 				return HttpResponseRedirect('/')
