@@ -59,6 +59,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from browser.serializers import SearchSetSerializer
 from rest_framework.response import Response
+from django.http import Http404
 
 
 #logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',level=logging.WARNING)
@@ -78,13 +79,13 @@ class SearchSets(viewsets.ModelViewSet):
 		return SearchSet.objects.filter(user_id=str(user.id))
 		#return SearchSet.objects.all()
 
-class SearchSetDetail(viewsets.ModelViewSet):
+class SearchSetDetail(APIView):
 	"""
 	Retrieve, update or delete an article set instance.
 	"""
 	serializer_class = SearchSetSerializer
 
-	def get_object(self):
+	def get_object(self,pk):
 		set_id = self.kwargs['pk']
 		user = self.request.user
 		logger.debug('user:'+str(user.id)+' set_id:'+str(set_id))
@@ -106,7 +107,7 @@ class SearchSetDetail(viewsets.ModelViewSet):
 
 	def put(self, request, pk, format=None):
 		snippet = self.get_object(pk)
-		serializer = SnippetSerializer(snippet, data=request.data)
+		serializer = SearchSetSerializer(snippet, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data)

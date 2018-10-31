@@ -22,6 +22,7 @@ from django.core.urlresolvers import reverse_lazy
 from browser.views import *
 from rest_framework import routers
 
+#routers combine all sorts of things into one simple setup
 router = routers.DefaultRouter()
 router.register(r'sets', SearchSets, base_name="SetList")
 #router.register(r'set', SearchSetDetail, base_name="Set")
@@ -29,7 +30,8 @@ router.register(r'sets', SearchSets, base_name="SetList")
 urlpatterns = [
 	url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-	#url(r'^api/set/(?P<pk>[0-9]+)/$', SearchSetDetail.as_view()),
+	url(r'^api/set/(?P<pk>[0-9]+)/$', SearchSetDetail.as_view()),
+
     #url(r'^browser/', include('browser.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('social_auth.urls')),

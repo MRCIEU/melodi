@@ -1196,3 +1196,213 @@
 [31/Oct/2018 16:45:40] DEBUG [browser.tasks:77] user.id = 1
 [31/Oct/2018 16:46:10] DEBUG [browser.tasks:77] user.id = None
 [31/Oct/2018 16:46:14] DEBUG [browser.tasks:77] user.id = None
+[31/Oct/2018 21:15:46] DEBUG [browser.tasks:90] user:None set_id:2
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:379] UserID:None - In index
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:583] {}
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:156] getting graph metrics
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:156] getting graph metrics
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:163] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:163] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:169] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:15:55] DEBUG [browser.tasks:173] getting time data...
+[31/Oct/2018 21:15:56] DEBUG [browser.tasks:169] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:15:56] DEBUG [browser.tasks:173] getting time data...
+[31/Oct/2018 21:15:59] DEBUG [browser.tasks:379] UserID:1 - In index
+[31/Oct/2018 21:15:59] DEBUG [browser.tasks:583] {}
+[31/Oct/2018 21:16:05] DEBUG [browser.tasks:90] user:1 set_id:2
+[31/Oct/2018 21:16:08] DEBUG [browser.tasks:90] user:1 set_id:2
+[31/Oct/2018 21:16:31] DEBUG [browser.tasks:90] user:1 set_id:2
+[31/Oct/2018 21:17:22] DEBUG [browser.tasks:90] user:1 set_id:2
+[31/Oct/2018 21:17:46] DEBUG [browser.tasks:90] user:1 set_id:2
+[31/Oct/2018 21:17:49] DEBUG [browser.tasks:90] user:1 set_id:2
+[31/Oct/2018 21:17:54] DEBUG [browser.tasks:90] user:1 set_id:1
+[31/Oct/2018 21:18:01] DEBUG [browser.tasks:90] user:1 set_id:3
+[31/Oct/2018 21:18:10] DEBUG [browser.tasks:90] user:1 set_id:3
+[31/Oct/2018 21:18:12] DEBUG [browser.tasks:90] user:1 set_id:3
+[31/Oct/2018 21:18:24] DEBUG [browser.tasks:90] user:1 set_id:3
+[31/Oct/2018 21:18:33] DEBUG [browser.tasks:90] user:1 set_id:3
+[31/Oct/2018 21:20:41] DEBUG [browser.tasks:90] user:1 set_id:3
+[31/Oct/2018 21:20:44] DEBUG [browser.tasks:90] user:1 set_id:31
+[31/Oct/2018 21:20:47] DEBUG [browser.tasks:90] user:1 set_id:1
+[31/Oct/2018 21:21:53] DEBUG [browser.tasks:91] user:1 set_id:1
+[31/Oct/2018 21:21:54] DEBUG [browser.tasks:91] user:1 set_id:11
+[31/Oct/2018 21:22:12] DEBUG [browser.tasks:91] user:1 set_id:11
+[31/Oct/2018 21:22:37] DEBUG [browser.tasks:91] user:1 set_id:1
+[31/Oct/2018 21:33:12] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:44:32] DEBUG [browser.tasks:91] user:1 set_id:1
+[31/Oct/2018 21:44:39] DEBUG [browser.tasks:91] user:1 set_id:1
+[31/Oct/2018 21:44:51] DEBUG [browser.tasks:380] UserID:1 - In index
+[31/Oct/2018 21:44:51] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:44:54] DEBUG [browser.tasks:380] UserID:1 - In index
+[31/Oct/2018 21:44:54] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:44:57] DEBUG [browser.tasks:687] UserID:1 - In jobs
+[31/Oct/2018 21:45:00] DEBUG [browser.tasks:380] UserID:1 - In index
+[31/Oct/2018 21:45:00] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:45:05] DEBUG [browser.tasks:687] UserID:1 - In jobs
+[31/Oct/2018 21:45:08] DEBUG [browser.tasks:380] UserID:1 - In index
+[31/Oct/2018 21:45:08] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:380] UserID:None - In index
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:157] getting graph metrics
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:164] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:157] getting graph metrics
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:164] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:170] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:174] getting time data...
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:170] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:45:10] DEBUG [browser.tasks:174] getting time data...
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:380] UserID:None - In index
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:157] getting graph metrics
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:164] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:157] getting graph metrics
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:170] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:174] getting time data...
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:164] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:170] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:45:11] DEBUG [browser.tasks:174] getting time data...
+[31/Oct/2018 21:45:13] DEBUG [browser.tasks:687] UserID:None - In jobs
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:380] UserID:None - In index
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:584] {}
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:157] getting graph metrics
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:164] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:157] getting graph metrics
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:164] match (s:Pubmed) return count(s) as s union match (s:Mesh) return count(s) as s union match (s:SDB_triple) return count(s) as s union match (s:SDB_item) return count(s) as s;
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:170] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:45:19] DEBUG [browser.tasks:174] getting time data...
+[31/Oct/2018 21:45:20] DEBUG [browser.tasks:170] [27403327, 464122, 17713742, 284801]
+[31/Oct/2018 21:45:20] DEBUG [browser.tasks:174] getting time data...
+[31/Oct/2018 21:45:26] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:45:41] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:45:42] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:45:44] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:45:48] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:46:51] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:47:02] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:47:50] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:47:51] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:47:59] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:47:59] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:47:59] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:48:06] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:48:06] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:48:06] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:48:09] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:48:09] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:48:24] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:48:24] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:48:29] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:50:10] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:50:10] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:50:10] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:50:10] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:50:15] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 21:50:15] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 21:54:52] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 21:54:52] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 21:55:29] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 21:55:29] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:00:16] DEBUG [browser.tasks:91] user:None set_id:1
+[31/Oct/2018 22:00:16] DEBUG [browser.tasks:105] SearchSetSerializer(<SearchSet: SearchSet object>):
+    user_id = CharField(max_length=200, required=True)
+    job_name = CharField(max_length=200, required=True)
+    job_id = CharField(max_length=200)
+    job_progress = IntegerField(max_value=2147483647, min_value=-2147483648)
+    ss_desc = CharField(max_length=5000)
+    job_status = CharField(max_length=20)
+    job_start = CharField(max_length=30)
+    pTotal = IntegerField(label='PTotal', max_value=2147483647, min_value=-2147483648)
+    id = IntegerField(label='ID', read_only=True)
+    class Meta:
+        validators = [<UniqueTogetherValidator(queryset=SearchSet.objects.all(), fields=('user_id', 'job_name'))>]
+[31/Oct/2018 22:00:16] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:00:22] DEBUG [browser.tasks:78] user.id = None
+[31/Oct/2018 22:00:22] DEBUG [browser.tasks:78] user.id = None
