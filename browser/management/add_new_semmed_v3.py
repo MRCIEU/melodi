@@ -14,7 +14,6 @@ import config
 #	gunzip -c semmedVER30_R_CITATIONS_to12312016.psv.gz | sed "s/'//g" | gzip > semmedVER30_R_CITATIONS_to12312016_edit.psv.gz
 #4. Add new data - change file locations in script and run this script
 #	python browser/management/add_new_semmed_v3.py
-#5. Copy new_pubs and new_sem files to db server and use load csv
 
 #neo4j
 from neo4j.v1 import GraphDatabase,basic_auth
@@ -119,7 +118,6 @@ def addNewPmids():
 	countAdd=0
 	session2 = driver.session()
 	#1|0006-2944|1975 Jun|1976 01 16|1975
-        o=gzip.open('data/new-pubs.tsv.gz','w')	
 	with gzip.open(semCitation, 'rb') as f:
 		for line in f:
 			counter+=1
@@ -139,9 +137,8 @@ def addNewPmids():
 					print "Added "+str(countAdd)
 					session2.close()
 					session2 = driver.session()
-				o.write(pmid+'\t'+issn+'\t'+da+'\t'+dcom+'\t'+dp+'\n')
-				#statement = "MERGE (n:Pubmed {pmid:"+pmid+"}) ON MATCH SET n.issn='"+issn+"',n.da='"+da+"',n.dcom='"+dcom+"',n.dp='"+dp+"' on CREATE SET n.issn='"+issn+"',n.da='"+da+"',n.dcom='"+dcom+"',n.dp='"+dp+"'"
-				#session2.run(statement)
+				statement = "MERGE (n:Pubmed {pmid:"+pmid+"}) ON MATCH SET n.issn='"+issn+"',n.da='"+da+"',n.dcom='"+dcom+"',n.dp='"+dp+"' on CREATE SET n.issn='"+issn+"',n.da='"+da+"',n.dcom='"+dcom+"',n.dp='"+dp+"'"
+				session2.run(statement)
 
 
 def addNewSemMed():
@@ -185,9 +182,8 @@ def addNewSemMed():
 					session2 = driver.session()
 				#check for dodgy pubmed ids with [2] in
 				if pmid.isdigit():
-					#use subject, object predicate as pid gets recreated for each release.
 					#statement="match (p:Pubmed{pmid:"+pmid+"}),(s:SDB_triple{s_name:'"+s_name+"',s_type:'"+s_type+"',o_name:'"+o_name+"',o_type:'"+o_type+"',predicate:'"+predicate+"'}) merge (p)-[:SEM]-(s);"
-					o.write(pmid+'\t'+s_name+'\t'+o_name+'\t'+predicate+'\n')
+					o.write(pmid+'\t'+pid+'\n')
 					#statement='match (p:Pubmed{pmid:'+pmid+'}),(s:SDB_triple{s_name:"'+s_name+'",o_name:"'+o_name+'",predicate:"'+predicate+'"}) merge (p)-[:SEM]-(s);'
 					#session2.run(statement)
 
@@ -221,12 +217,14 @@ def main():
 
 	#add/update PubMed nodes
 	#~130 minutes
-	addNewPmids()
-	#using periodic commit 10000 LOAD CSV FROM 'file:///new-pubs.tsv.gz' as row FIELDTERMINATOR '\t' MERGE (n:Pubmed {pmid:row[0]}) ON MATCH SET n.issn=row[1],n.da=row[2],n.dcom=row[3],n.dp=row[4] on CREATE SET n.issn=row[1],n.da=row[2],n.dcom=row[3],n.dp=row[4];
+	#addNewPmids()
 
 	#add new PubMed-SemMed relationships
-	#addNewSemMed()
-	#using periodic commit 10000 LOAD CSV FROM 'file:///new-semmed.tsv.gz' as row FIELDTERMINATOR '\t' match (p:Pubmed{pmid:row[0]}),(s:SDB_triple{s_name:row[1],o_name:row[2],predicate:row[3]}) merge (p)-[:SEM]-(s);
+	addNewSemMed()
+	#load using load csv
+	#using periodic commit 10000 LOAD CSV FROM 'file:///new-semmed.tsv.gz' as row FIELDTERMINATOR '\t' match (p:Pubmed{pmid:row[0]}),(s:SDB_triple{pid:row[1]}) merge (p)-[:SEM]-(s);
+	#13 hours for ~2 million relationships
+
 	#fix()
 
 if __name__ == "__main__":
