@@ -843,7 +843,7 @@ class ajax_compare(BaseDatatableView):
 		json_data = []
 		for item in qs:
 			job_desc = item.job_desc
-			if item.year_range != '1950 - 2017':
+			if item.year_range != '1950 - 2018':
 				year1 = item.year_range.split('-')[0].strip()
 				year2 = int(item.year_range.split('-')[1].strip())-1
 				#logger.debug('y1:'+year1+' y2:'+str(year2))
@@ -1100,7 +1100,7 @@ def pubSingle(request,num):
 	year2 = c.year_range.split("-")[1].strip()
 	logger.debug('year1 = '+year1+' year2 = '+year2)
 	yearString = ''
-	if year1 != '1960' or year2 != '2016':
+	if year1 != '1960' or year2 != '2017':
 		yearString = "p.dcom >= '"+year1+"' and p.dcom <= '"+year2+"' and"
 
 	#check user ids match
@@ -1194,7 +1194,7 @@ def pubDetails(request,num):
 	year2 = c.year_range.split("-")[1].strip()
 	logger.debug('year1 = '+year1+' year2 = '+year2)
 	yearString = ''
-	if year1 != '1960' or year2 != '2016':
+	if year1 != '1960' or year2 != '2017':
 		yearString = "p.dcom >= '"+year1+"' and p.dcom <= '"+year2+"' and"
 
 	#check user ids match
@@ -1553,7 +1553,7 @@ def temmpo_res(request):
 		#fileStore = '/tmp/'+str(int_file)
 		logger.debug("Running temmpo style analysis on "+str(as1)+" and "+str(as2))
 		jobDesc = as1+" : "+as2
-		jobName = str(s1.id)+"_"+str(s2.id)+"_2017"
+		jobName = str(s1.id)+"_"+str(s2.id)+"_2018"
 		try:
 			jCheck = Compare.objects.get(job_name=jobName, job_desc=jobDesc+" : "+str(int_file), user_id=str(request.user.id),job_type='Temmpo')
 			# delete entry if not complete and resubmitted
@@ -1563,7 +1563,7 @@ def temmpo_res(request):
 		except ObjectDoesNotExist:
 			jCheck = False
 		if jCheck == False:
-			q = Compare(user_id=str(request.user.id), job_desc=jobDesc+" : "+str(int_file), year_range='1950 - 2017', job_name=jobName, job_start=time.strftime("%Y-%m-%d %H:%M:%S"), job_status='Pending',job_type='Temmpo',job_progress=0)
+			q = Compare(user_id=str(request.user.id), job_desc=jobDesc+" : "+str(int_file), year_range='1950 - 2018', job_name=jobName, job_start=time.strftime("%Y-%m-%d %H:%M:%S"), job_status='Pending',job_type='Temmpo',job_progress=0)
 			q.save()
 			j=temmpo_task.delay(q.id,intData)
 		return HttpResponseRedirect(reverse('jobs'))

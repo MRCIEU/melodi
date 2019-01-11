@@ -802,7 +802,7 @@ def setup_fet(c,ss,job_name,ssNum):
 	#get year range
 	year1 = c.year_range.split("-")[0].strip()
 	year2 = c.year_range.split("-")[1].strip()
-	logger.debug('year1 = '+year1+' year2 = '+year2)
+	logger.debug('year1 = '+year1+' year2 = '+year2+' topYear = '+config.topYear)
 	yearString = ''
 	if year1 != '1950' or year2 != config.topYear:
 		yearString = "p.dp < '"+year2+"' "
@@ -838,7 +838,7 @@ def setup_fet(c,ss,job_name,ssNum):
 		comm= "match (s:SearchSet{name:'"+job_name+"_"+userID+"'})<-[r:INCLUDES]->(p:Pubmed)"
 		comm += "<-[:HAS_MESH{mesh_type:'main'}]->(m:Mesh)"+yearString+" with count(distinct(p.pmid)) as pc,m "
 		#comm += "return pc, m.mesh_id, m.mesh_name, m.freq_main;"
-		comm += "return pc, m.mesh_id, m.mesh_name, m.freq_"+str(int(year2)-1)
+		comm += "return pc, m.mesh_id, m.mesh_name, m.freq_"+str(int(year2))
 	elif jobType == "notMeshMain":
 		comm = "match (s:SearchSet{name:'"+job_name+"_"+userID+"'})<-[r:INCLUDES]->(p:Pubmed)"
 		comm += "<-[h:HAS_MESH]->(m:Mesh)"+yearString+" with count(distinct(p.pmid)) as pc,m "
@@ -849,7 +849,7 @@ def setup_fet(c,ss,job_name,ssNum):
 		#count(distinct) avoids issues with multiple triples called per article - not sure if this is the right thing to do...?
 		comm = "match (s:SearchSet{name:'"+job_name+"_"+userID+"'})-[r:INCLUDES]-(p:Pubmed)-[:SEM]-(st:SDB_triple)-[:SEMO]-(si1:SDB_item) "
 		comm += "where si1.i_freq <"+str(semFreq)+yearString+" with distinct p,si1,st match (st)-[:SEMS]-(si2:SDB_item) where si2.i_freq <"+str(semFreq)+" with "
-		comm += " count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_"+str(int(year2)-1)+";"
+		comm += " count(distinct(p)) as pc,st,si1,si2 return pc,st.pid,st.s_name,st.predicate,st.o_name,st.freq_"+str(int(year2))+";"
 
 	print(comm)
 	logger.debug(comm)
