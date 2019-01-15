@@ -708,11 +708,11 @@ h2 span { background:#fff; padding:0 10px; }
                     </ul>
 			<!--br><p><font size="4" color="red">Warning: the NCBI servers are down so pubmed lookup not working! </font><br><br-->
 		</div>
+		</div><br>
+		<div style="text-align:center" class="panel panel-default">
+		<h4>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to explore some pre-loaded analyses select some results from table below.</h3>
 		</div>
-		<div style="text-align:center">
-		<br><h4>To perform a new analysis please <a href="{% url 'socialauth_begin' 'google-oauth2' %}">Sign in</a>, or to explore some pre-loaded analyses select some results from table below.</h3>
-		</div>
-			<br><br><table id="example_data" class="display" cellspacing="0" width="100%">
+			<table id="example_data" class="display" cellspacing="0" width="100%">
 		                <thead>
 		                <tr>
 		                    <th>Concept 1</th>
