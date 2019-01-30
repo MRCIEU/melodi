@@ -45,8 +45,15 @@ while True:
 			print val,'already exists'
 			break
 		masterDic[val]=count
-	last_entry=res['aggregations']['my_buckets']['buckets'][-1]['key']['sub-pred-obj']
-	#print('last - ',last_entry)
-	pageCount+=1
+	if len(res['aggregations']['my_buckets']['buckets'])>1:
+		last_entry=res['aggregations']['my_buckets']['buckets'][-1]['key']['sub-pred-obj']
+		#print('last - ',last_entry)
+		pageCount+=1
+	else:
+		print 'Done'
+		break
 
 print len(masterDic)
+o=gzip.open('data/semmeddb_triple_freqs.txt.gz','w')
+for m in masterDic:
+	o.write(m+'\t'+str(masterDic[m])+'\n')

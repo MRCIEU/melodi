@@ -85,6 +85,7 @@ def index_predicate_data(predicate_data,index_name):
 				bulk_data = []
 			#print(line.decode('utf-8'))
 			l = line.rstrip().decode('utf-8').split('\t')
+			pred_id = l[5]+':'+l[3]+':'+l[9]
 			#print(l)
 			data_dict = {
 				 "PREDICATION_ID": l[0],
@@ -99,12 +100,12 @@ def index_predicate_data(predicate_data,index_name):
 				 "OBJECT_NAME":  l[9],
 				 "OBJECT_SEMTYPE":  l[10],
 				 "OBJECT_NOVELTY":  int(l[11]),
-				 "SUB_PRED_OBJ":l[5]+':'+l[3]+':'+l[9]
+				 "SUB_PRED_OBJ":pred_id
 			}
 			op_dict = {
 				"_index": index_name,
-                #"_id" : parent_id+':'+l[0],
-                #"_op_type":'create',
+                "_id" : l[0],
+                "_op_type":'create',
 				"_type": '_doc',
 				"_source":data_dict
 			}
