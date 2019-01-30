@@ -5,8 +5,15 @@ import requests
 import time
 import re
 import subprocess
+import config
 
-def run_query(filterData,index,size=1000):
+timeout=300
+
+es = Elasticsearch(
+	[{'host': config.elastic_host,'port': config.elastic_port}],
+)
+
+def run_query(filterData,index,size=100000):
 	#print(index)
 	start=time.time()
 	res=es.search(
@@ -29,13 +36,12 @@ def run_query(filterData,index,size=1000):
 		})
 	end = time.time()
 	t=round((end - start), 4)
-	print "Time taken:",t, "seconds"
-	print res['hits']['total']
-	return t,res['hits']['total']
+	#print "Time taken:",t, "seconds"
+	#print res['hits']['total']
+	return t,res['hits']['total'],res['hits']['hits']
 
 
 def pub_sem(query):
-
 	start=time.time()
 	print "\n### Getting ids for "+query+" ###"
 	url="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
@@ -71,6 +77,9 @@ def pub_sem(query):
 	print "Total pmids: "+str(pCount)
 	maxA=1000000
 	counter=0
+	pmidList=[]
+	totalRes=0
+	predCounts={}
 	if 0<pCount<maxA:
 		print "\n### Parsing ids ###"
 		start = time.time()
@@ -79,19 +88,45 @@ def pub_sem(query):
 			l = re.search(r'.*?<Id>(.*?)</Id>', line)
 			if l:
 				pmid = l.group(1)
-				filterData={"terms":{"pmid":[pmid]}}
-				t,time=run_query(filterData)
-				print t,time
+				pmidList.append(pmid)
 				counter+=1
 				if counter % 1000 == 0:
+					filterData={"terms":{"PMID":pmidList}}
+					#print(filterData)
+					t,resCount,res=run_query(filterData,'semmeddb')
+					if res>0:
+						#print(filterData)
+						print t,resCount
+						for r in res:
+							PMID=r['_source']['PMID']
+							#PREDICATION_ID=r['_source']['PREDICATION_ID']
+							PREDICATE=r['_source']['PREDICATE']
+							OBJECT_NAME=r['_source']['OBJECT_NAME']
+							SUBJECT_NAME=r['_source']['SUBJECT_NAME']
+							PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
+							#print PMID,PREDICATION_ID
+							if PREDICATION_ID in predCounts:
+								if PMID not in predCounts[PREDICATION_ID]:
+									predCounts[PREDICATION_ID].append(PMID)
+									predCounts[PREDICATION_ID].append(PMID)
+							else:
+								predCounts[PREDICATION_ID]=[PMID]
+						totalRes+=resCount
 					pc = round((float(counter)/float(pCount))*100)
-					print(pc)
+					print(pc,'%')
+					pmidList=[]
 		pc = round((float(counter)/float(pCount))*100)
-		print(pc)
+		print(pc,'%')
 		end = time.time()
 		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
-		return counter
+		print('Total results:',totalRes)
+		#print(predCounts)
+		for k in sorted(predCounts, key=lambda k: len(predCounts[k]), reverse=True):
+			if len(predCounts[k])>1:
+				print k,len(predCounts[k])
 	else:
-		SearchSet.objects.filter(job_name=sp[0],user_id=sp[1]).update(job_status='Too many articles',job_progress=0)
+		print('Too many articles')
 
-pub_sem('pcsk9')
+#pub_sem('pcsk9')
+pub_sem('oropharyngeal cancer')
+#pub_sem('prostate cancer')

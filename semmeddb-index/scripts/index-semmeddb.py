@@ -57,7 +57,8 @@ def create_index(index_name,shards=3):
 		                "OBJECT_CUI":{"type":"keyword"},
 		                "OBJECT_NAME":{"type":"keyword"},
 		                "OBJECT_SEMTYPE":{"type":"keyword"},
-		                "OBJECT_NOVELTY":{"type":"integer"}
+		                "OBJECT_NOVELTY":{"type":"integer"},
+						"SUB_PRED_OBJ":{"type":"keyword"}
 		             }
 		        }
 		    }
@@ -65,19 +66,17 @@ def create_index(index_name,shards=3):
 		es.indices.create(index = index_name, body = request_body,request_timeout=timeout)
 
 def index_predicate_data(predicate_data,index_name):
-	create_index(index_name)
 	print(get_date(),"Indexing predicate data...")
-
 	create_index(index_name)
 	bulk_data = []
 	counter=0
 	start = time.time()
-	chunkSize = 50000
+	chunkSize = 100000
 	with gzip.open(predicate_data) as f:
 		#next(f)
 		for line in f:
 			counter+=1
-			if counter % 10000 == 0:
+			if counter % 100000 == 0:
 				end = time.time()
 				t=round((end - start), 4)
 				print(get_date(),predicate_data,t,counter)
@@ -99,7 +98,8 @@ def index_predicate_data(predicate_data,index_name):
 				 "OBJECT_CUI":  l[8],
 				 "OBJECT_NAME":  l[9],
 				 "OBJECT_SEMTYPE":  l[10],
-				 "OBJECT_NOVELTY":  int(l[11])
+				 "OBJECT_NOVELTY":  int(l[11]),
+				 "SUB_PRED_OBJ":l[5]+':'+l[3]+':'+l[9]
 			}
 			op_dict = {
 				"_index": index_name,
