@@ -54,6 +54,7 @@ while True:
 		break
 
 print len(masterDic)
+print('Writing to file...')
 o=gzip.open('data/semmeddb_triple_freqs.txt.gz','w')
 for m in masterDic:
 	o.write(m+'\t'+str(masterDic[m])+'\n')

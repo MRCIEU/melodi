@@ -6,6 +6,7 @@ import time
 import re
 import subprocess
 import config
+import gzip
 
 timeout=300
 
@@ -80,6 +81,8 @@ def pub_sem(query):
 	pmidList=[]
 	totalRes=0
 	predCounts={}
+	chunkSize=50000
+	updateSize=10000
 	if 0<pCount<maxA:
 		print "\n### Parsing ids ###"
 		start = time.time()
@@ -90,7 +93,8 @@ def pub_sem(query):
 				pmid = l.group(1)
 				pmidList.append(pmid)
 				counter+=1
-				if counter % 1000 == 0:
+				if counter % chunkSize == 0:
+					print('Querying ES...')
 					filterData={"terms":{"PMID":pmidList}}
 					#print(filterData)
 					t,resCount,res=run_query(filterData,'semmeddb')
@@ -112,21 +116,27 @@ def pub_sem(query):
 							else:
 								predCounts[PREDICATION_ID]=[PMID]
 						totalRes+=resCount
+						pmidList=[]
+				if counter % updateSize == 0:
 					pc = round((float(counter)/float(pCount))*100)
-					print(pc,'%')
-					pmidList=[]
+					print(str(pc)+' % : '+str(len(pmidList)))
 		pc = round((float(counter)/float(pCount))*100)
-		print(pc,'%')
+		print(str(pc)+' %')
 		end = time.time()
 		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 		print('Total results:',totalRes)
+		outFile=query.replace(' ','_')+'.gz'
+		o = gzip.open('data/'+outFile,'w')
 		#print(predCounts)
 		for k in sorted(predCounts, key=lambda k: len(predCounts[k]), reverse=True):
 			if len(predCounts[k])>1:
-				print k,len(predCounts[k])
+				#print k,len(predCounts[k])
+				o.write(k+'\t'+str(len(predCounts[k]))+'\n')
+		o.close()
 	else:
 		print('Too many articles')
 
 #pub_sem('pcsk9')
-pub_sem('oropharyngeal cancer')
+#pub_sem('oropharyngeal cancer')
 #pub_sem('prostate cancer')
+pub_sem('breast cancer')
