@@ -1,6 +1,7 @@
 from elasticsearch import Elasticsearch
 from random import randint
 
+import scipy.stats as stats
 import requests
 import time
 import re
@@ -67,7 +68,9 @@ def es_query(filterData,index,predCounts):
 
 def fet(localPub,localSem,globalPub,globalSem):
 	print(localPub,localSem,globalPub,globalSem)
-	return 1,1
+	oddsratio, pvalue = stats.fisher_exact([[localPub, localSem], [globalPub, globalSem]])
+	print(oddsratio, pvalue)
+	return oddsratio,pvalue
 
 def pub_sem(query):
 	sem_trip_dic=read_sem_triples()
@@ -152,9 +155,9 @@ def pub_sem(query):
 			if len(predCounts[k])>1:
 				#print k,len(predCounts[k])
 				#do FET
-				f1,f2=fet(totalRes,len(predCounts[k]),sem_trip_dic[k],globalSem)
+				odds,pval=fet(len(predCounts[k]),totalRes,sem_trip_dic[k],globalSem)
 
-				o.write(k+'\t'+str(len(predCounts[k]))+'\t'+sem_trip_dic[k]+'\n')
+				o.write(k+'\t'+str(len(predCounts[k]))+'\t'+str(totalRes)+'\t'+sem_trip_dic[k]+'\t'+str(globalSem)+'\t'+str(odds)+'\t'+str(pval)+'\n')
 		o.close()
 	else:
 		print('Too many articles')
