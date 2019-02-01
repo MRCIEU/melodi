@@ -10,12 +10,17 @@ import config
 import gzip
 import argparse
 
+#globals
 
 timeout=300
 
 es = Elasticsearch(
 	[{'host': config.elastic_host,'port': config.elastic_port}],
 )
+
+#total number of publications
+#curl -XGET 'localhost:9200/semmeddb/_search?pretty' -H "Content-Type: application/json" -d '{"size":0, "aggs" : {"type_count":{"cardinality" :{ "field" : "PMID" }}}}'
+globalPub=17734131
 
 def run_query(filterData,index,size=100000):
 	#print(index)
@@ -66,9 +71,9 @@ def es_query(filterData,index,predCounts):
 				predCounts[PREDICATION_ID]=[PMID]
 	return t,resCount,res,predCounts
 
-def fet(localPub,localSem,globalPub,globalSem):
-	print(localPub,localSem,globalPub,globalSem)
-	oddsratio, pvalue = stats.fisher_exact([[localPub, localSem], [globalPub, globalSem]])
+def fet(localSem,localPub,globalSem,globalPub):
+	print(localSem,localPub,globalSem,globalPub)
+	oddsratio, pvalue = stats.fisher_exact([[localSem, localPub], [globalSem, globalPub]])
 	print(oddsratio, pvalue)
 	return oddsratio,pvalue
 
@@ -148,16 +153,17 @@ def pub_sem(query):
 		o = gzip.open('data/'+outFile,'w')
 		#print(predCounts)
 
-		#get global number of semmed triples
-		globalSem=es.count('semmeddb')['count']
+		#get global number of publications
+		#globalSem=es.count('semmeddb')['count']
+		#globalSem=25000000
 
 		for k in sorted(predCounts, key=lambda k: len(predCounts[k]), reverse=True):
 			if len(predCounts[k])>1:
 				#print k,len(predCounts[k])
 				#do FET
-				odds,pval=fet(len(predCounts[k]),totalRes,sem_trip_dic[k],globalSem)
+				odds,pval=fet(len(predCounts[k]),pCount,sem_trip_dic[k],globalPub)
 
-				o.write(k+'\t'+str(len(predCounts[k]))+'\t'+str(totalRes)+'\t'+sem_trip_dic[k]+'\t'+str(globalSem)+'\t'+str(odds)+'\t'+str(pval)+'\n')
+				o.write(k+'\t'+str(len(predCounts[k]))+'\t'+str(pCount)+'\t'+sem_trip_dic[k]+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
 		o.close()
 	else:
 		print('Too many articles')
