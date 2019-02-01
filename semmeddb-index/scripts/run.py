@@ -65,6 +65,10 @@ def es_query(filterData,index,predCounts):
 				predCounts[PREDICATION_ID]=[PMID]
 	return t,resCount,res,predCounts
 
+def fet(localPub,localSem,globalPub,globalSem):
+	print(localPub,localSem,globalPub,globalSem)
+	return 1,1
+
 def pub_sem(query):
 	sem_trip_dic=read_sem_triples()
 
@@ -140,9 +144,16 @@ def pub_sem(query):
 		outFile=query.replace(' ','_')+'.gz'
 		o = gzip.open('data/'+outFile,'w')
 		#print(predCounts)
+
+		#get global number of semmed triples
+		globalSem=es.count('semmeddb')['count']
+
 		for k in sorted(predCounts, key=lambda k: len(predCounts[k]), reverse=True):
 			if len(predCounts[k])>1:
 				#print k,len(predCounts[k])
+				#do FET
+				f1,f2=fet(totalRes,len(predCounts[k]),sem_trip_dic[k],globalSem)
+
 				o.write(k+'\t'+str(len(predCounts[k]))+'\t'+sem_trip_dic[k]+'\n')
 		o.close()
 	else:
@@ -160,6 +171,18 @@ def read_sem_triples():
 	end = time.time()
 	print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 	return sem_trip_dic
+
+def compare(q1,q2):
+	q1Dic={}
+	with gzip.open(q1) as f:
+		for line in f:
+			s,l,g = line.rstrip().split('\t')
+			q1Dic[s]={'local':l,'global':g}
+	q2Dic={}
+	with gzip.open(q1) as f:
+		for line in f:
+			s,l,g = line.rstrip().split('\t')
+			q1Dic[s]={'local':l,'global':g}
 
 if __name__ == '__main__':
 
