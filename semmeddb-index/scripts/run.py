@@ -77,9 +77,7 @@ def fet(localSem,localPub,globalSem,globalPub):
 	print(oddsratio, pvalue)
 	return oddsratio,pvalue
 
-def pub_sem(query):
-	sem_trip_dic=read_sem_triples()
-
+def pub_sem(query,sem_trip_dic):
 	start=time.time()
 	print "\n### Getting ids for "+query+" ###"
 	url="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
@@ -138,7 +136,7 @@ def pub_sem(query):
 					pmidList=[]
 				if counter % updateSize == 0:
 					pc = round((float(counter)/float(pCount))*100)
-					print(str(pc)+' % : '+str(len(pmidList)))
+					#print(str(pc)+' % : '+str(len(pmidList)))
 		print('Querying ES...')
 		filterData={"terms":{"PMID":pmidList}}
 		t,resCount,res,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts)
@@ -210,8 +208,11 @@ if __name__ == '__main__':
 			if args.query == None:
 				print('Please provide a query')
 			else:
+				sem_trip_dic=read_sem_triples()
 				print('creating enriched article set')
-				pub_sem(args.query)
+				queries=args.query.rstrip().split(',')
+				for q in queries:
+					pub_sem(q,sem_trip_dic)
 		elif args.method == 'compare':
 			if args.query_1 == None:
 				print('Please provide a name')
