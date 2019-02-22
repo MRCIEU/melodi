@@ -20,6 +20,9 @@ headers = {'Content-Type': 'application/json'}
 #after query
 #curl -X GET "localhost:9200/semmeddb/_search?pretty" -H 'Content-Type: application/json' -d '{ "aggs" : { "my_buckets" : { "composite": { "size":100, "sources": [{"sub-pred-obj":{"terms" : { "field" : "SUB_PRED_OBJ"}}} ],"after":{"sub-pred-obj":"\"\"\"U\"\" lymphocyte\":LOCATION_OF:receptor"} }}}} '
 
+#check
+#curl -XGET 'localhost:9200/semmeddb/_search?pretty' -H 'Content-Type: application/json' -d '{"size":1,"query":{"bool":{"filter":[{"term":{"SUB_PRED_OBJ":"Encounter due to counseling:PROCESS_OF:Family"}}]}}}';
+
 def create_counts(type):
 	print 'Creating counts for ',type
 	if type == 'semmeddb_triple':

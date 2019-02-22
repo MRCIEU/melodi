@@ -49,26 +49,6 @@ def run_query(filterData,index,size=100000):
 	#print res['hits']['total']
 	return t,res['hits']['total'],res['hits']['hits']
 
-def get_term_stats(index='semmeddb_triple_freqs',query=''):
-	filterData={"terms":{"SUB_PRED_OBJ":[query]}}
-	start=time.time()
-	res=es.search(
-		request_timeout=timeout,
-		index=index,
-		body={
-			"size":1,
-			"query": {
-				"bool" : {
-					"filter" : filterData
-				}
-			}
-		}
-	)
-	end = time.time()
-	t=round((end - start), 4)
-	#print "Time taken:",t, "seconds"
-	return res['hits']['hits']
-
 def es_query(filterData,index,predCounts):
 	#print(filterData)
 	t,resCount,res=run_query(filterData,index)
@@ -84,15 +64,17 @@ def es_query(filterData,index,predCounts):
 			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
 			#print PMID,PREDICATION_ID
 			if PREDICATION_ID in predCounts:
-				predCounts[PREDICATION_ID]+=1
+				if PMID not in predCounts[PREDICATION_ID]:
+					predCounts[PREDICATION_ID].append(PMID)
+					predCounts[PREDICATION_ID].append(PMID)
 			else:
-				predCounts[PREDICATION_ID]=1
+				predCounts[PREDICATION_ID]=[PMID]
 	return t,resCount,res,predCounts
 
 def fet(localSem,localPub,globalSem,globalPub):
-	#print(localSem,localPub,globalSem,globalPub)
+	print(localSem,localPub,globalSem,globalPub)
 	oddsratio, pvalue = stats.fisher_exact([[localSem, localPub], [globalSem, globalPub]])
-	#print(oddsratio, pvalue)
+	print(oddsratio, pvalue)
 	return oddsratio,pvalue
 
 def pub_sem(query,sem_trip_dic):
@@ -134,7 +116,7 @@ def pub_sem(query,sem_trip_dic):
 	pmidList=[]
 	totalRes=0
 	predCounts={}
-	chunkSize=500
+	chunkSize=5000
 	updateSize=1000
 	if 0<pCount<maxA:
 		print "\n### Parsing ids ###"
@@ -165,35 +147,22 @@ def pub_sem(query,sem_trip_dic):
 		end = time.time()
 		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 		print('Total results:',totalRes)
-		outFile=query.replace(' ','_')+'.gz'
+		outFile=query.replace(' ','_')+'.old.gz'
 		o = gzip.open('data/'+outFile,'w')
 		#print(predCounts)
 
 		#get global number of publications
-		globalSem=es.count('semmeddb')['count']
+		#globalSem=es.count('semmeddb')['count']
 		#globalSem=25000000
 
-		print('Doing enrichment...')
-		start = time.time()
-		for k in sorted(predCounts, key=lambda k: predCounts[k], reverse=True):
-			if predCounts[k]>1:
-				#get frequency
-				freq_res = get_term_stats(query=k)
-				if freq_res:
-					#print(freq_res)
-					global_term_freq = freq_res[0]['_source']['frequency']
-					#print k,len(predCounts[k])
-					#do FET
-					#print(k,predCounts[k],totalRes,global_term_freq,globalSem)
-					odds,pval=fet(predCounts[k],totalRes,global_term_freq,globalSem)
+		for k in sorted(predCounts, key=lambda k: len(predCounts[k]), reverse=True):
+			if len(predCounts[k])>1:
+				#print k,len(predCounts[k])
+				#do FET
+				odds,pval=fet(len(predCounts[k]),pCount,sem_trip_dic[k],globalPub)
 
-					o.write(k+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(global_term_freq)+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
-				else:
-					continue
-					#print(k,'has no freq')
+				o.write(k+'\t'+str(len(predCounts[k]))+'\t'+str(pCount)+'\t'+sem_trip_dic[k]+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
 		o.close()
-		end = time.time()
-		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 	else:
 		print('Too many articles')
 
@@ -233,14 +202,13 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 	print(args)
 	if args.method == None:
-		print("Please provide a method (-m): [get_data, compare]")
+		print("Please provide a method (get_data, compare)")
 	else:
 		if args.method == 'get_data':
 			if args.query == None:
-				print('Please provide a query (-q) [e.g. pcsk9]')
+				print('Please provide a query')
 			else:
-				#sem_trip_dic=read_sem_triples()
-				sem_trip_dic={}
+				sem_trip_dic=read_sem_triples()
 				print('creating enriched article set')
 				queries=args.query.rstrip().split(',')
 				for q in queries:
@@ -258,4 +226,3 @@ if __name__ == '__main__':
 #pub_sem('oropharyngeal cancer')
 #pub_sem('prostate cancer')
 #pub_sem('breast cancer')
-#get_term_stats('semmeddb_triple_freqs',filterData={"terms":{"SUB_PRED_OBJ":['Encounter due to counseling:PROCESS_OF:Family']}})
