@@ -24,7 +24,47 @@ def escape_things(text):
 	text = text.replace("'","\\'")
 	return text
 
-def create_graph(nodes,rels):
+def load_nodes(session,nodes,type):
+	with open(nodes) as json_file:
+		data = json.load(json_file)
+		for d in data:
+			#print(d)
+			for s in data[d]:
+
+				sub=escape_things(data[d][s]['sub'])
+				pred=data[d][s]['pred']
+				obj=escape_things(data[d][s]['obj'])
+				triple=sub+':'+pred+":"+obj
+				pval,odds = data[d][s]['pval'],data[d][s]['odds']
+
+				com="merge (d:DataSet{name:'"+d+"'}) return d;"
+				for res in session.run(com): continue;
+				com="merge (sem:SemMedTriple{name:'"+triple+"',sub:'"+sub+"',pred:'"+pred+"',obj:'"+obj+"'}) return sem;"
+				for res in session.run(com): continue;
+
+				#add enrichment data
+				com="match (d:DataSet{name:'"+d+"'}) match (sem:SemMedTriple{name:'"+triple+"'}) merge (d)-[:ENRICHED{pval:"+pval+",odds:"+odds+"}]->(sem) return d,sem;"
+				for res in session.run(com): continue;
+
+				#sep nodes for each part of semmmed
+				com="merge (sub:SemSub{name:'"+sub+"'}) return sub;"
+				for res in session.run(com): continue;
+				com="merge (pred:SemPred{name:'"+pred+"'}) return pred;"
+				for res in session.run(com): continue;
+				com="merge (obj:SemObj{name:'"+obj+"'}) return obj;"
+				for res in session.run(com): continue;
+				if type == 'a':
+					com="match (sem:SemMedTriple{name:'"+triple+"'}) match (sub:SemSub{name:'"+sub+"'}) "\
+				    	"match (pred:SemPred{name:'"+pred+"'}) match (obj:SemObj{name:'"+obj+"'}) "\
+						"merge (sem)-[:CONTAINS]->(sub)-[:SUB_PRED]->(pred)-[:PRED_OBJ]->(obj) return pred,obj;"
+				else:
+					com="match (sem:SemMedTriple{name:'"+triple+"'}) match (sub:SemSub{name:'"+sub+"'}) "\
+				    	"match (pred:SemPred{name:'"+pred+"'}) match (obj:SemObj{name:'"+obj+"'}) "\
+						"merge (sem)<-[:CONTAINS]-(obj)<-[:PRED_OBJ]-(pred)<-[:SUB_PRED]-(sub) return pred,obj;"
+
+				for res in session.run(com): continue;
+
+def create_graph(a_nodes,b_nodes,rels):
 	driver=neo4j_connect()
 	session = driver.session()
 
@@ -48,49 +88,22 @@ def create_graph(nodes,rels):
 	com="CREATE index on :SemObj(name);"
 	session.run(com)
 
-	print('Reading',nodes)
-	with open(nodes) as json_file:
-		data = json.load(json_file)
-		for d in data:
-			#print(d)
-			for s in data[d]:
-				com="merge (d:DataSet{name:'"+d+"'}) return d;"
-				for res in session.run(com): continue;
-				sub=escape_things(data[d][s]['sub'])
-				pred=data[d][s]['pred']
-				obj=escape_things(data[d][s]['obj'])
-				triple=sub+':'+pred+":"+obj
-				com="merge (sem:SemMedTriple{name:'"+triple+"',sub:'"+sub+"',pred:'"+pred+"',obj:'"+obj+"'}) return sem;"
-				for res in session.run(com): continue;
-
-				#add enrichment data
-				pval,odds = data[d][s]['pval'],data[d][s]['odds']
-				com="match (d:DataSet{name:'"+d+"'}) match (sem:SemMedTriple{name:'"+triple+"'}) merge (d)-[:ENRICHED{pval:"+pval+",odds:"+odds+"}]->(sem) return d,sem;"
-				for res in session.run(com): continue;
-
-				#sep nodes for each part of semmmed
-				com="merge (sub:SemSub{name:'"+escape_things(data[d][s]['sub'])+"'}) return sub;"
-				for res in session.run(com): continue;
-				com="merge (pred:SemPred{name:'"+escape_things(data[d][s]['pred'])+"'}) return pred;"
-				for res in session.run(com): continue;
-				com="merge (obj:SemObj{name:'"+escape_things(data[d][s]['obj'])+"'}) return obj;"
-				for res in session.run(com): continue;
-				com="match (sem:SemMedTriple{name:'"+triple+"'}) match (sub:SemSub{name:'"+escape_things(data[d][s]['sub'])+"'}) "\
-				    "match (pred:SemPred{name:'"+data[d][s]['pred']+"'}) match (obj:SemObj{name:'"+escape_things(data[d][s]['obj'])+"'}) "\
-					"merge (sem)-[:CONTAINS]->(sub)-[:SUB_PRED]->(pred)-[:PRED_OBJ]->(obj) return pred,obj;"
-				for res in session.run(com): continue;
+	print('Reading',a_nodes)
+	load_nodes(session,a_nodes,'a')
+	print('Reading',b_nodes)
+	load_nodes(session,b_nodes,'b')
 
 	print('Adding rels...')
 	with open(rels) as f:
 		for line in f:
-			num,s1,s2,d1,d2 = line.rstrip().split('\t')
-			com="match (d1:DataSet{name:'"+escape_things(d1)+"'})-[:ENRICHED]->(sem1:SemMedTriple{name:'"+escape_things(s1)+"'})-[:CONTAINS]-(:SemSub)-[:SUB_PRED]-(:SemPred)-[:PRED_OBJ]-(obj:SemObj) "\
-			    "match (d2:DataSet{name:'"+escape_things(d2)+"'})-[:ENRICHED]->(sem2:SemMedTriple{name:'"+escape_things(s2)+"'})-[:CONTAINS]-(sub:SemSub) "\
-			    "merge (obj)-[:OVERLAPS{d1:'"+d1+"',d2:'"+d2+"'}]-(sub) return sem1,sem2,sub,obj;"
+			num,s1,s2,overlap,d1,d2 = line.rstrip().split('\t')
+			com="match (d1:DataSet{name:'"+escape_things(d1)+"'})-[:ENRICHED]->(sem1:SemMedTriple{name:'"+escape_things(s1)+"'})-[:CONTAINS]-(sub1:SemSub)-[:SUB_PRED]-(pred1:SemPred)-[:PRED_OBJ]-(obj1:SemObj{name:'"+overlap+"'}) "\
+			    "match (d2:DataSet{name:'"+escape_things(d2)+"'})-[:ENRICHED]->(sem2:SemMedTriple{name:'"+escape_things(s2)+"'})<-[:CONTAINS]-(obj2:SemObj)<-[:PRED_OBJ]-(pred2:SemPred)<-[:SUB_PRED]-(sub2:SemSub{name:'"+overlap+"'}) "\
+			    "merge (obj1)-[:OVERLAPS{d1:'"+d1+"',d2:'"+d2+"'}]-(sub2) return sem1,sem2,sub2,obj1;"
 			#com="match (d1:DataSet{name:'"+escape_things(d1)+"'})-[:ENRICHED]->(sem1:SemMedTriple{name:'"+escape_things(s1)+"'}) match (d2:DataSet{name:'"+escape_things(d2)+"'})-[:ENRICHED]->(sem2:SemMedTriple{name:'"+escape_things(s2)+"'}) "\
 			#     "merge (sem1)-[:OVERLAPS]-(sem2) return sem1,sem2;"
 			print(com)
 			for res in session.run(com): continue;
 
 
-create_graph('data/compare/nodes.json','data/compare/rels.tsv')
+create_graph('data/compare/a_nodes.json','data/compare/b_nodes.json','data/compare/rels.tsv')

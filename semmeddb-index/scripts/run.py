@@ -254,10 +254,11 @@ def compare(aList,bList):
 	print(len(aDic))
 	print(len(bDic))
 
-	ignoreTerms=['Patients']
+	ignoreTerms=['Patients','Disease']
 
 	#compare two sets of data
-	comDic=defaultdict(dict)
+	aComDic=defaultdict(dict)
+	bComDic=defaultdict(dict)
 	joinDic={}
 	predDic={}
 	joinCount=0
@@ -292,23 +293,27 @@ def compare(aList,bList):
 						else:
 							predDic[bPred]=1
 						#print a,s1,aDic[a][s1],b,s2,bDic[b][s2]
-						comDic[a][s1]=aDic[a][s1]
-						comDic[b][s2]=bDic[b][s2]
+						aComDic[a][s1]=aDic[a][s1]
+						bComDic[b][s2]=bDic[b][s2]
 						joinCount+=1
-						joinDic[joinCount]={'s1':s1,'s2':s2,'d1':a,'d2':b}
+						joinDic[joinCount]={'s1':s1,'s2':s2,'overlap':aObj,'d1':a,'d2':b}
 	#get some summaries
 	print(predDic)
-	for c in comDic:
-		print(c,len(comDic[c]))
+	for c in aComDic:
+		print(c,len(aComDic[c]))
 
-	with open('data/compare/nodes.json','w') as outfile:
+	with open('data/compare/a_nodes.json','w') as outfile:
 		#outfile={'source':a:'sem':s1:aDic[a][s1]}
-		json.dump(comDic,outfile)
+		json.dump(aComDic,outfile)
+
+	with open('data/compare/b_nodes.json','w') as outfile:
+		#outfile={'source':a:'sem':s1:aDic[a][s1]}
+		json.dump(bComDic,outfile)
 
 	o = open('data/compare/rels.tsv','w')
 	for i in joinDic:
 	#outfile={'source':a:'sem':s1:aDic[a][s1]}
-		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
+		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
 	o.close()
 
 if __name__ == '__main__':
