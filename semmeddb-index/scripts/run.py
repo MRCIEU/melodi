@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 from random import randint
-
+from collections import defaultdict
 import scipy.stats as stats
 import requests
 import time
@@ -9,6 +9,8 @@ import subprocess
 import config
 import gzip
 import argparse
+import os
+import json
 
 #globals
 
@@ -21,6 +23,8 @@ es = Elasticsearch(
 #total number of publications
 #curl -XGET 'localhost:9200/semmeddb/_search?pretty' -H "Content-Type: application/json" -d '{"size":0, "aggs" : {"type_count":{"cardinality" :{ "field" : "PMID" }}}}'
 globalPub=17734131
+
+#time python scripts/run.py -m compare -a 'CR1,CCDC6,KAT8' -b 'Alzheimer’s_disease'
 
 def run_query(filterData,index,size=100000):
 	#print(index)
@@ -49,14 +53,14 @@ def run_query(filterData,index,size=100000):
 	#print res['hits']['total']
 	return t,res['hits']['total'],res['hits']['hits']
 
-def get_term_stats(index='semmeddb_triple_freqs',query=''):
-	filterData={"terms":{"SUB_PRED_OBJ":[query]}}
+def get_term_stats(index='semmeddb_triple_freqs',query=[]):
+	filterData={"terms":{"SUB_PRED_OBJ":query}}
 	start=time.time()
 	res=es.search(
 		request_timeout=timeout,
 		index=index,
 		body={
-			"size":1,
+			"size":1000000,
 			"query": {
 				"bool" : {
 					"filter" : filterData
@@ -69,12 +73,12 @@ def get_term_stats(index='semmeddb_triple_freqs',query=''):
 	#print "Time taken:",t, "seconds"
 	return res['hits']['hits']
 
-def es_query(filterData,index,predCounts):
+def es_query(filterData,index,predCounts,resDic):
 	#print(filterData)
 	t,resCount,res=run_query(filterData,index)
 	if res>0:
 		#print(filterData)
-		print t,resCount
+		#print t,resCount
 		for r in res:
 			PMID=r['_source']['PMID']
 			#PREDICATION_ID=r['_source']['PREDICATION_ID']
@@ -82,12 +86,13 @@ def es_query(filterData,index,predCounts):
 			OBJECT_NAME=r['_source']['OBJECT_NAME']
 			SUBJECT_NAME=r['_source']['SUBJECT_NAME']
 			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
+			resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'pred':PREDICATE,'obj':OBJECT_NAME}
 			#print PMID,PREDICATION_ID
 			if PREDICATION_ID in predCounts:
 				predCounts[PREDICATION_ID]+=1
 			else:
 				predCounts[PREDICATION_ID]=1
-	return t,resCount,res,predCounts
+	return t,resCount,resDic,predCounts
 
 def fet(localSem,localPub,globalSem,globalPub):
 	#print(localSem,localPub,globalSem,globalPub)
@@ -134,8 +139,9 @@ def pub_sem(query,sem_trip_dic):
 	pmidList=[]
 	totalRes=0
 	predCounts={}
-	chunkSize=500
-	updateSize=1000
+	resDic={}
+	chunkSize=10000
+	updateSize=10000
 	if 0<pCount<maxA:
 		print "\n### Parsing ids ###"
 		start = time.time()
@@ -146,22 +152,21 @@ def pub_sem(query,sem_trip_dic):
 				pmid = l.group(1)
 				pmidList.append(pmid)
 				counter+=1
-				if counter % chunkSize == 0:
-					print('Querying ES...')
-					filterData={"terms":{"PMID":pmidList}}
-					t,resCount,res,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts)
-					totalRes+=resCount
-					pmidList=[]
 				if counter % updateSize == 0:
 					pc = round((float(counter)/float(pCount))*100)
-					#print(str(pc)+' % : '+str(len(pmidList)))
-		print('Querying ES...')
+					print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
+				if counter % chunkSize == 0:
+					#print('Querying ES...')
+					filterData={"terms":{"PMID":pmidList}}
+					t,resCount,resDic,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts,resDic=resDic)
+					totalRes+=resCount
+					pmidList=[]
 		filterData={"terms":{"PMID":pmidList}}
-		t,resCount,res,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts)
+		t,resCount,resDic,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts,resDic=resDic)
 		totalRes+=resCount
 
 		pc = round((float(counter)/float(pCount))*100)
-		print(str(pc)+' %')
+		print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
 		end = time.time()
 		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 		print('Total results:',totalRes)
@@ -173,25 +178,37 @@ def pub_sem(query,sem_trip_dic):
 		globalSem=es.count('semmeddb')['count']
 		#globalSem=25000000
 
+		#get triple freqs
+		tripleFreqs = {}
+		print('Geting freqs...',len(predCounts))
+		#print(predCounts.keys())
+		freq_res = get_term_stats(query=predCounts.keys())
+		#print(freq_res)
+		for i in freq_res:
+			tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
+
 		print('Doing enrichment...')
 		start = time.time()
+		counter=0
 		for k in sorted(predCounts, key=lambda k: predCounts[k], reverse=True):
+			counter+=1
+			if counter % chunkSize == 0:
+				pc = round((float(counter)/float(len(predCounts)))*100)
+				print(str(pc)+' % : '+str(counter))
 			if predCounts[k]>1:
-				#get frequency
-				freq_res = get_term_stats(query=k)
 				if freq_res:
-					#print(freq_res)
-					global_term_freq = freq_res[0]['_source']['frequency']
-					#print k,len(predCounts[k])
-					#do FET
-					#print(k,predCounts[k],totalRes,global_term_freq,globalSem)
-					odds,pval=fet(predCounts[k],totalRes,global_term_freq,globalSem)
+					odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
 
-					o.write(k+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(global_term_freq)+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
+					o.write(k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
 				else:
 					continue
 					#print(k,'has no freq')
 		o.close()
+		if len(predCounts)>1:
+			pc = round((float(counter)/float(len(predCounts)))*100)
+		else:
+			pc=100
+		print(str(pc)+' % : '+str(counter))
 		end = time.time()
 		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 	else:
@@ -210,17 +227,85 @@ def read_sem_triples():
 	print "\tTime taken:", round((end - start) / 60, 3), "minutes"
 	return sem_trip_dic
 
-def compare(q1,q2):
-	q1Dic={}
-	with gzip.open(q1) as f:
-		for line in f:
-			s,l,g = line.rstrip().split('\t')
-			q1Dic[s]={'local':l,'global':g}
-	q2Dic={}
-	with gzip.open(q1) as f:
-		for line in f:
-			s,l,g = line.rstrip().split('\t')
-			q1Dic[s]={'local':l,'global':g}
+def compare(aList,bList):
+	pValCut=1e-5
+	predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES']
+
+	aDic=defaultdict(dict)
+	for a in aList.split(','):
+		print(a)
+		with gzip.open(os.path.join('data',a+'.gz')) as f:
+			for line in f:
+				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
+				if float(p)<pValCut:
+					if pred not in predIgnore:
+						aDic[a][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+	bDic=defaultdict(dict)
+	for b in bList.split(','):
+		print(b)
+		with gzip.open(os.path.join('data',b+'.gz')) as f:
+			for line in f:
+				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
+				if float(p)<pValCut:
+					if pred not in predIgnore:
+						bDic[b][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+
+	print(len(aDic))
+	print(len(bDic))
+
+
+
+	#compare two sets of data
+	comDic=defaultdict(dict)
+	joinDic={}
+	predDic={}
+	joinCount=0
+	for a in aDic:
+		print(a)
+		counter=0
+		for s1 in aDic[a]:
+			counter+=1
+			pc = round((float(counter)/float(len(aDic[a])))*100,1)
+			#print(counter,pc,pc%10)
+			if pc % 10 == 0:
+				print(pc,'%')
+			#ignore less useful predicates
+			aSub,aPred,aObj = aDic[a][s1]['sub'],aDic[a][s1]['pred'],aDic[a][s1]['obj']
+			for b in bDic:
+				#print(b)
+				for s2 in bDic[b]:
+					#print(s1,s2)
+					#ignore less useful predicates
+					bSub,bPred,bObj = bDic[b][s2]['sub'],bDic[b][s2]['pred'],bDic[b][s2]['obj']
+					#print(aObj,bSub)
+					if aObj == bSub:
+						if aPred in predDic:
+							predDic[aPred]+=1
+						else:
+							predDic[aPred]=1
+						if bPred in predDic:
+							predDic[bPred]+=1
+						else:
+							predDic[bPred]=1
+						#print a,s1,aDic[a][s1],b,s2,bDic[b][s2]
+						comDic[a][s1]=aDic[a][s1]
+						comDic[b][s2]=bDic[b][s2]
+						joinCount+=1
+						joinDic[joinCount]={'s1':s1,'s2':s2,'d1':a,'d2':b}
+	#get some summaries
+	print(predDic)
+	for c in comDic:
+		print(c,len(comDic[c]))
+
+	with open('data/compare/nodes.json','w') as outfile:
+		#outfile={'source':a:'sem':s1:aDic[a][s1]}
+		json.dump(comDic,outfile)
+
+	o = open('data/compare/rels.tsv','w')
+	for i in joinDic:
+	#outfile={'source':a:'sem':s1:aDic[a][s1]}
+		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
+	o.close()
 
 if __name__ == '__main__':
 
@@ -229,6 +314,8 @@ if __name__ == '__main__':
 	#                   help='an integer for the accumulator')
 	parser.add_argument('-m,--method', dest='method', help='(get_data, compare)')
 	parser.add_argument('-q,--query', dest='query', help='the pubmed query')
+	parser.add_argument('-a,--query_a', dest='query_a', help='list of enriched data sets')
+	parser.add_argument('-b,--query_b', dest='query_b', help='list of enriched data sets')
 
 	args = parser.parse_args()
 	print(args)
@@ -246,10 +333,11 @@ if __name__ == '__main__':
 				for q in queries:
 					pub_sem(q,sem_trip_dic)
 		elif args.method == 'compare':
-			if args.query_1 == None:
-				print('Please provide a name')
+			if args.query_a == None or args.query_b == None:
+				print('Please provide two lists of data sets to compare')
 			else:
 				print('Comparing data...')
+				compare(args.query_a,args.query_b)
 				#delete_index(args.index_name)
 		else:
 			print("Not a good method")
