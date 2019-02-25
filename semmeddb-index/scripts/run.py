@@ -24,7 +24,7 @@ es = Elasticsearch(
 #curl -XGET 'localhost:9200/semmeddb/_search?pretty' -H "Content-Type: application/json" -d '{"size":0, "aggs" : {"type_count":{"cardinality" :{ "field" : "PMID" }}}}'
 globalPub=17734131
 
-#time python scripts/run.py -m compare -a 'CR1,CCDC6,KAT8' -b 'Alzheimer’s_disease'
+#time python scripts/run.py -m compare -a 'CR1,CCDC6,KAT8' -b 'Alzheimers_disease'
 
 def run_query(filterData,index,size=100000):
 	#print(index)
@@ -229,7 +229,7 @@ def read_sem_triples():
 
 def compare(aList,bList):
 	pValCut=1e-5
-	predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES']
+	predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','COEXISTS_WITH','ASSOCIATED_WITH']
 
 	aDic=defaultdict(dict)
 	for a in aList.split(','):
@@ -247,13 +247,14 @@ def compare(aList,bList):
 			for line in f:
 				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
 				if float(p)<pValCut:
+					#ignore less useful predicates
 					if pred not in predIgnore:
 						bDic[b][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
 
 	print(len(aDic))
 	print(len(bDic))
 
-
+	ignoreTerms=['Patients']
 
 	#compare two sets of data
 	comDic=defaultdict(dict)
@@ -269,15 +270,18 @@ def compare(aList,bList):
 			#print(counter,pc,pc%10)
 			if pc % 10 == 0:
 				print(pc,'%')
-			#ignore less useful predicates
 			aSub,aPred,aObj = aDic[a][s1]['sub'],aDic[a][s1]['pred'],aDic[a][s1]['obj']
 			for b in bDic:
 				#print(b)
 				for s2 in bDic[b]:
 					#print(s1,s2)
-					#ignore less useful predicates
 					bSub,bPred,bObj = bDic[b][s2]['sub'],bDic[b][s2]['pred'],bDic[b][s2]['obj']
 					#print(aObj,bSub)
+					#testing
+					if bSub.startswith('Alzheimer'):
+						continue
+					if bSub in ignoreTerms:
+						continue
 					if aObj == bSub:
 						if aPred in predDic:
 							predDic[aPred]+=1
