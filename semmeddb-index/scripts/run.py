@@ -73,6 +73,17 @@ def get_term_stats(index='semmeddb_triple_freqs',query=[]):
 	#print "Time taken:",t, "seconds"
 	return res['hits']['hits']
 
+def create_es_filter(pmidList):
+	typeFilterList = [
+		"aapp","amas","anab","bacs","biof","bpoc","chem","comd","dsyn","emod","enzy","genf","gngm","hcpp","hops","horm","imft","inch",
+		"moft","mosq","neop","nnon","nsba","orch","orgf","ortf","patf","rcpt","sbst","socb","tisu","topp","virs","vita"]
+	filterOptions = [
+			{"terms":{"PMID":pmidList}},
+			{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
+			{"terms":{"SUBJECT_SEMTYPE":typeFilterList}},
+			]
+	return filterOptions
+
 def es_query(filterData,index,predCounts,resDic):
 	#print(filterData)
 	t,resCount,res=run_query(filterData,index)
@@ -142,6 +153,7 @@ def pub_sem(query,sem_trip_dic):
 	resDic={}
 	chunkSize=10000
 	updateSize=10000
+	filterOptions = create_es_filter(pmidList)
 	if 0<pCount<maxA:
 		print "\n### Parsing ids ###"
 		start = time.time()
@@ -157,12 +169,10 @@ def pub_sem(query,sem_trip_dic):
 					print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
 				if counter % chunkSize == 0:
 					#print('Querying ES...')
-					filterData={"terms":{"PMID":pmidList}}
-					t,resCount,resDic,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts,resDic=resDic)
+					t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
 					totalRes+=resCount
 					pmidList=[]
-		filterData={"terms":{"PMID":pmidList}}
-		t,resCount,resDic,predCounts=es_query(filterData=filterData,index='semmeddb',predCounts=predCounts,resDic=resDic)
+		t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
 		totalRes+=resCount
 
 		pc = round((float(counter)/float(pCount))*100)
@@ -229,7 +239,7 @@ def read_sem_triples():
 
 def compare(aList,bList):
 	pValCut=1e-5
-	predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','COEXISTS_WITH','ASSOCIATED_WITH']
+	predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','COEXISTS_WITH','ASSOCIATED_WITH','compared_with']
 
 	aDic=defaultdict(dict)
 	for a in aList.split(','):
@@ -343,7 +353,7 @@ if __name__ == '__main__':
 					pub_sem(q,sem_trip_dic)
 		elif args.method == 'compare':
 			if args.query_a == None or args.query_b == None:
-				print('Please provide two lists of data sets to compare')
+				print('Please provide two lists of data sets to compare (-a and -b)')
 			else:
 				print('Comparing data...')
 				compare(args.query_a,args.query_b)
