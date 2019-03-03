@@ -90,4 +90,6 @@ def index_predicate_data(predicate_data,index_name):
 		print('counting index timeout',index_name)
 
 #index_predicate_data('data/semmedVER31_R_PREDICATION_06302018_1000.tsv.gz','semmeddb')
-index_predicate_data('./data/semmeddb_triple_freqs.txt.gz','semmeddb_triple_freqs')
+#index_predicate_data('./data/semmeddb_triple_freqs.txt.gz','semmeddb_triple_freqs')
+index_predicate_data('./data/freqs/semmeddb_subject_freqs.txt.gz','semmeddb_subject_freqs')
+index_predicate_data('./data/freqs/semmeddb_object_freqs.txt.gz','semmeddb_object_freqs')

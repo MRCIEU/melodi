@@ -102,14 +102,14 @@ def create_graph(a_nodes,b_nodes,rels):
 	counter=0
 	with open(rels) as f:
 		for line in f:
+			counter+=1
 			num,s1,s2,overlap,d1,d2 = line.rstrip().split('\t')
 			tx.run(statement,{'dataName1':d1,'dataName2':d2,'semTriple1':escape_things(s1),'semTriple2':escape_things(s2),'overlapName':overlap})
 			if counter % 1000 == 0:
-				print(statement)
+				print(counter)
 				tx.commit()
 				tx = session.begin_transaction()
-			print(counter)
-			counter+=1
+			#print(counter)
 			#com="match (d1:DataSet{name:'"+escape_things(d1)+"'})-[:ENRICHED]->(sem1:SemMedTriple{name:'"+escape_things(s1)+"'})-[:CONTAINS]-(sub1:SemSub)-[:SUB_PRED]-(pred1:SemPred)-[:PRED_OBJ]-(obj1:SemObj{name:'"+overlap+"'}) "\
 			#    "match (d2:DataSet{name:'"+escape_things(d2)+"'})-[:ENRICHED]->(sem2:SemMedTriple{name:'"+escape_things(s2)+"'})<-[:CONTAINS]-(obj2:SemObj)<-[:PRED_OBJ]-(pred2:SemPred)<-[:SUB_PRED]-(sub2:SemSub{name:'"+overlap+"'}) "\
 			#    "merge (obj1)-[:OVERLAPS{d1:'"+d1+"',d2:'"+d2+"'}]-(sub2) return sem1,sem2,sub2,obj1;"
@@ -120,6 +120,7 @@ def create_graph(a_nodes,b_nodes,rels):
 			#for res in session.run(com): continue;
 	tx.run(statement,{'dataName1':d1,'dataName2':d2,'semTriple1':escape_things(s1),'semTriple2':escape_things(s2),'overlapName':overlap})
 	tx.commit()
+	print(counter,'relationships added')
 
 
 create_graph('data/compare/a_nodes.json','data/compare/b_nodes.json','data/compare/rels.tsv')
