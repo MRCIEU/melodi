@@ -1,0 +1,4 @@
+scipy
+requests
+elasticsearch
+neo4j
