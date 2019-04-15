@@ -74,9 +74,15 @@ def get_term_stats(index='semmeddb_triple_freqs',query=[]):
 	return res['hits']['hits']
 
 def create_es_filter(pmidList):
+	#https://github.com/MRCIEU/melodi/blob/master/data/SRDEF.txt
+	#typeFilterList = [
+	#	"aapp","amas","anab","bacs","biof","bpoc","celf","chem","comd","dsyn","emod","enzy","genf","gngm","hcpp","hops","horm","imft","inch",
+	#	"moft","mosq","neop","nnon","nsba","orch","orgf","ortf","patf","rcpt","sbst","socb","tisu","topp","virs","vita"]
+
+	#typeFilterList = [
+	#	"aapp","amas","bacs","celf","enzy","gngm","horm","orch"]
 	typeFilterList = [
-		"aapp","amas","anab","bacs","biof","bpoc","chem","comd","dsyn","emod","enzy","genf","gngm","hcpp","hops","horm","imft","inch",
-		"moft","mosq","neop","nnon","nsba","orch","orgf","ortf","patf","rcpt","sbst","socb","tisu","topp","virs","vita"]
+		"aapp","enzy","gngm"]
 	filterOptions = [
 			{"terms":{"PMID":pmidList}},
 			{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
@@ -95,9 +101,11 @@ def es_query(filterData,index,predCounts,resDic):
 			#PREDICATION_ID=r['_source']['PREDICATION_ID']
 			PREDICATE=r['_source']['PREDICATE']
 			OBJECT_NAME=r['_source']['OBJECT_NAME']
+			OBJECT_TYPE=r['_source']['OBJECT_SEMTYPE']
 			SUBJECT_NAME=r['_source']['SUBJECT_NAME']
+			SUBJECT_TYPE=r['_source']['SUBJECT_SEMTYPE']
 			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
-			resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'pred':PREDICATE,'obj':OBJECT_NAME}
+			resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'subType':SUBJECT_TYPE,'pred':PREDICATE,'obj':OBJECT_NAME,'objType':OBJECT_TYPE}
 			#print PMID,PREDICATION_ID
 			if PREDICATION_ID in predCounts:
 				predCounts[PREDICATION_ID]+=1
@@ -209,7 +217,7 @@ def pub_sem(query,sem_trip_dic):
 				if freq_res:
 					odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
 
-					o.write(k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
+					o.write(k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
 				else:
 					continue
 					#print(k,'has no freq')
@@ -246,20 +254,20 @@ def compare(aList,bList):
 		print(a)
 		with gzip.open(os.path.join('data',a+'.gz')) as f:
 			for line in f:
-				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
+				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
 				if float(p)<pValCut:
 					if pred not in predIgnore:
-						aDic[a][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+						aDic[a][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
 	bDic=defaultdict(dict)
 	for b in bList.split(','):
 		print(b)
 		with gzip.open(os.path.join('data',b+'.gz')) as f:
 			for line in f:
-				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
+				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
 				if float(p)<pValCut:
 					#ignore less useful predicates
 					if pred not in predIgnore:
-						bDic[b][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+						bDic[b][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
 
 	print(len(aDic))
 	print(len(bDic))
@@ -288,7 +296,7 @@ def compare(aList,bList):
 					#print(s1,s2)
 					bSub,bPred,bObj = bDic[b][s2]['sub'],bDic[b][s2]['pred'],bDic[b][s2]['obj']
 					#print(aObj,bSub)
-					#testing
+					#testing removal of words
 					if bSub.startswith('Alzheimer'):
 						continue
 					if bSub in ignoreTerms:
@@ -306,7 +314,7 @@ def compare(aList,bList):
 						aComDic[a][s1]=aDic[a][s1]
 						bComDic[b][s2]=bDic[b][s2]
 						joinCount+=1
-						joinDic[joinCount]={'s1':s1,'s2':s2,'overlap':aObj,'d1':a,'d2':b}
+						joinDic[joinCount]={'s1':s1,'aSub':aSub,'aPred':aPred,'aObj':aObj,'s2':s2,'bSub':bSub,'bPred':bPred,'bObj':bObj,'overlap':aObj,'d1':a,'d2':b}
 	#get some summaries
 	print(predDic)
 	for c in aComDic:
@@ -323,7 +331,7 @@ def compare(aList,bList):
 	o = open('data/compare/rels.tsv','w')
 	for i in joinDic:
 	#outfile={'source':a:'sem':s1:aDic[a][s1]}
-		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
+		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['bSub']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
 	o.close()
 
 if __name__ == '__main__':

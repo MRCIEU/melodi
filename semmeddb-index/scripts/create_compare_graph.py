@@ -31,8 +31,10 @@ def load_nodes(session,nodes,type):
 			#print(d)
 			for s in data[d]:
 				sub=escape_things(data[d][s]['sub'])
+				subType=data[d][s]['subType']
 				pred=data[d][s]['pred']
 				obj=escape_things(data[d][s]['obj'])
+				objType=data[d][s]['objType']
 				triple=sub+':'+pred+":"+obj
 				pval,odds = data[d][s]['pval'],data[d][s]['odds']
 				d_clean = escape_things(d)
@@ -45,24 +47,39 @@ def load_nodes(session,nodes,type):
 				com="match (d:DataSet{name:'"+d_clean+"'}) match (sem:SemMedTriple{name:'"+triple+"'}) merge (d)-[:ENRICHED{pval:"+pval+",odds:"+odds+"}]->(sem) return d,sem;"
 				for res in session.run(com): continue;
 
-				#sep nodes for each part of semmmed
-				com="merge (sub:SemSub{name:'"+sub+"'}) return sub;"
+				com="merge (sub:Concept{name:'"+sub+"',type:'"+subType+"'}) return sub;"
 				for res in session.run(com): continue;
-				com="merge (pred:SemPred{name:'"+pred+"'}) return pred;"
+				com="merge (obj:Concept{name:'"+obj+"',type:'"+objType+"'}) return obj;"
 				for res in session.run(com): continue;
-				com="merge (obj:SemObj{name:'"+obj+"'}) return obj;"
-				for res in session.run(com): continue;
-				com="match (sub:SemSub{name:'"+sub+"'}) match (pred:SemPred{name:'"+pred+"'}) match (obj:SemObj{name:'"+obj+"'}) "\
-				    "merge (sub)-[:SUB_PRED]->(pred) merge (pred)-[:PRED_OBJ]->(obj);"
+				com="match (sub:Concept{name:'"+sub+"'}) match (obj:Concept{name:'"+obj+"'}) merge (sub)-[:"+pred+"]->(obj);"
+				#print(com)
 				for res in session.run(com): continue;
 				if type == 'a':
-					com="match (sem:SemMedTriple{name:'"+triple+"'}) match (sub:SemSub{name:'"+sub+"'}) "\
-						"merge (sem)-[:CONTAINS]->(sub);"
+					com="match (sem:SemMedTriple{name:'"+triple+"'}) match (sub:Concept{name:'"+sub+"'}) "\
+					"merge (sem)-[:CONTAINS]->(sub);"
 				else:
-					com="match (sem:SemMedTriple{name:'"+triple+"'}) match (obj:SemObj{name:'"+obj+"'}) "\
-						"merge (sem)<-[:CONTAINS]-(obj);"
-
+					com="match (sem:SemMedTriple{name:'"+triple+"'}) match (obj:Concept{name:'"+obj+"'}) "\
+					"merge (sem)<-[:CONTAINS]-(obj);"
 				for res in session.run(com): continue;
+
+				# for res in session.run(com): continue;
+				# #sep nodes for each part of semmmed
+				# com="merge (sub:SemSub{name:'"+sub+"'}) return sub;"
+				# for res in session.run(com): continue;
+				# com="merge (pred:SemPred{name:'"+pred+"'}) return pred;"
+				# for res in session.run(com): continue;
+				# com="merge (obj:SemObj{name:'"+obj+"'}) return obj;"
+				# for res in session.run(com): continue;
+				# com="match (sub:SemSub{name:'"+sub+"'}) match (pred:SemPred{name:'"+pred+"'}) match (obj:SemObj{name:'"+obj+"'}) "\
+				#     "merge (sub)-[:SUB_PRED]->(pred) merge (pred)-[:PRED_OBJ]->(obj);"
+				# for res in session.run(com): continue;
+				# if type == 'a':
+				# 	com="match (sem:SemMedTriple{name:'"+triple+"'}) match (sub:SemSub{name:'"+sub+"'}) "\
+				# 		"merge (sem)-[:CONTAINS]->(sub);"
+				# else:
+				# 	com="match (sem:SemMedTriple{name:'"+triple+"'}) match (obj:SemObj{name:'"+obj+"'}) "\
+				# 		"merge (sem)<-[:CONTAINS]-(obj);"
+				# for res in session.run(com): continue;
 
 def create_graph(a_nodes,b_nodes,rels):
 	driver=neo4j_connect()
@@ -81,12 +98,14 @@ def create_graph(a_nodes,b_nodes,rels):
 	com="CREATE index on :SemMedTriple(obj)"
 	session.run(com)
 
-	com="CREATE index on :SemSub(name);"
+	com="CREATE index on :Concept(name);"
 	session.run(com)
-	com="CREATE index on :SemPred(name);"
-	session.run(com)
-	com="CREATE index on :SemObj(name);"
-	session.run(com)
+	#com="CREATE index on :SemSub(name);"
+	#session.run(com)
+	#com="CREATE index on :SemPred(name);"
+	#session.run(com)
+	#com="CREATE index on :SemObj(name);"
+	#session.run(com)
 
 	print('Reading',a_nodes)
 	load_nodes(session,a_nodes,'a')
@@ -96,15 +115,25 @@ def create_graph(a_nodes,b_nodes,rels):
 	print('Adding rels...')
 	tx = session.begin_transaction()
 	#statement = "MERGE (n:Pubmed {pmid:{pmid}}) ON MATCH SET n.title={title},n.jt={jt} on CREATE SET n.dcom={dcom},n.issn={issn},n.title={title},n.jt={jt}"
-	statement = "match (d1:DataSet{name:{dataName1}})-[:ENRICHED]->(sem1:SemMedTriple{name:{semTriple1}})-[:CONTAINS]-(sub1:SemSub)-[:SUB_PRED]-(pred1:SemPred)-[:PRED_OBJ]-(obj1:SemObj{name:{overlapName}}) "\
-		"match (d2:DataSet{name:{dataName2}})-[:ENRICHED]->(sem2:SemMedTriple{name:{semTriple2}})<-[:CONTAINS]-(obj2:SemObj)<-[:PRED_OBJ]-(pred2:SemPred)<-[:SUB_PRED]-(sub2:SemSub{name:{overlapName}}) "\
+	#statement = "match (d1:DataSet{name:{dataName1}})-[:ENRICHED]->(sem1:SemMedTriple{name:{semTriple1}})-[:CONTAINS]-(sub1:SemSub)-[:SUB_PRED]-(pred1:SemPred)-[:PRED_OBJ]-(obj1:SemObj{name:{overlapName}}) "\
+	#	"match (d2:DataSet{name:{dataName2}})-[:ENRICHED]->(sem2:SemMedTriple{name:{semTriple2}})<-[:CONTAINS]-(obj2:SemObj)<-[:PRED_OBJ]-(pred2:SemPred)<-[:SUB_PRED]-(sub2:SemSub{name:{overlapName}}) "\
+	#	"merge (obj1)-[:OVERLAPS{d1:{dataName1},d2:{dataName2}}]-(sub2) return sem1,sem2,sub2,obj1;"
+	statement = "match (d1:DataSet{name:{dataName1}})-[:ENRICHED]->(sem1:SemMedTriple{name:{semTriple1}})-[:CONTAINS]-(sub1:Concept{name:{aSub}})-[rel1:{aPred}]->(obj1:Concept{name:{overlapName}}) "\
+		"match (d2:DataSet{name:{dataName2}})-[:ENRICHED]->(sem2:SemMedTriple{name:{semTriple2}})<-[:CONTAINS]-(obj2:Concept{name:{bObj}})<-[rel2:{bPred}]-(sub2:SemSub{name:{overlapName}}) "\
 		"merge (obj1)-[:OVERLAPS{d1:{dataName1},d2:{dataName2}}]-(sub2) return sem1,sem2,sub2,obj1;"
 	counter=0
 	with open(rels) as f:
 		for line in f:
 			counter+=1
-			num,s1,s2,overlap,d1,d2 = line.rstrip().split('\t')
-			tx.run(statement,{'dataName1':d1,'dataName2':d2,'semTriple1':escape_things(s1),'semTriple2':escape_things(s2),'overlapName':overlap})
+			num,semTriple1,aSub,aPred,aObj,semTriple2,bSub,bPred,bObj,overlapName,dataName1,dataName2 = line.rstrip().split('\t')
+			#print(num,s1,aSub,aPred,aObj,s2,bSub,bPred,bObj,overlap,d1,d2)
+			#print(statement,{'dataName1':d1,'dataName2':d2,'semTriple1':escape_things(s1),'aSub':aSub,'aPred':aPred,'aObj':aObj,'semTriple2':escape_things(s2),'bSub':bSub,'bPred':bPred,'bObj':bObj,'overlapName':overlap})
+			#tx.run(statement,{'dataName1':d1,'dataName2':d2,'semTriple1':escape_things(s1),'aSub':aSub,'aPred':aPred,'aObj':aObj,'semTriple2':escape_things(s2),'bSub':bSub,'bPred':bPred,'bObj':bObj,'overlapName':overlap})
+			statement = "match (d1:DataSet{name:'"+escape_things(dataName1)+"'})-[:ENRICHED]->(sem1:SemMedTriple{name:'"+escape_things(semTriple1)+"'})-[:CONTAINS]-(sub1:Concept{name:'"+escape_things(aSub)+"'})-[rel1:"+aPred+"]->(obj1:Concept{name:'"+escape_things(overlapName)+"'}) "\
+				"match (d2:DataSet{name:'"+escape_things(dataName2)+"'})-[:ENRICHED]->(sem2:SemMedTriple{name:'"+escape_things(semTriple2)+"'})<-[:CONTAINS]-(obj2:Concept{name:'"+escape_things(bObj)+"'})<-[rel2:"+bPred+"]-(sub2:Concept{name:'"+escape_things(overlapName)+"'}) "\
+				"merge (obj1)-[:OVERLAPS{d1:'"+escape_things(dataName1)+"',d2:'"+escape_things(dataName2)+"'}]-(sub2) return sem1,sem2,sub2,obj1;"
+			#print(statement)
+			tx.run(statement)
 			if counter % 1000 == 0:
 				print(counter)
 				tx.commit()
@@ -118,7 +147,7 @@ def create_graph(a_nodes,b_nodes,rels):
 			#     "merge (sem1)-[:OVERLAPS]-(sem2) return sem1,sem2;"
 			#print(com)
 			#for res in session.run(com): continue;
-	tx.run(statement,{'dataName1':d1,'dataName2':d2,'semTriple1':escape_things(s1),'semTriple2':escape_things(s2),'overlapName':overlap})
+	tx.run(statement)
 	tx.commit()
 	print(counter,'relationships added')
 
