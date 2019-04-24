@@ -32,11 +32,6 @@ def run_query(filterData,index,size=100000):
 	res=es.search(
 		request_timeout=timeout,
 		index=index,
-		#index="ukb-b",
-		#index="pqtl-a",
-		#index="mrb-original",
-		#index="mrbase-opt-disk",
-		#doc_type="assoc",
 		body={
 			"size":size,
 			#{}"profile": True,
@@ -93,7 +88,8 @@ def create_es_filter(pmidList):
 def es_query(filterData,index,predCounts,resDic):
 	#print(filterData)
 	t,resCount,res=run_query(filterData,index)
-	if res>0:
+	print(resCount)
+	if resCount>0:
 		#print(filterData)
 		#print t,resCount
 		for r in res:
@@ -121,7 +117,7 @@ def fet(localSem,localPub,globalSem,globalPub):
 
 def pub_sem(query,sem_trip_dic):
 	start=time.time()
-	print "\n### Getting ids for "+query+" ###"
+	print("\n### Getting ids for "+query+" ###")
 	url="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
 	params = {'db': 'pubmed', 'term': query,'retmax':'1000000000','rettype':'uilist'}
 
@@ -140,7 +136,7 @@ def pub_sem(query,sem_trip_dic):
 	out.close()
 	r.status_code
 	end=time.time()
-	print "Time taken:",round((end-start)/60,3),"minutes"
+	print("Time taken:",round((end-start)/60,3),"minutes")
 
 	#count the number of pmids
 	cmd = "grep -c '<Id>' "+ranFile
@@ -150,9 +146,9 @@ def pub_sem(query,sem_trip_dic):
 	try:
 		pCount = int(subprocess.check_output(cmd, shell=True))
 	except:
-		print "No results"
+		print("No results")
 
-	print "Total pmids: "+str(pCount)
+	print("Total pmids: "+str(pCount))
 	maxA=1000000
 	counter=0
 	pmidList=[]
@@ -163,7 +159,7 @@ def pub_sem(query,sem_trip_dic):
 	updateSize=10000
 	filterOptions = create_es_filter(pmidList)
 	if 0<pCount<maxA:
-		print "\n### Parsing ids ###"
+		print("\n### Parsing ids ###")
 		start = time.time()
 		f = open('/tmp/'+ran+'.txt', 'r')
 		for line in f:
@@ -180,13 +176,14 @@ def pub_sem(query,sem_trip_dic):
 					t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
 					totalRes+=resCount
 					pmidList=[]
+		#print(filterOptions)
 		t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
 		totalRes+=resCount
 
 		pc = round((float(counter)/float(pCount))*100)
 		print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
 		end = time.time()
-		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+		print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 		print('Total results:',totalRes)
 		outFile=query.replace(' ','_')+'.gz'
 		o = gzip.open('data/'+outFile,'w')
@@ -200,7 +197,7 @@ def pub_sem(query,sem_trip_dic):
 		tripleFreqs = {}
 		print('Geting freqs...',len(predCounts))
 		#print(predCounts.keys())
-		freq_res = get_term_stats(query=predCounts.keys())
+		freq_res = get_term_stats(query=list(predCounts.keys()))
 		#print(freq_res)
 		for i in freq_res:
 			tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
@@ -216,8 +213,8 @@ def pub_sem(query,sem_trip_dic):
 			if predCounts[k]>1:
 				if freq_res:
 					odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
-
-					o.write(k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
+					t = k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n'
+					o.write(t.encode('utf-8'))
 				else:
 					continue
 					#print(k,'has no freq')
@@ -228,7 +225,7 @@ def pub_sem(query,sem_trip_dic):
 			pc=100
 		print(str(pc)+' % : '+str(counter))
 		end = time.time()
-		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+		print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 	else:
 		print('Too many articles')
 
@@ -242,7 +239,7 @@ def read_sem_triples():
 			sem_trip_dic[s]=f
 	print(len(sem_trip_dic))
 	end = time.time()
-	print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+	print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 	return sem_trip_dic
 
 def compare(aList,bList):
