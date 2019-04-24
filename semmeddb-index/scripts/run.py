@@ -249,7 +249,7 @@ def compare(aList,bList):
 	aDic=defaultdict(dict)
 	for a in aList.split(','):
 		print(a)
-		with gzip.open(os.path.join('data',a+'.gz')) as f:
+		with gzip.open(os.path.join('data',a+'.gz'),'rb') as f:
 			for line in f:
 				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
 				if float(p)<pValCut:
