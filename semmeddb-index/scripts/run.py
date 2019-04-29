@@ -32,11 +32,6 @@ def run_query(filterData,index,size=100000):
 	res=es.search(
 		request_timeout=timeout,
 		index=index,
-		#index="ukb-b",
-		#index="pqtl-a",
-		#index="mrb-original",
-		#index="mrbase-opt-disk",
-		#doc_type="assoc",
 		body={
 			"size":size,
 			#{}"profile": True,
@@ -74,9 +69,15 @@ def get_term_stats(index='semmeddb_triple_freqs',query=[]):
 	return res['hits']['hits']
 
 def create_es_filter(pmidList):
+	#https://github.com/MRCIEU/melodi/blob/master/data/SRDEF.txt
+	#typeFilterList = [
+	#	"aapp","amas","anab","bacs","biof","bpoc","celf","chem","comd","dsyn","emod","enzy","genf","gngm","hcpp","hops","horm","imft","inch",
+	#	"moft","mosq","neop","nnon","nsba","orch","orgf","ortf","patf","rcpt","sbst","socb","tisu","topp","virs","vita"]
+
+	#typeFilterList = [
+	#	"aapp","amas","bacs","celf","enzy","gngm","horm","orch"]
 	typeFilterList = [
-		"aapp","amas","anab","bacs","biof","bpoc","chem","comd","dsyn","emod","enzy","genf","gngm","hcpp","hops","horm","imft","inch",
-		"moft","mosq","neop","nnon","nsba","orch","orgf","ortf","patf","rcpt","sbst","socb","tisu","topp","virs","vita"]
+		"aapp","enzy","gngm"]
 	filterOptions = [
 			{"terms":{"PMID":pmidList}},
 			{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
@@ -87,7 +88,8 @@ def create_es_filter(pmidList):
 def es_query(filterData,index,predCounts,resDic):
 	#print(filterData)
 	t,resCount,res=run_query(filterData,index)
-	if res>0:
+	print(resCount)
+	if resCount>0:
 		#print(filterData)
 		#print t,resCount
 		for r in res:
@@ -95,9 +97,11 @@ def es_query(filterData,index,predCounts,resDic):
 			#PREDICATION_ID=r['_source']['PREDICATION_ID']
 			PREDICATE=r['_source']['PREDICATE']
 			OBJECT_NAME=r['_source']['OBJECT_NAME']
+			OBJECT_TYPE=r['_source']['OBJECT_SEMTYPE']
 			SUBJECT_NAME=r['_source']['SUBJECT_NAME']
+			SUBJECT_TYPE=r['_source']['SUBJECT_SEMTYPE']
 			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
-			resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'pred':PREDICATE,'obj':OBJECT_NAME}
+			resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'subType':SUBJECT_TYPE,'pred':PREDICATE,'obj':OBJECT_NAME,'objType':OBJECT_TYPE}
 			#print PMID,PREDICATION_ID
 			if PREDICATION_ID in predCounts:
 				predCounts[PREDICATION_ID]+=1
@@ -113,7 +117,7 @@ def fet(localSem,localPub,globalSem,globalPub):
 
 def pub_sem(query,sem_trip_dic):
 	start=time.time()
-	print "\n### Getting ids for "+query+" ###"
+	print("\n### Getting ids for "+query+" ###")
 	url="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
 	params = {'db': 'pubmed', 'term': query,'retmax':'1000000000','rettype':'uilist'}
 
@@ -132,7 +136,7 @@ def pub_sem(query,sem_trip_dic):
 	out.close()
 	r.status_code
 	end=time.time()
-	print "Time taken:",round((end-start)/60,3),"minutes"
+	print("Time taken:",round((end-start)/60,3),"minutes")
 
 	#count the number of pmids
 	cmd = "grep -c '<Id>' "+ranFile
@@ -142,9 +146,9 @@ def pub_sem(query,sem_trip_dic):
 	try:
 		pCount = int(subprocess.check_output(cmd, shell=True))
 	except:
-		print "No results"
+		print("No results")
 
-	print "Total pmids: "+str(pCount)
+	print("Total pmids: "+str(pCount))
 	maxA=1000000
 	counter=0
 	pmidList=[]
@@ -155,7 +159,7 @@ def pub_sem(query,sem_trip_dic):
 	updateSize=10000
 	filterOptions = create_es_filter(pmidList)
 	if 0<pCount<maxA:
-		print "\n### Parsing ids ###"
+		print("\n### Parsing ids ###")
 		start = time.time()
 		f = open('/tmp/'+ran+'.txt', 'r')
 		for line in f:
@@ -172,13 +176,14 @@ def pub_sem(query,sem_trip_dic):
 					t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
 					totalRes+=resCount
 					pmidList=[]
+		#print(filterOptions)
 		t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
 		totalRes+=resCount
 
 		pc = round((float(counter)/float(pCount))*100)
 		print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
 		end = time.time()
-		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+		print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 		print('Total results:',totalRes)
 		outFile=query.replace(' ','_')+'.gz'
 		o = gzip.open('data/'+outFile,'w')
@@ -192,7 +197,7 @@ def pub_sem(query,sem_trip_dic):
 		tripleFreqs = {}
 		print('Geting freqs...',len(predCounts))
 		#print(predCounts.keys())
-		freq_res = get_term_stats(query=predCounts.keys())
+		freq_res = get_term_stats(query=list(predCounts.keys()))
 		#print(freq_res)
 		for i in freq_res:
 			tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
@@ -208,8 +213,8 @@ def pub_sem(query,sem_trip_dic):
 			if predCounts[k]>1:
 				if freq_res:
 					odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
-
-					o.write(k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n')
+					t = k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n'
+					o.write(t.encode('utf-8'))
 				else:
 					continue
 					#print(k,'has no freq')
@@ -220,7 +225,7 @@ def pub_sem(query,sem_trip_dic):
 			pc=100
 		print(str(pc)+' % : '+str(counter))
 		end = time.time()
-		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+		print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 	else:
 		print('Too many articles')
 
@@ -234,7 +239,7 @@ def read_sem_triples():
 			sem_trip_dic[s]=f
 	print(len(sem_trip_dic))
 	end = time.time()
-	print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+	print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 	return sem_trip_dic
 
 def compare(aList,bList):
@@ -244,22 +249,22 @@ def compare(aList,bList):
 	aDic=defaultdict(dict)
 	for a in aList.split(','):
 		print(a)
-		with gzip.open(os.path.join('data',a+'.gz')) as f:
+		with gzip.open(os.path.join('data',a+'.gz'),'rb') as f:
 			for line in f:
-				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
+				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
 				if float(p)<pValCut:
 					if pred not in predIgnore:
-						aDic[a][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+						aDic[a][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
 	bDic=defaultdict(dict)
 	for b in bList.split(','):
 		print(b)
 		with gzip.open(os.path.join('data',b+'.gz')) as f:
 			for line in f:
-				s,sub,pred,obj,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
+				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
 				if float(p)<pValCut:
 					#ignore less useful predicates
 					if pred not in predIgnore:
-						bDic[b][s]={'sub':sub,'obj':obj,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+						bDic[b][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
 
 	print(len(aDic))
 	print(len(bDic))
@@ -288,7 +293,7 @@ def compare(aList,bList):
 					#print(s1,s2)
 					bSub,bPred,bObj = bDic[b][s2]['sub'],bDic[b][s2]['pred'],bDic[b][s2]['obj']
 					#print(aObj,bSub)
-					#testing
+					#testing removal of words
 					if bSub.startswith('Alzheimer'):
 						continue
 					if bSub in ignoreTerms:
@@ -306,7 +311,7 @@ def compare(aList,bList):
 						aComDic[a][s1]=aDic[a][s1]
 						bComDic[b][s2]=bDic[b][s2]
 						joinCount+=1
-						joinDic[joinCount]={'s1':s1,'s2':s2,'overlap':aObj,'d1':a,'d2':b}
+						joinDic[joinCount]={'s1':s1,'aSub':aSub,'aPred':aPred,'aObj':aObj,'s2':s2,'bSub':bSub,'bPred':bPred,'bObj':bObj,'overlap':aObj,'d1':a,'d2':b}
 	#get some summaries
 	print(predDic)
 	for c in aComDic:
@@ -323,7 +328,7 @@ def compare(aList,bList):
 	o = open('data/compare/rels.tsv','w')
 	for i in joinDic:
 	#outfile={'source':a:'sem':s1:aDic[a][s1]}
-		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
+		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['bSub']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
 	o.close()
 
 if __name__ == '__main__':
