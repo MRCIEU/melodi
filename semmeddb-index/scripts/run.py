@@ -26,6 +26,11 @@ globalPub=17734131
 
 #time python scripts/run.py -m compare -a 'CR1,CCDC6,KAT8' -b 'Alzheimers_disease'
 
+#globals
+predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','compared_with']
+termIgnore=['Patients','Disease','Genes','Proteins']
+
+
 def run_query(filterData,index,size=100000):
 	#print(index)
 	start=time.time()
@@ -48,7 +53,7 @@ def run_query(filterData,index,size=100000):
 	#print res['hits']['total']
 	return t,res['hits']['total'],res['hits']['hits']
 
-def get_term_stats(index='semmeddb_triple_freqs',query=[]):
+def get_semmed_data(index='semmeddb_triple_freqs',query=[]):
 	filterData={"terms":{"SUB_PRED_OBJ":query}}
 	start=time.time()
 	res=es.search(
@@ -68,6 +73,7 @@ def get_term_stats(index='semmeddb_triple_freqs',query=[]):
 	#print "Time taken:",t, "seconds"
 	return res['hits']['hits']
 
+
 def create_es_filter(pmidList):
 	#https://github.com/MRCIEU/melodi/blob/master/data/SRDEF.txt
 	#typeFilterList = [
@@ -76,8 +82,9 @@ def create_es_filter(pmidList):
 
 	#typeFilterList = [
 	#	"aapp","amas","bacs","celf","enzy","gngm","horm","orch"]
-	typeFilterList = [
-		"aapp","enzy","gngm"]
+	#typeFilterList = ["aapp","enzy","gngm"]
+	typeFilterList = ["aapp","enzy","gngm","chem","clnd","dsyn","genf","horm","hops","inch","lipd","neop","orch"]
+
 	filterOptions = [
 			{"terms":{"PMID":pmidList}},
 			{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
@@ -85,7 +92,7 @@ def create_es_filter(pmidList):
 			]
 	return filterOptions
 
-def es_query(filterData,index,predCounts,resDic):
+def es_query(filterData,index,predCounts,resDic,pubDic):
 	#print(filterData)
 	t,resCount,res=run_query(filterData,index)
 	print(resCount)
@@ -101,13 +108,19 @@ def es_query(filterData,index,predCounts,resDic):
 			SUBJECT_NAME=r['_source']['SUBJECT_NAME']
 			SUBJECT_TYPE=r['_source']['SUBJECT_SEMTYPE']
 			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
-			resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'subType':SUBJECT_TYPE,'pred':PREDICATE,'obj':OBJECT_NAME,'objType':OBJECT_TYPE}
-			#print PMID,PREDICATION_ID
-			if PREDICATION_ID in predCounts:
-				predCounts[PREDICATION_ID]+=1
-			else:
-				predCounts[PREDICATION_ID]=1
-	return t,resCount,resDic,predCounts
+			#filter on predicate
+			if PREDICATE not in predIgnore and OBJECT_NAME not in termIgnore and SUBJECT_NAME not in termIgnore:
+				resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'subType':SUBJECT_TYPE,'pred':PREDICATE,'obj':OBJECT_NAME,'objType':OBJECT_TYPE}
+				if PREDICATION_ID in pubDic:
+					pubDic[PREDICATION_ID].add(PMID)
+				else:
+					pubDic[PREDICATION_ID] = {PMID}
+				#print PMID,PREDICATION_ID
+				if PREDICATION_ID in predCounts:
+					predCounts[PREDICATION_ID]+=1
+				else:
+					predCounts[PREDICATION_ID]=1
+	return t,resCount,resDic,predCounts,pubDic
 
 def fet(localSem,localPub,globalSem,globalPub):
 	#print(localSem,localPub,globalSem,globalPub)
@@ -155,6 +168,7 @@ def pub_sem(query,sem_trip_dic):
 	totalRes=0
 	predCounts={}
 	resDic={}
+	pubDic={}
 	chunkSize=10000
 	updateSize=10000
 	filterOptions = create_es_filter(pmidList)
@@ -173,11 +187,11 @@ def pub_sem(query,sem_trip_dic):
 					print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
 				if counter % chunkSize == 0:
 					#print('Querying ES...')
-					t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
+					t,resCount,resDic,predCounts,pubDic=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic,pubDic=pubDic)
 					totalRes+=resCount
 					pmidList=[]
 		#print(filterOptions)
-		t,resCount,resDic,predCounts=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic)
+		t,resCount,resDic,predCounts,pubDic=es_query(filterData=filterOptions,index='semmeddb',predCounts=predCounts,resDic=resDic,pubDic=pubDic)
 		totalRes+=resCount
 
 		pc = round((float(counter)/float(pCount))*100)
@@ -197,7 +211,7 @@ def pub_sem(query,sem_trip_dic):
 		tripleFreqs = {}
 		print('Geting freqs...',len(predCounts))
 		#print(predCounts.keys())
-		freq_res = get_term_stats(query=list(predCounts.keys()))
+		freq_res = get_semmed_data(query=list(predCounts.keys()))
 		#print(freq_res)
 		for i in freq_res:
 			tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
@@ -213,7 +227,7 @@ def pub_sem(query,sem_trip_dic):
 			if predCounts[k]>1:
 				if freq_res:
 					odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
-					t = k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\n'
+					t = k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+";".join(pubDic[k])+'\n'
 					o.write(t.encode('utf-8'))
 				else:
 					continue
@@ -227,7 +241,7 @@ def pub_sem(query,sem_trip_dic):
 		end = time.time()
 		print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 	else:
-		print('Too many articles')
+		print('0 or too many articles')
 
 def read_sem_triples():
 	print('getting background freqs...')
@@ -242,34 +256,39 @@ def read_sem_triples():
 	print("\tTime taken:", round((end - start) / 60, 3), "minutes")
 	return sem_trip_dic
 
-def compare(aList,bList):
-	pValCut=1e-5
-	predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','COEXISTS_WITH','ASSOCIATED_WITH','compared_with']
-
+def compare(aList,bList,name):
+	pValCut=1e-1
+	#predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','COEXISTS_WITH','ASSOCIATED_WITH','compared_with']
+	#predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','compared_with']
 	aDic=defaultdict(dict)
 	for a in aList.split(','):
 		print(a)
-		with gzip.open(os.path.join('data',a+'.gz'),'rb') as f:
-			for line in f:
-				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
-				if float(p)<pValCut:
-					if pred not in predIgnore:
-						aDic[a][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
+		fPath=os.path.join('data',a+'.gz')
+		if os.path.isfile(fPath):
+			with gzip.open(fPath,'rb') as f:
+				for line in f:
+					s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p,pubs = line.rstrip().split('\t')
+					if float(p)<pValCut:
+						if pred not in predIgnore:
+							aDic[a][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p,'pubs':pubs.split(';')}
+		else:
+			print(fPath,'does not exist')
 	bDic=defaultdict(dict)
 	for b in bList.split(','):
 		print(b)
-		with gzip.open(os.path.join('data',b+'.gz')) as f:
-			for line in f:
-				s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p = line.rstrip().split('\t')
-				if float(p)<pValCut:
-					#ignore less useful predicates
-					if pred not in predIgnore:
-						bDic[b][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
-
+		fPath=os.path.join('data',b+'.gz')
+		if os.path.isfile(fPath):
+			with gzip.open(fPath,'rb') as f:
+				for line in f:
+					s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p,pubs = line.rstrip().split('\t')
+					if float(p)<pValCut:
+						#ignore less useful predicates
+						if pred not in predIgnore:
+							bDic[b][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p,'pubs':pubs.split(';')}
+		else:
+			print(fPath,'does not exist')
 	print(len(aDic))
 	print(len(bDic))
-
-	ignoreTerms=['Patients','Disease']
 
 	#compare two sets of data
 	aComDic=defaultdict(dict)
@@ -287,6 +306,8 @@ def compare(aList,bList):
 			if pc % 10 == 0:
 				print(pc,'%')
 			aSub,aPred,aObj = aDic[a][s1]['sub'],aDic[a][s1]['pred'],aDic[a][s1]['obj']
+			if aSub in termIgnore or aObj in termIgnore:
+				continue
 			for b in bDic:
 				#print(b)
 				for s2 in bDic[b]:
@@ -294,9 +315,7 @@ def compare(aList,bList):
 					bSub,bPred,bObj = bDic[b][s2]['sub'],bDic[b][s2]['pred'],bDic[b][s2]['obj']
 					#print(aObj,bSub)
 					#testing removal of words
-					if bSub.startswith('Alzheimer'):
-						continue
-					if bSub in ignoreTerms:
+					if bSub in termIgnore or bObj in termIgnore:
 						continue
 					if aObj == bSub:
 						if aPred in predDic:
@@ -311,25 +330,44 @@ def compare(aList,bList):
 						aComDic[a][s1]=aDic[a][s1]
 						bComDic[b][s2]=bDic[b][s2]
 						joinCount+=1
-						joinDic[joinCount]={'s1':s1,'aSub':aSub,'aPred':aPred,'aObj':aObj,'s2':s2,'bSub':bSub,'bPred':bPred,'bObj':bObj,'overlap':aObj,'d1':a,'d2':b}
+						joinDic[joinCount]={'s1':s1,'aSub':aSub,'aSubType':aDic[a][s1]['subType'],'aPred':aPred,'aObj':aObj,'aObjType':aDic[a][s1]['objType'],'s2':s2,'bSub':bSub,'bSubType':bDic[b][s2]['subType'],'bPred':bPred,'bObj':bObj,'bObjType':bDic[b][s2]['subType'],'overlap':aObj,'d1':a,'d2':b}
+
 	#get some summaries
 	print(predDic)
 	for c in aComDic:
 		print(c,len(aComDic[c]))
 
-	with open('data/compare/a_nodes.json','w') as outfile:
+	if not os.path.exists(os.path.join('data','compare',name)):
+		os.mkdir(os.path.join('data','compare',name))
+		print("Directory " , name ,  " created ")
+	else:
+		print("Directory " , name ,  " already exists")
+
+	with open(os.path.join('data','compare',name,'a_nodes.json'),'w') as outfile:
 		#outfile={'source':a:'sem':s1:aDic[a][s1]}
 		json.dump(aComDic,outfile)
 
-	with open('data/compare/b_nodes.json','w') as outfile:
+	with open(os.path.join('data','compare',name,'b_nodes.json'),'w') as outfile:
 		#outfile={'source':a:'sem':s1:aDic[a][s1]}
 		json.dump(bComDic,outfile)
 
-	o = open('data/compare/rels.tsv','w')
+	o = open(os.path.join('data','compare',name,'rels.tsv'),'w')
 	for i in joinDic:
 	#outfile={'source':a:'sem':s1:aDic[a][s1]}
-		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['bSub']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
+		o.write(str(i)+'\t'+joinDic[i]['s1']+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aSubType']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['s2']+'\t'+joinDic[i]['bSub']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['overlap']+'\t'+joinDic[i]['d1']+'\t'+joinDic[i]['d2']+'\n')
 	o.close()
+
+	#full summary outFile
+	o = open(os.path.join('data','compare',name,'summary.tsv'),'w')
+	o.write('Gene\tPubMedIDs1\tSubject1\tSubject1_Type\tPredicate1\tObject1/Subject2\tObject1/Subject2_Type\tPredicate2\tObject2\tObject2_Type\tPubMedIDs2\tDisease\n')
+	for i in joinDic:
+		a = joinDic[i]['d1']
+		b = joinDic[i]['d2']
+		sem1 = joinDic[i]['s1']
+		sem2 = joinDic[i]['s2']
+		o.write(joinDic[i]['d1']+'\t'+";".join(aDic[a][sem1]['pubs'])+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aSubType']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['aObjType']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['bObjType']+'\t'+";".join(bDic[b][sem2]['pubs'])+'\t'+joinDic[i]['d2']+'\n')
+	o.close()
+
 
 if __name__ == '__main__':
 
@@ -370,4 +408,4 @@ if __name__ == '__main__':
 #pub_sem('oropharyngeal cancer')
 #pub_sem('prostate cancer')
 #pub_sem('breast cancer')
-#get_term_stats('semmeddb_triple_freqs',filterData={"terms":{"SUB_PRED_OBJ":['Encounter due to counseling:PROCESS_OF:Family']}})
+#get_semmed_data('semmeddb_triple_freqs',filterData={"terms":{"SUB_PRED_OBJ":['Encounter due to counseling:PROCESS_OF:Family']}})

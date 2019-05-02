@@ -43,6 +43,14 @@ def load_nodes(session,nodes,type):
 				com="merge (sem:SemMedTriple{name:'"+triple+"',sub:'"+sub+"',pred:'"+pred+"',obj:'"+obj+"'}) return sem;"
 				for res in session.run(com): continue;
 
+				#add publication nodes
+				pubs = data[d][s]['pubs']
+				for p in pubs:
+					com="merge (d:Publication{pmid:'"+p+"'}) return d;"
+					for res in session.run(com): continue;
+					com="match (d:Publication{pmid:'"+p+"'}) match (sem:SemMedTriple{name:'"+triple+"'}) merge (d)<-[:DERIVED_FROM]-(sem);"
+					for res in session.run(com): continue;
+
 				#add enrichment data
 				com="match (d:DataSet{name:'"+d_clean+"'}) match (sem:SemMedTriple{name:'"+triple+"'}) merge (d)-[:ENRICHED{pval:"+pval+",odds:"+odds+"}]->(sem) return d,sem;"
 				for res in session.run(com): continue;
@@ -87,6 +95,9 @@ def create_graph(a_nodes,b_nodes,rels):
 
 	#add some indexes
 	com="CREATE index on :DataSet(name);"
+	session.run(com)
+
+	com="CREATE index on :Publication(pmid);"
 	session.run(com)
 
 	com="CREATE index on :SemMedTriple(name)"
