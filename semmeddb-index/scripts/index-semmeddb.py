@@ -30,7 +30,7 @@ def get_date():
     d = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return(d)
 
-def create_index(index_name,shards=3):
+def create_predicate_index(index_name,shards=3):
 	if es.indices.exists(index_name,request_timeout=timeout):
 		print("Index name already exists, please choose another")
 	else:
@@ -38,7 +38,7 @@ def create_index(index_name,shards=3):
 		request_body ={
 			"settings":{
 	        	"number_of_shards" : shards,
-	        	"number_of_replicas":1,
+	        	"number_of_replicas":0,
 	        	#"index.codec": "best_compression",
 				"refresh_interval":-1,
 				"index.max_result_window": 1000000
@@ -65,9 +65,42 @@ def create_index(index_name,shards=3):
 		}
 		es.indices.create(index = index_name, body = request_body,request_timeout=timeout)
 
+def create_gene_index(index_name,shards=3):
+	if es.indices.exists(index_name,request_timeout=timeout):
+		print("Index name already exists, please choose another")
+	else:
+		print("Creating index "+index_name)
+		request_body ={
+			"settings":{
+	        	"number_of_shards" : shards,
+	        	"number_of_replicas":0,
+	        	#"index.codec": "best_compression",
+				"refresh_interval":-1,
+				"index.max_result_window": 1000000
+	    	},
+		    "mappings":{
+		        "_doc" : {
+		            "properties": {
+		                "SENTENCE_ID": { "type": "keyword"},
+		                "CUI": { "type": "keyword"},
+		                "NAME":{"type":"keyword"},
+		                "TYPE":{"type":"keyword"},
+		                "GENE_ID":{"type":"keyword"},
+		                "GENE_NAME":{"type":"keyword"},
+		                "TEXT":{"type":"keyword"},
+		                "START_INDEX":{"type":"keyword"},
+		                "END_INDEX":{"type":"integer"},
+						"SCORE":{"type":"integer"}
+		             }
+		        }
+		    }
+		}
+		es.indices.create(index = index_name, body = request_body,request_timeout=timeout)
+
+
 def index_predicate_data(predicate_data,index_name):
 	print(get_date(),"Indexing predicate data...")
-	create_index(index_name)
+	create_predicate_index(index_name)
 	bulk_data = []
 	counter=0
 	start = time.time()
@@ -124,5 +157,62 @@ def index_predicate_data(predicate_data,index_name):
 	except timeout:
 		print('counting index timeout',index_name)
 
+def index_gene_data(predicate_data,index_name):
+	print(get_date(),"Indexing gene data...")
+	create_gene_index(index_name)
+	bulk_data = []
+	counter=0
+	start = time.time()
+	chunkSize = 100000
+	with gzip.open(predicate_data) as f:
+		#next(f)
+		for line in f:
+			counter+=1
+			if counter % 100000 == 0:
+				end = time.time()
+				t=round((end - start), 4)
+				print(get_date(),predicate_data,t,counter)
+			if counter % chunkSize == 0:
+				deque(helpers.streaming_bulk(client=es,actions=bulk_data,chunk_size=chunkSize,request_timeout=timeout,raise_on_error=False),maxlen=0)
+				bulk_data = []
+			#print(line.decode('utf-8'))
+			l = line.rstrip().decode('utf-8').replace('""""""','NA').split('\t')
+			data_dict = {
+				 "SENTENCE_ID": l[1],
+				 "CUI":  l[2],
+				 "NAME":  l[3],
+				 "TYPE":  l[4],
+				 "GENE_ID":l[5],
+				 "GENE_NAME":l[6],
+				 "TEXT":l[7],
+				 "START_INDEX":int(l[8]),
+				 "END_INDEX":int(l[9]),
+				 "SCORE":int(l[10])
+			}
+			op_dict = {
+				"_index": index_name,
+                "_id" : l[0],
+                "_op_type":'create',
+				"_type": '_doc',
+				"_source":data_dict
+			}
+			bulk_data.append(op_dict)
+	#print bulk_data[0]
+	#print len(bulk_data)
+	deque(helpers.streaming_bulk(client=es,actions=bulk_data,chunk_size=chunkSize,request_timeout=timeout,raise_on_error=False),maxlen=0)
+
+	#check number of records, doesn't work very well with low refresh rate
+	print("Counting number of records...")
+	try:
+	    es.indices.refresh(index=index_name,request_timeout=timeout)
+	    res=es.search(index=index_name,request_timeout=timeout)
+	    esRecords = res['hits']['total']
+	    print("Number of records in index",index_name,"=",esRecords)
+	except timeout:
+		print('counting index timeout',index_name)
+
 #index_predicate_data('data/semmedVER31_R_PREDICATION_06302018_1000.tsv.gz','semmeddb')
-index_predicate_data('/Users/be15516/mounts/rdfs_mrc/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/v31_R_30_06_18/semmedVER31_R_PREDICATION_06302018.tsv.gz','semmeddb')
+
+#index_predicate_data('/Users/be15516/mounts/rdfs_mrc/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/v31_R_30_06_18/semmedVER31_R_PREDICATION_06302018.tsv.gz','semmeddb')
+
+index_gene_data('/Users/be15516/mounts/rdfs_mrc/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/v31_R_30_06_18/semmedVER31_R_ENTITY_06302018_genes_test.tsv.gz','semmeddb-genes')

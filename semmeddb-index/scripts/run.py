@@ -29,6 +29,7 @@ globalPub=17734131
 #globals
 predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','compared_with']
 termIgnore=['Patients','Disease','Genes','Proteins']
+typeFilterList = ["aapp","enzy","gngm","chem","clnd","horm","hops","inch","lipd","neop","orch"]
 
 
 def run_query(filterData,index,size=100000):
@@ -83,7 +84,7 @@ def create_es_filter(pmidList):
 	#typeFilterList = [
 	#	"aapp","amas","bacs","celf","enzy","gngm","horm","orch"]
 	#typeFilterList = ["aapp","enzy","gngm"]
-	typeFilterList = ["aapp","enzy","gngm","chem","clnd","dsyn","genf","horm","hops","inch","lipd","neop","orch"]
+	#typeFilterList = ["aapp","enzy","gngm","chem","clnd","dsyn","genf","horm","hops","inch","lipd","neop","orch"]
 
 	filterOptions = [
 			{"terms":{"PMID":pmidList}},
