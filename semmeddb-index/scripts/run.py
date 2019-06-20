@@ -106,12 +106,14 @@ def es_query(filterData,index,predCounts,resDic,pubDic):
 			PREDICATE=r['_source']['PREDICATE']
 			OBJECT_NAME=r['_source']['OBJECT_NAME']
 			OBJECT_TYPE=r['_source']['OBJECT_SEMTYPE']
+			OBJECT_CUI=r['_source']['OBJECT_CUI']
 			SUBJECT_NAME=r['_source']['SUBJECT_NAME']
 			SUBJECT_TYPE=r['_source']['SUBJECT_SEMTYPE']
+			SUBJECT_CUI=r['_source']['SUBJECT_CUI']
 			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
 			#filter on predicate
 			if PREDICATE not in predIgnore and OBJECT_NAME not in termIgnore and SUBJECT_NAME not in termIgnore:
-				resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'subType':SUBJECT_TYPE,'pred':PREDICATE,'obj':OBJECT_NAME,'objType':OBJECT_TYPE}
+				resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'subType':SUBJECT_TYPE,'subCUI':SUBJECT_CUI,'pred':PREDICATE,'obj':OBJECT_NAME,'objType':OBJECT_TYPE,'objCUI':OBJECT_CUI}
 				if PREDICATION_ID in pubDic:
 					pubDic[PREDICATION_ID].add(PMID)
 				else:
@@ -217,6 +219,24 @@ def pub_sem(query,sem_trip_dic):
 		for i in freq_res:
 			tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
 
+		#get gene data from semmeddb-genes - dont need this, CUI for gngm are or contain entrez IDs!!!
+		# print('Getting gene info...')
+		# cuiSet=set()
+		# for r in resDic:
+		# 	subCUI=resDic[r]['subCUI']
+		# 	objCUI=resDic[r]['objCUI']
+		# 	cuiSet.add(subCUI)
+		# 	cuiSet.add(objCUI)
+		# filterData = [
+		# 		{"terms":{"CUI":list(cuiSet)}}
+		# 		]
+		# genet,geneResCount,geneRes=run_query(filterData,'semmeddb-genes')
+		# cuiToEntrez={}
+		# for g in geneRes:
+		# 	cuiToEntrez[g['_source']['CUI']]=g['_source']['GENE_ID']
+		# print(cuiToEntrez)
+
+
 		print('Doing enrichment...')
 		start = time.time()
 		counter=0
@@ -228,7 +248,17 @@ def pub_sem(query,sem_trip_dic):
 			if predCounts[k]>1:
 				if freq_res:
 					odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
-					t = k+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+";".join(pubDic[k])+'\n'
+					#if resDic[k]['subCUI'] in cuiToEntrez:
+					#	subEntrez=cuiToEntrez[resDic[k]['subCUI']]
+					#else:
+					#	subEntrez = 'NA'
+					#	print(resDic[k]['subCUI'],'missing')
+					#if resDic[k]['objCUI'] in cuiToEntrez:
+					#	objEntrez=cuiToEntrez[resDic[k]['objCUI']]
+					#else:
+					#	objEntrez = 'NA'
+					#	print(resDic[k]['objCUI'],'missing')
+					t = k+'\t'+resDic[k]['subCUI']+'\t'+resDic[k]['sub']+'\t'+resDic[k]['subType']+'\t'+resDic[k]['pred']+'\t'+resDic[k]['objCUI']+'\t'+resDic[k]['obj']+'\t'+resDic[k]['objType']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+";".join(pubDic[k])+'\n'
 					o.write(t.encode('utf-8'))
 				else:
 					continue
@@ -268,10 +298,10 @@ def compare(aList,bList,name):
 		if os.path.isfile(fPath):
 			with gzip.open(fPath,'rb') as f:
 				for line in f:
-					s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p,pubs = line.rstrip().split('\t')
+					s,subCUI,sub,subType,pred,objCUI,obj,objType,f1,f2,f3,f4,o,p,pubs = line.rstrip().split('\t')
 					if float(p)<pValCut:
 						if pred not in predIgnore:
-							aDic[a][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p,'pubs':pubs.split(';')}
+							aDic[a][s]={'subCUI':subCUI,'sub':sub,'subType':subType,'objCUI':objCUI,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p,'pubs':pubs.split(';')}
 		else:
 			print(fPath,'does not exist')
 	bDic=defaultdict(dict)
@@ -281,11 +311,11 @@ def compare(aList,bList,name):
 		if os.path.isfile(fPath):
 			with gzip.open(fPath,'rb') as f:
 				for line in f:
-					s,sub,subType,pred,obj,objType,f1,f2,f3,f4,o,p,pubs = line.rstrip().split('\t')
+					s,subCUI,sub,subType,pred,objCUI,obj,objType,f1,f2,f3,f4,o,p,pubs = line.rstrip().split('\t')
 					if float(p)<pValCut:
 						#ignore less useful predicates
 						if pred not in predIgnore:
-							bDic[b][s]={'sub':sub,'subType':subType,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p,'pubs':pubs.split(';')}
+							bDic[b][s]={'subCUI':subCUI,'sub':sub,'subType':subType,'objCUI':objCUI,'obj':obj,'objType':objType,'pred':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p,'pubs':pubs.split(';')}
 		else:
 			print(fPath,'does not exist')
 	print(len(aDic))
@@ -331,7 +361,7 @@ def compare(aList,bList,name):
 						aComDic[a][s1]=aDic[a][s1]
 						bComDic[b][s2]=bDic[b][s2]
 						joinCount+=1
-						joinDic[joinCount]={'s1':s1,'aSub':aSub,'aSubType':aDic[a][s1]['subType'],'aPred':aPred,'aObj':aObj,'aObjType':aDic[a][s1]['objType'],'s2':s2,'bSub':bSub,'bSubType':bDic[b][s2]['subType'],'bPred':bPred,'bObj':bObj,'bObjType':bDic[b][s2]['subType'],'overlap':aObj,'d1':a,'d2':b}
+						joinDic[joinCount]={'s1':s1,'aSubCUI':aDic[a][s1]['subCUI'],'aSub':aSub,'aSubType':aDic[a][s1]['subType'],'aPred':aPred,'aObjCUI':aDic[a][s1]['objCUI'],'aObj':aObj,'aObjType':aDic[a][s1]['objType'],'s2':s2,'bSubCUI':bDic[b][s2]['subCUI'],'bSub':bSub,'bSubType':bDic[b][s2]['subType'],'bPred':bPred,'bObjCUI':bDic[b][s2]['objCUI'],'bObj':bObj,'bObjType':bDic[b][s2]['subType'],'overlap':aObj,'d1':a,'d2':b}
 
 	#get some summaries
 	print(predDic)
@@ -360,13 +390,13 @@ def compare(aList,bList,name):
 
 	#full summary outFile
 	o = open(os.path.join('data','compare',name,'summary.tsv'),'w')
-	o.write('Gene\tPubMedIDs1\tSubject1\tSubject1_Type\tPredicate1\tObject1/Subject2\tObject1/Subject2_Type\tPredicate2\tObject2\tObject2_Type\tPubMedIDs2\tDisease\n')
+	o.write('Gene\tPubMedIDs1\tSubject1\tSubject1_Type\tCUI\tPredicate1\tObject1/Subject2\tObject1/Subject2_Type\tCUI\tPredicate2\tObject2\tObject2_Type\tCUI\tPubMedIDs2\tDisease\n')
 	for i in joinDic:
 		a = joinDic[i]['d1']
 		b = joinDic[i]['d2']
 		sem1 = joinDic[i]['s1']
 		sem2 = joinDic[i]['s2']
-		o.write(joinDic[i]['d1']+'\t'+";".join(aDic[a][sem1]['pubs'])+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aSubType']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['aObjType']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['bObjType']+'\t'+";".join(bDic[b][sem2]['pubs'])+'\t'+joinDic[i]['d2']+'\n')
+		o.write(joinDic[i]['d1']+'\t'+";".join(aDic[a][sem1]['pubs'])+'\t'+joinDic[i]['aSub']+'\t'+joinDic[i]['aSubType']+'\t'+joinDic[i]['aSubCUI']+'\t'+joinDic[i]['aPred']+'\t'+joinDic[i]['aObj']+'\t'+joinDic[i]['aObjType']+'\t'+joinDic[i]['aObjCUI']+'\t'+joinDic[i]['bPred']+'\t'+joinDic[i]['bObj']+'\t'+joinDic[i]['bObjType']+'\t'+joinDic[i]['bObjCUI']+'\t'+";".join(bDic[b][sem2]['pubs'])+'\t'+joinDic[i]['d2']+'\n')
 	o.close()
 
 
@@ -379,6 +409,7 @@ if __name__ == '__main__':
 	parser.add_argument('-q,--query', dest='query', help='the pubmed query')
 	parser.add_argument('-a,--query_a', dest='query_a', help='list of enriched data sets')
 	parser.add_argument('-b,--query_b', dest='query_b', help='list of enriched data sets')
+	parser.add_argument('-n,--name', dest='name', help='a name for the comparison')
 
 	args = parser.parse_args()
 	print(args)
@@ -396,11 +427,11 @@ if __name__ == '__main__':
 				for q in queries:
 					pub_sem(q,sem_trip_dic)
 		elif args.method == 'compare':
-			if args.query_a == None or args.query_b == None:
-				print('Please provide two lists of data sets to compare (-a and -b)')
+			if args.query_a == None or args.query_b == None or args.name == None:
+				print('Please provide two lists of data sets to compare (-a and -b) and a name (-n)')
 			else:
 				print('Comparing data...')
-				compare(args.query_a,args.query_b)
+				compare(args.query_a,args.query_b, args.name)
 				#delete_index(args.index_name)
 		else:
 			print("Not a good method")
