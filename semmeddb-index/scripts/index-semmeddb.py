@@ -41,7 +41,7 @@ def create_predicate_index(index_name,shards=3):
 	        	"number_of_replicas":0,
 	        	#"index.codec": "best_compression",
 				"refresh_interval":-1,
-				"index.max_result_window": 1000000
+				"index.max_result_window": 10000000
 	    	},
 		    "mappings":{
 		        "_doc" : {
