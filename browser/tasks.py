@@ -68,23 +68,23 @@ def test():
 	#logger.debug("Running test schedular: "+str(t))
 
 def pmid_get(d,td):
-	print "\n### Getting pubmed ids for "+td+" ###"
+	logger.debug("\n### Getting pubmed ids for "+td+" ###")
 	start = time.time()
-
 	url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
 	payload = {'db': 'pubmed',
                'term': '"'+td+'"[PDAT] : "3000"[PDAT]',
                'retmax': '1000000000'}
 				#'retmax': '10'}
 
+	try:
 	# get the data
-	r = requests.get(url, params=payload)
-
-	out = open(d + 'pmids_raw.txt', 'w')
-	out.write(r.text)
-	end = time.time()
-	print "\tTime taken:", round((end - start) / 60, 3), "minutes"
-
+		r = requests.get(url, params=payload)
+		out = open(d + 'pmids_raw.txt', 'w')
+		out.write(r.text)
+		end = time.time()
+		print "\tTime taken:", round((end - start) / 60, 3), "minutes"
+	except requests.exceptions.RequestException as e:
+		logger.debug('eutils not working')
 
 def parse_pmids(d):
 	print "\n### Parsing ids ###"
@@ -628,8 +628,11 @@ def pub_sem(sp):
 	#r = requests.post(url)
 
 	# GET with params in URL
-	r = requests.get(url, params=params)
-
+	try:
+		r = requests.get(url, params=params)
+	except requests.exceptions.RequestException as e:
+		logger.debug('eutils not working')
+		return
 	#create random file name
 	n = 10
 	ran=''.join(["%s" % randint(0, 9) for num in range(0, n)])

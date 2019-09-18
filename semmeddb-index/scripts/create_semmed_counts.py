@@ -20,6 +20,9 @@ headers = {'Content-Type': 'application/json'}
 #after query
 #curl -X GET "localhost:9200/semmeddb/_search?pretty" -H 'Content-Type: application/json' -d '{ "aggs" : { "my_buckets" : { "composite": { "size":100, "sources": [{"sub-pred-obj":{"terms" : { "field" : "SUB_PRED_OBJ"}}} ],"after":{"sub-pred-obj":"\"\"\"U\"\" lymphocyte\":LOCATION_OF:receptor"} }}}} '
 
+#check
+#curl -XGET 'localhost:9200/semmeddb/_search?pretty' -H 'Content-Type: application/json' -d '{"size":1,"query":{"bool":{"filter":[{"term":{"SUB_PRED_OBJ":"Encounter due to counseling:PROCESS_OF:Family"}}]}}}';
+
 def create_counts(type):
 	print 'Creating counts for ',type
 	if type == 'semmeddb_triple':
@@ -28,6 +31,9 @@ def create_counts(type):
 		source="SUBJECT_NAME"
 	elif type == 'semmeddb_object':
 		source="OBJECT_NAME"
+	else:
+		print('unkown type!')
+		exit()
 
 	#get initial aggreation
 	print 'Running initial aggregation',source
@@ -52,6 +58,10 @@ def create_counts(type):
 		r = requests.post(url, json=payload, headers=headers)
 		res=r.json()
 		for r in res['aggregations']['my_buckets']['buckets']:
+<<<<<<< HEAD
+=======
+			#print(r['key'])
+>>>>>>> 0da7389197a73834162c11b73d6bdc4f31e205ac
 			val = r['key'][type]
 			count = r['doc_count']
 			if val in masterDic:
@@ -68,10 +78,14 @@ def create_counts(type):
 
 	print len(masterDic)
 	print('Writing to file...')
-	o=gzip.open('data/'+type+'_freqs.txt.gz','w')
+	o=gzip.open('data/freqs/'+type+'_freqs.txt.gz','w')
 	for m in masterDic:
 		o.write(m+'\t'+str(masterDic[m])+'\n')
 
 #create_counts('semmeddb_triple')
+<<<<<<< HEAD
 create_counts('semmeddb_subject')
+=======
+#create_counts('semmeddb_subject')
+>>>>>>> 0da7389197a73834162c11b73d6bdc4f31e205ac
 create_counts('semmeddb_object')
