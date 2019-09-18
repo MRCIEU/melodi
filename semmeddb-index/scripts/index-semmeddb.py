@@ -125,4 +125,5 @@ def index_predicate_data(predicate_data,index_name):
 		print('counting index timeout',index_name)
 
 #index_predicate_data('data/semmedVER31_R_PREDICATION_06302018_1000.tsv.gz','semmeddb')
-index_predicate_data('/Users/be15516/mounts/rdfs_mrc/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/v31_R_30_06_18/semmedVER31_R_PREDICATION_06302018.tsv.gz','semmeddb')
+#index_predicate_data('/Users/be15516/mounts/rdfs_mrc/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/v31_R_30_06_18/semmedVER31_R_PREDICATION_06302018.tsv.gz','semmeddb')
+index_predicate_data('/projects/MRC-IEU/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/v31_R_30_06_18/semmedVER31_R_PREDICATION_06302018.tsv.gz','semmeddb')

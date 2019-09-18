@@ -21,10 +21,10 @@ auth_token = basic_auth(config.user, config.password)
 driver = GraphDatabase.driver("bolt://"+config.server+":"+config.port,auth=auth_token)
 
 #files
-baseDir='/projects/MRC-IEU/users/be15516/data/SemMedDB/v31_R_30_06_18/'
+baseDir='/projects/MRC-IEU/research/data/nih/_devs/NIH_SemMedDB/data/SemMedDB/semmedVER40_R/'
 #SemMed
-semCitation = baseDir+'semmedVER31_R_CITATIONS_06302018_edit.psv.gz'
-semPA = baseDir+'semmedVER31_R_PREDICATION_06302018.psv.gz'
+semCitation = baseDir+'semmedVER40_R_CITATIONS_edit.psv.gz'
+semPA = baseDir+'semmedVER40_R_PREDICATION.psv.gz'
 
 old_pmids='data/old_pmids.txt.gz'
 new_pmids='data/new_pmids.txt.gz'
@@ -53,6 +53,7 @@ def getpubmedData():
 			#com="match (p:Pubmed)-[:SEM]-(s:SDB_triple) return distinct(p.pmid) as pmid;"
 			#com="match (p:Pubmed)-[:SEM|:HAS_MESH]-() return distinct(p.pmid) as pmid;"
 			com="match (p:Pubmed) where p.dp is not NULL return distinct(p.pmid) as pmid;"
+			print(com)
 			s = session2.run(com)
 			counter=0
 			for res in s:
@@ -84,14 +85,14 @@ def getNewPmids():
 			for line in f:
 				pDic[line.rstrip()]=''
 		print "Time taken to read from file:", round(time.time() - start, 3), "seconds"
-
+		print('Reading ',semPA)
 		with gzip.open(semPA, 'r') as f:
 			for line in f:
 				counter+=1
 				if counter % 1000000 == 0:
-					print counter
+					print counter,pmid
 					print str(len(newPDic))
-				l = line.split("|")
+				l = line.split("\t")
 				pmid = l[2]
 				if pmid not in pDic:
 					#print l
@@ -123,7 +124,7 @@ def addNewPmids():
 			counter+=1
 			if counter % 1000000 == 0:
 				print counter
-			l = line.rstrip().split("|")
+			l = line.rstrip().split("\t")
 			pmid = l[0]
 			issn = l[1]
 			da = l[2]
@@ -158,7 +159,7 @@ def addNewSemMed():
 	#don't split inside quoted sections, e.g. 49963|341414|1|21065029|COEXISTS_WITH|"708|925"|"C1QBP|CD8A"|gngm|1|C0771648|Poractant alfa|orch|1
 	o=gzip.open('data/new-semmed.tsv.gz','w')
 	with gzip.open(semPA, 'rb') as f:
-		for line in reader(f, delimiter='|'):
+		for line in reader(f, delimiter='\t'):
 			counter+=1
 			if counter % 1000000 == 0:
 				print "------ "+str(counter)+" ------"
@@ -183,7 +184,7 @@ def addNewSemMed():
 				#check for dodgy pubmed ids with [2] in
 				if pmid.isdigit():
 					#statement="match (p:Pubmed{pmid:"+pmid+"}),(s:SDB_triple{s_name:'"+s_name+"',s_type:'"+s_type+"',o_name:'"+o_name+"',o_type:'"+o_type+"',predicate:'"+predicate+"'}) merge (p)-[:SEM]-(s);"
-					o.write(pmid+'\t'+pid+'\n')
+					o.write(pmid+'\t'+s_name+'\t'+predicate+'\t'+o_name+'\n')
 					#statement='match (p:Pubmed{pmid:'+pmid+'}),(s:SDB_triple{s_name:"'+s_name+'",o_name:"'+o_name+'",predicate:"'+predicate+'"}) merge (p)-[:SEM]-(s);'
 					#session2.run(statement)
 
@@ -222,7 +223,7 @@ def main():
 	#add new PubMed-SemMed relationships
 	addNewSemMed()
 	#load using load csv
-	#using periodic commit 10000 LOAD CSV FROM 'file:///new-semmed.tsv.gz' as row FIELDTERMINATOR '\t' match (p:Pubmed{pmid:row[0]}),(s:SDB_triple{pid:row[1]}) merge (p)-[:SEM]-(s);
+	#using periodic commit 10000 LOAD CSV FROM 'file:///new-semmed.tsv.gz' as row FIELDTERMINATOR '\t' match (p:Pubmed{pmid:toInt(row[0])}) match (s:SDB_triple{pid:row[1]}) merge (p)-[:SEM]-(s);
 	#13 hours for ~2 million relationships
 
 	#fix()

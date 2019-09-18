@@ -26,7 +26,7 @@ def create_counts(type):
 		source="sub-pred-obj"
 	elif type == 'semmeddb_subject':
 		source="SUBJECT_NAME"
-	elif type == 'object':
+	elif type == 'semmeddb_object':
 		source="OBJECT_NAME"
 
 	#get initial aggreation
@@ -52,7 +52,7 @@ def create_counts(type):
 		r = requests.post(url, json=payload, headers=headers)
 		res=r.json()
 		for r in res['aggregations']['my_buckets']['buckets']:
-			val = r['key'][source]
+			val = r['key'][type]
 			count = r['doc_count']
 			if val in masterDic:
 				print val,'already exists'
@@ -74,4 +74,4 @@ def create_counts(type):
 
 #create_counts('semmeddb_triple')
 create_counts('semmeddb_subject')
-#create_counts('semmeddb_object')
+create_counts('semmeddb_object')
