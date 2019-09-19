@@ -1100,7 +1100,7 @@ def pubSingle(request,num):
 	year2 = c.year_range.split("-")[1].strip()
 	logger.debug('year1 = '+year1+' year2 = '+year2)
 	yearString = ''
-	if year1 != '1960' or year2 != '2017':
+	if year1 != '1960' or year2 != '2018':
 		yearString = "p.dcom >= '"+year1+"' and p.dcom <= '"+year2+"' and"
 
 	#check user ids match
@@ -1194,7 +1194,7 @@ def pubDetails(request,num):
 	year2 = c.year_range.split("-")[1].strip()
 	logger.debug('year1 = '+year1+' year2 = '+year2)
 	yearString = ''
-	if year1 != '1960' or year2 != '2017':
+	if year1 != '1960' or year2 != '2018':
 		yearString = "p.dcom >= '"+year1+"' and p.dcom <= '"+year2+"' and"
 
 	#check user ids match
