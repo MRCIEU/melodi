@@ -11,7 +11,7 @@ driver = GraphDatabase.driver("bolt://"+config.server+":"+config.port,auth=auth_
 
 session = driver.session()
 
-yRange = range(1950,2019)
+yRange = range(1950,2020)
 
 #to just update
 #mesh
@@ -134,16 +134,17 @@ def update_graph(file,type):
 				#semmed triples
 				statement = "MERGE (m:SDB_triple {pid:" + name + "}) ON MATCH SET "+freqString+""
 			#print statement
-			#session.run(statement)
+			session.run(statement)
 
 
 
 def main():
 	#update_sem_c()
-	get_mesh(yRange)
-	get_semmed(yRange)
-	parse(home+'data/mesh_freqs')
-	parse(home+'data/semmed_freqs')
+	
+	#get_mesh(yRange)
+	#get_semmed(yRange)
+	#parse(home+'data/mesh_freqs')
+	#parse(home+'data/semmed_freqs')
 	update_graph(home+'data/mesh_freqs','mesh')
 	update_graph(home+'data/semmed_freqs','semmed')
 
