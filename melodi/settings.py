@@ -31,7 +31,7 @@ DEBUG = False
 #ALLOWED_HOSTS = []
 
 #Add this for public
-ALLOWED_HOSTS = ['melodi.biocompute.org.uk','www.melodi.biocompute.org.uk']
+ALLOWED_HOSTS = ['melodi.biocompute.org.uk','www.melodi.biocompute.org.uk','melodi.mrcieu.ac.uk']
 
 # Application definition
 
